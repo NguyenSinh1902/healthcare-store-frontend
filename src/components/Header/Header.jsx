@@ -21,7 +21,7 @@ const Header = () => {
       <div className="header__category">
         <img src={iconCategory} alt="Category" className="icon" />
         <span>Category</span>
-        <img src={weuiBack} alt="weuiBack" className="icon" />
+        <img src={weuiBack} alt="weuiBack" className="icon_show" />
       </div>
 
       <div className="header__search">
@@ -32,6 +32,7 @@ const Header = () => {
       <div className="header__location">
         <img src={bxMap} alt="Location" className="icon" />
         <span>TP.HCM</span>
+        <img src={weuiBack} alt="weuiBack" className="icon_show" />
       </div>
 
       <div className="header__actions">
