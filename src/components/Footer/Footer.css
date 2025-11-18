@@ -11,14 +11,27 @@
     font-family: 'Poppins', sans-serif;
 }
 
-.footer-main-content {
+.footer__outer {
+    width: 100%;
     max-width: 1440px;
-    padding: 80px 135px 52px;
     margin: 0 auto;
+}
+
+.footer__inner {
+    width: 100%;
+    padding: 0 135px;
+    box-sizing: border-box;
+}
+
+.footer-main-content {
+    width: 100%;
+    padding: 80px 0 52px;
     display: flex;
     justify-content: space-between;
-    gap: 87px;
+    /* gap: ; */
+    box-sizing: border-box;
 }
+
 
 .footer-col {
     display: flex;
