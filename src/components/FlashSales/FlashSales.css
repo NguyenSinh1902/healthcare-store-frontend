@@ -153,6 +153,14 @@
   display: none;
 }
 
+/* Hide Products : View All Products */
+.flash-sales-container.expanded {
+    flex-wrap: wrap; /* Cho phép các thẻ xuống dòng */
+    overflow-x: visible; /* Tắt thanh cuộn ngang */
+    justify-content: center;
+    gap: 30px 16px;
+}
+
 .view-all-container {
     display: flex;
     justify-content: center;
