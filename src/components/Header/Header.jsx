@@ -13,7 +13,8 @@ import weuiBack from '../../assets/images/weui_back-outlined.png';
 const Header = () => {
   return (
     <header className="header">
-      <div className="header__logo">
+      <div className='header__container'>
+        <div className="header__logo">
         <img src={logo} alt="GreenPlus" className="logo-img" />
         <h2 className="logo-text">GreenPlus</h2>
       </div>
@@ -39,6 +40,7 @@ const Header = () => {
         <img src={iconBell} alt="Notification" />
         <img src={iconCart} alt="Cart" />
         <img src={iconAccount} alt="User" />
+      </div>
       </div>
     </header>
   );
