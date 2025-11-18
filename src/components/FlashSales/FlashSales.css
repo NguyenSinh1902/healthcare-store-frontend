@@ -1,0 +1,179 @@
+.flash-sales {
+  width: 100%;
+  background-color: #fff;
+  padding: 20px 0;
+}
+
+.flash-sales__outer {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.flash-sales__inner {
+  width: 100%;
+  padding: 0 135px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.flash-sales-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.header-left-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.today-block {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.red-rectangle {
+    width: 20px;
+    height: 40px;
+    background-color: #2859C5;
+    border-radius: 4px;
+}
+
+.today-text {
+    color: #2859C5;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    line-height: 20px;
+}
+
+.title-countdown-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 87px;
+}
+
+.section-title {
+    color: black;
+    font-size: 36px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    line-height: 48px;
+    letter-spacing: 1.44px;
+    margin: 0;
+}
+
+.countdown-timer {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 4px;
+}
+
+.countdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.countdown-label {
+    color: black;
+    font-size: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    line-height: 18px;
+}
+
+.countdown-number {
+    color: black;
+    font-size: 32px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    line-height: 30px;
+    letter-spacing: 1.28px;
+}
+
+.colon {
+    color: #2859C5;
+    font-size: 30px;
+    font-weight: 700;
+    margin-top: 15px;
+}
+
+.header-nav-arrows {
+    display: flex;
+    gap: 8px;
+    padding-bottom: 5px;
+}
+
+.nav-arrow-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background-color: #F5F5F5;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.nav-arrow-btn:hover {
+    background-color: #E0E0E0;
+}
+
+.nav-arrow-btn svg {
+    font-size: 20px;
+    color: black;
+}
+
+.flash-sales-container > div {
+    flex-shrink: 0;
+}
+
+.flash-sales-container {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 0px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.flash-sales-container::-webkit-scrollbar {
+  display: none;
+}
+
+.view-all-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 0px;
+}
+
+.view-all-btn {
+    width: 300px;
+    height: 65px;
+    background-color: #2859C5;
+    border-radius: 15px;
+    border: none;
+    color: white;
+    font-size: 20px;
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-weight: 700;
+    line-height: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.view-all-btn:hover {
+    background-color: #1D50C5;
+}
