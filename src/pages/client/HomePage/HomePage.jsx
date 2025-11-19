@@ -4,12 +4,13 @@ import FlashSales from "../../../components/FlashSales/FlashSales";
 import BestSellingProducts from "../../../components/BestSellingProducts/BestSellingProducts";
 import RecommendedProducts from "../../../components/RecommendedProducts/RecommendedProducts";
 import FeaturedProduct from "../../../components/FeaturedProduct/FeaturedProduct";
+import NewArrival from "../../../components/NewArrival/NewArrival";
 
 const HomePage = () => {
   return (
     <div>
       <Banner />
-      
+
       <FlashSales />
 
       <BestSellingProducts />
@@ -17,6 +18,8 @@ const HomePage = () => {
       <FeaturedProduct />
 
       <RecommendedProducts />
+
+      <NewArrival />
     </div>
   );
 };
