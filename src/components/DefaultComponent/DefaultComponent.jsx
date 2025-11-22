@@ -1,14 +1,19 @@
 import React from 'react';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer'; 
 
-function DefaultComponent({ children }) {
+const DefaultComponent = ({ children }) => {
   return (
-    <div>
-      <header>
-        <h1>Header - Healthcare Store</h1>
-      </header>
-      <main>{children}</main>
-    </div>
+    <>
+      <Header />
+            
+      <main>
+        {children}
+      </main>
+      
+      <Footer />
+    </>
   );
-}
+};
 
 export default DefaultComponent;
