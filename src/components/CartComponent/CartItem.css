@@ -1,0 +1,137 @@
+/* @import url('https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Degular+Demo:wght@400;600&display=swap'); */
+
+.cart-item-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 0;
+    border-bottom: 1px solid #F8F7F8;
+}
+
+.cart-item-left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.cart-item-image-box {
+    width: 64px;
+    height: 64px;
+    background-color: #F8F7F8;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.cart-item-image-box img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+}
+
+.cart-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.item-name {
+    font-family: 'ABeeZee', sans-serif;
+    font-size: 14px;
+    color: #0D0C0D;
+    line-height: 20px;
+    max-width: 250px;
+}
+
+.item-price-row {
+    display: flex;
+    gap: 8px;
+    font-family: 'Degular Demo', sans-serif;
+    font-size: 14px;
+}
+
+.price-current {
+    color: #2859C5;
+    font-weight: 600;
+}
+
+.price-original {
+    color: #9C939D;
+    text-decoration: line-through;
+    font-weight: 400;
+}
+
+.cart-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.qty-control {
+    display: flex;
+    align-items: center;
+    background-color: #F8F7F8;
+    border-radius: 21px;
+    padding: 4px;
+    gap: 8px;
+}
+
+.qty-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid #F8F7F8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.qty-btn.minus {
+    background-color: white;
+    color: #0D0C0D;
+}
+
+.qty-btn.plus {
+    background-color: #2859C5;
+    color: white;
+}
+
+.qty-value {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #0D0C0D;
+    min-width: 20px;
+    text-align: center;
+}
+
+.remove-btn {
+    cursor: pointer;
+    font-family: 'Degular Demo', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #2859C5;
+    padding: 4px 12px;
+    border-radius: 20px; 
+    transition: background 0.2s;
+}
+
+.remove-btn:hover {
+    background-color: #F0F8FF;
+}
+
+.cart-item-total {
+    width: 80px;
+    text-align: right;
+    font-family: 'ABeeZee', sans-serif;
+    font-size: 18px;
+    color: #0D0C0D;
+    letter-spacing: 0.5px;
+}
