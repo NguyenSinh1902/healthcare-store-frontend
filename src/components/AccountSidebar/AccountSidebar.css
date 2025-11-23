@@ -4,31 +4,28 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 24px;
+    gap: 12px;
 }
 
 .sidebar-group {
-    background-color: #FAF9FF;
-    border-radius: 20px;
-    padding: 20px 16px;
+    background-color: #FBFBFE;
+    border-radius: 24px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
 }
 
 .user-info {
     display: flex;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 24px;
 }
 
 .user-avatar {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     object-fit: cover;
     background-color: #E15177;
@@ -37,34 +34,34 @@
 .user-name {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
-    font-size: 18px;
-    color: #333;
-    line-height: 24px;
+    font-size: 16px;
+    color: #0D0C0D;
+    line-height: 22px;
 }
 
 .menu-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
 }
 
 .menu-item {
-    height: 48px;
+    height: 40px;
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 10px 0;
-    padding-right: 18px;
+    gap: 12px;
+    padding: 8px 0;
+    padding-right: 16px;
     cursor: pointer;
-    border-radius: 24px;
-    transition: all 0.2s ease-in-out;
-    color: #9C939D;
+    border-radius: 32px;
+    transition: all 0.2s;
+
+    color: #9C939D; 
 }
 
 .menu-item:hover {
-    background-color: #F0F0F0;
-    padding-left: 12px;
-    transform: scale(1.05);
+    background-color: #f0f0f5;
+    padding-left: 10px;
 }
 
 .menu-icon {
@@ -74,7 +71,6 @@
     align-items: center;
     justify-content: center;
     font-size: 18px;
-    color: #B6349A;
 }
 
 .menu-label {
@@ -87,7 +83,6 @@
 
 .menu-item.active {
     color: #2859C5;
-    background-color: #E7F1FF;
 }
 
 .menu-item.active .menu-label {
@@ -98,20 +93,14 @@
     height: 1px;
     background-color: #F0EEF0;
     width: 100%;
-    margin: 16px 0;
+    margin: 12px 0;
 }
 
 .menu-item.logout {
-    color: #FF5C8D;
-    margin-top: auto;
-}
-
-.menu-item.logout:hover {
-    background-color: #FFF0F5;
+    color: #2859C5;
 }
 
 .menu-item.logout .menu-label {
     font-family: 'Inter', sans-serif;
     font-weight: 500;
-    font-size: 16px;
 }
