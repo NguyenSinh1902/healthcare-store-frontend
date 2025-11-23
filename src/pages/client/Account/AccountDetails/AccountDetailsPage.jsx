@@ -11,40 +11,46 @@ const accountInfo = [
     { label: 'Address', value: '123 Nguyen Thi Minh Khai Street, District 3, Ho Chi Minh City, Vietnam' },
 ];
 
-const AccountDetailsPage = () => (
+const AccountDetailsPage = () => {
+  return (
     <section className="account-page-wrapper">
-        <div className="account-container">
-            <Row gutter={40}>
-                <Col xs={24} lg={6}>
-                    <AccountSidebar />
-                </Col>
+      <div className="account-container">
+        
+        <Row gutter={40}>
 
-                <Col xs={24} lg={18}>
-                    <div className="account-details-content">
-                        <h2 className="page-title">Account Details</h2>
+            <Col xs={24} lg={6}>
+                <AccountSidebar />
+            </Col>
 
-                        <div className="details-list">
-                            {accountInfo.map((item, index) => (
-                                <div key={index} className="detail-card">
-                                    <div className="detail-info">
-                                        <span className="detail-label">{item.label}</span>
-                                        <span className="detail-value">{item.value}</span>
-                                    </div>
-
-                                    <button className="btn-edit-pink">
-                                        <div className="icon-edit-wrapper">
-                                            <EditOutlined />
-                                        </div>
-                                        <span>Edit</span>
-                                    </button>
+            <Col xs={24} lg={18}>
+                <div className="account-details-content">
+                    <h2 className="page-title">Account Details</h2>
+                    
+                    <div className="details-list">
+                        {accountInfo.map((item, index) => (
+                            <div key={index} className="detail-card">
+                                <div className="detail-info">
+                                    <span className="detail-label">{item.label}</span>
+                                    <span className="detail-value">{item.value}</span>
                                 </div>
-                            ))}
-                        </div>
+                                
+                                <button className="btn-edit-pink">
+
+                                    <div className="icon-edit-wrapper">
+                                        <EditOutlined />
+                                    </div>
+                                    <span>Edit</span>
+                                </button>
+                            </div>
+                        ))}
                     </div>
-                </Col>
-            </Row>
-        </div>
+                </div>
+            </Col>
+        </Row>
+
+      </div>
     </section>
-);
+  );
+};
 
 export default AccountDetailsPage;

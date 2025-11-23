@@ -26,7 +26,7 @@
     font-size: 24px;
     font-weight: 600;
     color: #0D0C0D;
-    margin-bottom: 16px;
+    margin: 0 0 16px 0;
     letter-spacing: 0.4px;
 }
 
@@ -44,11 +44,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: box-shadow 0.2s ease-in-out;
+    transition: box-shadow 0.2s;
 }
 
 .detail-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
 }
 
 .detail-info {
@@ -82,13 +82,14 @@
     align-items: center;
     gap: 8px;
     cursor: pointer;
+    
     font-family: 'Degular Demo', sans-serif;
     font-weight: 600;
     font-size: 14px;
     color: #B6349A;
     padding: 8px 12px;
     border-radius: 20px;
-    transition: background-color 0.2s ease-in-out;
+    transition: background 0.2s;
 }
 
 .btn-edit-pink:hover {
@@ -101,6 +102,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     border: 1.5px solid #B6349A;
     border-radius: 4px;
     font-size: 12px;
@@ -110,11 +112,12 @@
     color: #B6349A;
 }
 
+/* Responsive */
 @media (max-width: 992px) {
     .account-container {
         padding: 0 20px;
     }
-
+    
     .detail-card {
         flex-direction: row;
         align-items: flex-start;
