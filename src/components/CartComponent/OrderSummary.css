@@ -1,0 +1,160 @@
+/* @import url('https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Degular+Demo:wght@400;600&family=Inter:wght@400;600&family=Poppins:wght@400;600&display=swap'); */
+
+.order-summary-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.summary-card {
+    background: white;
+    border-radius: 32px;
+    border: 1px solid #F8F7F8;
+    padding: 32px;
+    box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.progress-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.progress-bar-bg {
+    width: 100%;
+    height: 6px;
+    background-color: #FAF8F9;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: #2859C5;
+    border-radius: 24px;
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    font-family: 'ABeeZee', sans-serif;
+    font-size: 14px;
+    color: #0D0C0D;
+    text-align: center;
+    line-height: 20px;
+}
+
+.summary-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.summary-title {
+    font-family: 'Degular Demo', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: #0D0C0D;
+    letter-spacing: 0.1px;
+    margin: 0;
+}
+
+.summary-row-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 16px;
+}
+
+.row-label {
+    font-family: 'ABeeZee', sans-serif;
+    font-size: 16px;
+    color: #3E3B3F;
+    letter-spacing: 0.1px;
+}
+
+.row-value {
+    font-family: 'Degular Demo', sans-serif;
+    font-size: 16px;
+    color: #3E3B3F;
+    letter-spacing: 0.1px;
+}
+
+.row-value.strike-through {
+    color: #9C939D;
+    text-decoration: line-through;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+    background-color: #F0EEF0;
+}
+
+.summary-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.total-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #0D0C0D;
+}
+
+.total-value {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: black;
+}
+
+.btn-checkout {
+    width: 100%;
+    background-color: #2859C5;
+    border-radius: 39px;
+    border: none;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-checkout:hover {
+    background-color: #1e46a3;
+}
+
+.btn-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-family: 'Degular Demo', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.btn-price {
+    color: white;
+    font-family: 'Degular Demo', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    min-width: 60px;
+    text-align: right;
+}

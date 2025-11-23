@@ -116,7 +116,7 @@
     flex-wrap: wrap;
     overflow-x: visible;
     justify-content: center;
-    gap: 16px 16px;
+    gap: 15px 15px;
 }
 
 .view-all-container {

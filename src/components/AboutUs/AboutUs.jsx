@@ -8,7 +8,7 @@ const AboutUs = () => {
         <div className="about-us__inner">
 
           <div className="about-us-header">
-            <h2 className="section-title">About Us</h2>
+            <h2 className="ab-section-title">About Us</h2>
             <p className="section-subtitle">Your trusted partner for safe and effective healthcare</p>
           </div>
 

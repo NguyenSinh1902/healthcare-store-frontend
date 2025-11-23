@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;800&display=swap');
+
+.login-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+}
+
+.login-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1A1A1A;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 382px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-group label {
+    color: black;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: left;
+}
+
+.custom-input {
+    width: 100%;
+    height: 50px;
+    background-color: #EBEFFF;
+    border: 1px solid #656ED3;
+    border-radius: 15px;
+    padding: 0 20px;
+    font-size: 16px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.custom-input:focus {
+    border-color: #343170;
+    background-color: #fff;
+}
+
+.btn-login {
+    width: 100%;
+    height: 50px;
+    background-color: #343170;
+    border-radius: 15px;
+    border: none;
+    color: white;
+    font-size: 20px;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s;
+    box-shadow: 0 4px 10px rgba(52, 49, 112, 0.3);
+}
+
+.btn-login:hover {
+    background-color: #262355;
+}
+
+.login-footer {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.text-gray {
+    color: black;
+    font-weight: 400;
+}
+
+.text-link {
+    color: #3E3B7F;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.text-link:hover {
+    text-decoration: underline;
+}

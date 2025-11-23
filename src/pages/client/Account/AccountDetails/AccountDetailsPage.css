@@ -1,0 +1,125 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Degular+Demo:wght@600&display=swap'); */
+
+.account-page-wrapper {
+    width: 100%;
+    background-color: white;
+    padding: 40px 0;
+    min-height: 100vh;
+}
+
+.account-container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 135px;
+    box-sizing: border-box;
+}
+
+.account-details-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.page-title {
+    font-family: 'Degular Demo', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: #0D0C0D;
+    margin: 0 0 16px 0;
+    letter-spacing: 0.4px;
+}
+
+.details-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.detail-card {
+    background-color: white;
+    border: 1px solid #F0EEF0;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: box-shadow 0.2s;
+}
+
+.detail-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.detail-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-width: 80%;
+}
+
+.detail-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #0D0C0D;
+    line-height: 22px;
+}
+
+.detail-value {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #9C939D;
+    line-height: 20px;
+    word-wrap: break-word;
+}
+
+.btn-edit-pink {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    
+    font-family: 'Degular Demo', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #B6349A;
+    padding: 8px 12px;
+    border-radius: 20px;
+    transition: background 0.2s;
+}
+
+.btn-edit-pink:hover {
+    background-color: #FCF0F8;
+}
+
+.icon-edit-wrapper {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1.5px solid #B6349A;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.icon-edit-wrapper .anticon {
+    color: #B6349A;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .account-container {
+        padding: 0 20px;
+    }
+    
+    .detail-card {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}

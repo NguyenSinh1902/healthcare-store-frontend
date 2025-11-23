@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Roboto:wght@700&display=swap');
+
+.order-success-page {
+    width: 100%;
+    background-color: #FAFAFA;
+    padding-bottom: 0px;
+    min-height: 87vh;
+}
+
+.os-page__outer {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.os-page__inner {
+    width: 100%;
+    padding: 0 135px;
+    box-sizing: border-box;
+    padding-top: 10px;
+}
+
+.breadcrumb {
+    padding: 0 0 30px 0;
+    color: #9A9A9A;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.breadcrumb span {
+    cursor: pointer;
+}
+
+.breadcrumb .current {
+    color: black;
+    cursor: default;
+    font-weight: 500;
+}
+
+.os-content-wrapper {
+    margin-bottom: 60px;
+}
+
+.os-action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    width: 100%;
+}
+
+.btn-action {
+    height: 70px;
+    border-radius: 20px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 40px;
+    min-width: 350px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-home {
+    background-color: #2859C5;
+    color: white;
+    border: none;
+}
+
+.btn-home:hover {
+    background-color: #1e46a3;
+    box-shadow: 0 4px 15px rgba(40, 89, 197, 0.3);
+}
+
+.btn-history {
+    background-color: white;
+    color: #2859C5;
+    border: 4px solid #2859C5;
+}
+
+.btn-history:hover {
+    background-color: #F0F8FF;
+}
+
+@media (max-width: 992px) {
+    .os-page__inner {
+        padding: 0 20px;
+    }
+    
+    .os-action-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .btn-action {
+        width: 100%;
+        min-width: unset;
+    }
+}
