@@ -1,0 +1,211 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Degular+Demo:wght@600&family=Inter:wght@500;600&family=Poppins:wght@400;600&display=swap'); */
+
+.account-page-wrapper {
+    width: 100%;
+    background-color: white;
+    padding: 40px 0;
+    min-height: 100vh;
+}
+.account-container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 135px;
+    box-sizing: border-box;
+}
+
+.my-orders-content {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.orders-header {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.page-title {
+    font-family: 'Degular Demo', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: black;
+    margin: 0;
+    letter-spacing: 0.4px;
+}
+
+.order-tabs {
+    display: flex;
+    gap: 12px;
+}
+
+.tab-btn {
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: 1px solid #ECEAEC;
+    background: #FCFCFC;
+    color: #686069;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.tab-btn.active {
+    background-color: #8FBFFA;
+    border-color: #2859C5;
+    color: #2859C5;
+    font-weight: 600;
+}
+
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.order-card {
+    display: flex;
+    align-items: center;
+    padding: 24px;
+    background: white;
+    border: 1px solid #F2F2F2;
+    border-radius: 32px;
+    gap: 20px;
+    height: 125px;
+    box-sizing: border-box;
+}
+
+.main-icon-img {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.order-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.col-main {
+    flex: 2.2;
+    gap: 8px;
+    align-items: flex-start;
+    min-width: 0;
+}
+
+.order-date {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    color: #686069;
+    line-height: 1;
+}
+
+.order-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: black;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    max-width: 250px;
+    display: block;
+}
+
+.col-price, .col-qty {
+    flex: 1.5;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.col-icon-img {
+    width: 40px;
+    height: 40px;
+    margin-top: 4px;
+}
+
+.col-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+}
+
+.order-price, .order-item-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #0D0C0D;
+    line-height: 1;
+}
+
+.order-method, .order-qty-val {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    color: #686069;
+    line-height: 1;
+}
+
+/* Col 4: Status */
+.col-status {
+    flex: 1.8;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+}
+
+.status-badge {
+    padding: 8px 12px;
+    background-color: #F5FBF5;
+    border: 1px solid #117E11;
+    border-radius: 14px;
+    color: #117E11;
+    font-family: 'Degular Demo', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.btn-reorder {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #E0E0E0;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0D0C0D;
+    transition: all 0.2s;
+}
+
+.btn-reorder:hover {
+    background-color: #f9f9f9;
+    border-color: #d0d0d0;
+}
+
+@media (max-width: 1200px) {
+    .order-card {
+        gap: 12px;
+        padding: 16px;
+    }
+    .col-main { flex: 2; }
+    .col-price, .col-qty { flex: 1.2; gap: 8px; }
+    .col-status { flex: 1.5; gap: 8px; }
+    .order-name, .order-price, .order-item-label { font-size: 18px; }
+    .order-date, .order-method, .order-qty-val { font-size: 14px; }
+}
