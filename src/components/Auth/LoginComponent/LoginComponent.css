@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;800&display=swap');
+
+.login-page-wrapper {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.login-container {
+    display: flex;
+    width: 1440px;
+    height: 720px;
+    background-color: #EBEFFF;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    box-shadow: 0 0 50px rgba(255,255,255,0.1);
+    overflow: hidden; 
+    border-radius: 20px;
+}
+
+.login-left-section {
+    flex: 0.9;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 300px;
+    align-items: flex-start;
+    z-index: 2;
+}
+
+.login-form-wrapper {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1A1A1A;
+    margin-bottom: 30px;
+}
+
+.login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group label {
+    font-size: 16px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.custom-input {
+    width: 100%;
+    height: 50px;
+    background-color: #EBEFFF;
+    border: 1px solid #656ED3;
+    border-radius: 15px;
+    padding: 0 20px;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.btn-login {
+    width: 100%;
+    height: 50px;
+    background-color: #343170;
+    border-radius: 15px;
+    border: none;
+    color: white;
+    font-size: 20px;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.login-footer {
+    margin-top: 20px;
+    font-size: 16px;
+}
+.text-link { color: #3E3B7F; font-weight: 500; cursor: pointer; margin-left: 5px; }
+
+.decorative-shape {
+    position: absolute;
+    border-radius: 100px;
+    transform: rotate(-41deg);
+    z-index: -1;
+}
+.shape-1 { width: 600px; height: 140px; background-color: #838CF1; bottom: -80px; left: -200px; }
+.shape-2 { width: 550px; height: 130px; background-color: #AFB3FF; bottom: -100px; left: -150px; }
+
+.login-right-section {
+    flex: 0.6;
+    background-color: #AFB3FF;
+    position: relative;
+    z-index: 1;
+}
+
+.login-floating-img {
+    position: absolute;
+    top: 50%;
+    left: -280px; 
+    transform: translateY(-50%);
+    width: auto;
+    height: 80%;
+    object-fit: contain;
+    z-index: 10;
+    filter: drop-shadow(20px 20px 30px rgba(0,0,0,0.2));
+}
