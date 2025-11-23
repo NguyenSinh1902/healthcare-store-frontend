@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Row, Col } from "antd";
+import { SyncOutlined } from "@ant-design/icons";
 import AccountSidebar from "../../../../components/AccountSidebar/AccountSidebar";
 import "./MyOrdersPage.css";
+import iconLinear from "../../../../assets/images/outline-linear.png";
+import iconMoney from "../../../../assets/images/outline-money.png";
+import iconReceipt from "../../../../assets/images/outline-receipt.png";
 
 const orders = [
   {
@@ -41,6 +45,7 @@ const MyOrdersPage = () => {
     <section className="account-page-wrapper">
       <div className="account-container">
         <Row gutter={40}>
+
           <Col xs={24} lg={6}>
             <AccountSidebar />
           </Col>
@@ -63,34 +68,45 @@ const MyOrdersPage = () => {
                 </div>
               </div>
 
-              {/* Orders List */}
               <div className="orders-list">
                 {orders.map((order) => (
                   <div key={order.id} className="order-card">
-                    {/* Order Card Content */}
+
                     <div className="order-col col-main">
                       <div className="order-name">{order.name}</div>
                       <div className="order-date">{order.date}</div>
                     </div>
+
                     <div className="order-col col-price">
+                      <img src={iconMoney} alt="" className="col-icon-img" />
                       <div className="col-text">
                         <div className="order-price">${order.price}</div>
                         <div className="order-method">{order.method}</div>
                       </div>
                     </div>
+
                     <div className="order-col col-qty">
+                      <img src={iconReceipt} alt="" className="col-icon-img" />
                       <div className="col-text">
                         <div className="order-item-label">Item</div>
                         <div className="order-qty-val">{order.quantity}x</div>
                       </div>
                     </div>
+
                     <div className="order-col col-status">
                       <div className="status-badge">{order.status}</div>
+                      <button className="btn-reorder">
+
+                        <img
+                          src={iconLinear}
+                          alt=""
+                          className="main-icon-img"
+                        />
+                      </button>
                     </div>
                   </div>
                 ))}
               </div>
-
             </div>
           </Col>
         </Row>
