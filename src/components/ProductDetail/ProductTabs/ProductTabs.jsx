@@ -140,6 +140,76 @@ const ProductTabs = () => {
           </div>
         )}
 
+        {activeTab === "review" && (
+          <div className="tab-review fade-in">
+            <div className="review-layout">
+
+              <div className="review-summary">
+                <h3 className="review-heading">Customer Reviews</h3>
+                <p className="review-sub">Average rating: 4.5 (5391)</p>
+
+                <div className="rating-bars">
+                  {[
+                    { star: 5, percent: 80, count: "5.15K" },
+                    { star: 4, percent: 60, count: "4.28K" },
+                    { star: 3, percent: 30, count: "3.00k" },
+                    { star: 2, percent: 15, count: "2.23K" },
+                    { star: 1, percent: 5, count: "1.29K" },
+                  ].map((row) => (
+                    <div key={row.star} className="bar-row">
+                      <span className="star-num">{row.star}</span>
+                      <div className="star-icon-box">★</div>{" "}
+
+                      <div className="progress-wrapper">
+
+                        <div className="progress-bg">
+                          <div
+                            className="progress-fill"
+                            style={{ width: `${row.percent}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                      <span className="review-count-num">{row.count}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="review-list">
+                {reviewsData.map((review) => (
+                  <div key={review.id} className="review-card">
+
+                    <div className="review-card-top">
+                      <img
+                        src={review.avatar}
+                        alt={review.name}
+                        className="user-avatar"
+                      />
+
+                      <div className="review-info">
+                        {" "}
+
+                        <div className="review-header">
+                          <span className="user-name">{review.name}</span>
+                          <span className="review-date">{review.date}</span>
+                        </div>
+                        <div className="user-rating">
+                          <Rate
+                            disabled
+                            defaultValue={review.rating}
+                            style={{ fontSize: 12, color: "#FFAD33" }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="user-comment">{review.comment}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
