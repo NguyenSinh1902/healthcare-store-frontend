@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Table, Input, Button, Space, Tag, Popconfirm, Image, Tooltip, Card, Row, Col } from 'antd'; // Thêm Image, Tooltip, EditOutlined
+import { Table, Input, Button, Space, Tag, Popconfirm, Card, Row, Col, Tooltip, Image } from 'antd';
 import { SearchOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
 import './AdminProduct.css';
 
 const initialProducts = [
@@ -19,7 +19,10 @@ const initialProducts = [
         product_group: 'RECOMMENDED',
         stock_quantity: 200,
         id_category: 6,
-        thumbnails: ['https://placehold.co/50x50?text=Thumb1', 'https://placehold.co/50x50?text=Thumb2']
+        thumbnails: [
+            'https://placehold.co/50x50?text=Thumb1',
+            'https://placehold.co/50x50?text=Thumb2'
+        ]
     },
     {
         key: 2,
@@ -51,7 +54,8 @@ const initialProducts = [
         product_group: 'RECOMMENDED',
         stock_quantity: 200,
         id_category: 5,
-        thumbnails: []},
+        thumbnails: []
+    },
 
     ...Array.from({ length: 15 }).map((_, i) => ({
         key: i + 4,
@@ -81,7 +85,13 @@ const AdminProductList = () => {
     };
 
     const columns = [
-        { title: 'ID', dataIndex: 'id_product', key: 'id_product', width: 80, fixed: 'left' },
+        {
+            title: 'ID',
+            dataIndex: 'id_product',
+            key: 'id_product',
+            width: 80,
+            fixed: 'left',
+        },
         {
             title: 'Name',
             dataIndex: 'name_product',
@@ -91,14 +101,16 @@ const AdminProductList = () => {
             filteredValue: [searchText],
             onFilter: (value, record) =>
                 record.name_product.toLowerCase().includes(value.toLowerCase()) ||
-                record.id_product.toLowerCase().includes(value.toLowerCase()), // Thêm logic lọc
+                record.id_product.toLowerCase().includes(value.toLowerCase()),
         },
         {
             title: 'Image',
             dataIndex: 'image_product',
             key: 'image_product',
             width: 100,
-            render: (text) => (<Image src={text} alt="main" width={50} height={50} style={{ objectFit: 'cover' }} />), // Thêm render Image
+            render: (text) => (
+                <Image src={text} alt="main" width={50} height={50} style={{ objectFit: 'cover' }} />
+            ),
         },
         {
             title: 'Thumbnails',
@@ -117,15 +129,81 @@ const AdminProductList = () => {
                 </div>
             ),
         },
-        { title: 'Brand', dataIndex: 'brand', key: 'brand', width: 100, },
-        { title: 'Category ID', dataIndex: 'id_category', key: 'id_category', width: 100, },
-        { title: 'Group', dataIndex: 'product_group', key: 'product_group', width: 120, render: (text) => <Tag color="blue">{text}</Tag> },
-        { title: 'Price', dataIndex: 'price', key: 'price', width: 100, render: (price) => <span style={{ fontWeight: 'bold' }}>${price}</span>, },
-        { title: 'Old Price', dataIndex: 'old_price', key: 'old_price', width: 100, render: (price) => price ? <span style={{ textDecoration: 'line-through', color: '#999' }}>${price}</span> : '-', },
-        { title: 'Discount', dataIndex: 'discount_percent', key: 'discount_percent', width: 100, render: (percent) => percent > 0 ? <Tag color="red">-{percent}%</Tag> : '-', },
-        { title: 'Stock', dataIndex: 'stock_quantity', key: 'stock_quantity', width: 100, sorter: (a, b) => a.stock_quantity - b.stock_quantity, },
-        { title: 'Description', dataIndex: 'description', key: 'description', width: 200, render: (description) => (<Tooltip placement="topLeft" title={description}>{description}</Tooltip>), }, // Tạm thời render Tooltip
-        { title: 'Information', dataIndex: 'information', key: 'information', width: 200, render: (info) => (<Tooltip placement="topLeft" title={info}>{info}</Tooltip>), }, // Tạm thời render Tooltip
+        {
+            title: 'Brand',
+            dataIndex: 'brand',
+            key: 'brand',
+            width: 100,
+        },
+        {
+            title: 'Category ID',
+            dataIndex: 'id_category',
+            key: 'id_category',
+            width: 100,
+        },
+        {
+            title: 'Group',
+            dataIndex: 'product_group',
+            key: 'product_group',
+            width: 120,
+            render: (text) => <Tag color="blue">{text}</Tag>
+        },
+        {
+            title: 'Price',
+            dataIndex: 'price',
+            key: 'price',
+            width: 100,
+            render: (price) => <span style={{ fontWeight: 'bold' }}>${price}</span>,
+        },
+        {
+            title: 'Old Price',
+            dataIndex: 'old_price',
+            key: 'old_price',
+            width: 100,
+            render: (price) => price ? <span style={{ textDecoration: 'line-through', color: '#999' }}>${price}</span> : '-',
+        },
+        {
+            title: 'Discount',
+            dataIndex: 'discount_percent',
+            key: 'discount_percent',
+            width: 100,
+            render: (percent) => percent > 0 ? <Tag color="red">-{percent}%</Tag> : '-',
+        },
+        {
+            title: 'Stock',
+            dataIndex: 'stock_quantity',
+            key: 'stock_quantity',
+            width: 100,
+            sorter: (a, b) => a.stock_quantity - b.stock_quantity,
+        },
+        {
+            title: 'Description',
+            dataIndex: 'description',
+            key: 'description',
+            width: 200,
+            ellipsis: {
+                showTitle: false,
+            },
+            render: (description) => (
+                <Tooltip placement="topLeft" title={description}>
+                    {description}
+                </Tooltip>
+            ),
+        },
+        {
+            title: 'Information',
+            dataIndex: 'information',
+            key: 'information',
+            width: 200,
+            ellipsis: {
+                showTitle: false,
+            },
+            render: (info) => (
+                <Tooltip placement="topLeft" title={info}>
+                    {info}
+                </Tooltip>
+            ),
+        },
         {
             title: 'Action',
             key: 'action',
@@ -133,7 +211,7 @@ const AdminProductList = () => {
             width: 100,
             render: (_, record) => (
                 <Space size="small">
-                    <Button type="primary" icon={<EditOutlined />} size="small" /> {/* Thêm nút Edit */}
+                    <Button type="primary" icon={<EditOutlined />} size="small" />
                     <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
                         <Button type="primary" danger icon={<DeleteOutlined />} size="small" />
                     </Popconfirm>
@@ -141,6 +219,22 @@ const AdminProductList = () => {
             ),
         },
     ];
+
+    const stockChartData = [...products]
+        .sort((a, b) => b.stock_quantity - a.stock_quantity)
+        .slice(0, 10)
+        .map(p => ({
+            name: p.name_product,
+            stock: p.stock_quantity
+        }));
+
+    const discountChartData = [...products]
+        .sort((a, b) => b.discount_percent - a.discount_percent)
+        .slice(0, 10)
+        .map(p => ({
+            name: p.name_product,
+            discount: p.discount_percent
+        }));
 
     return (
         <div className="admin-product-list">
@@ -162,6 +256,37 @@ const AdminProductList = () => {
                 className="product-table"
                 scroll={{ x: 1800 }}
             />
+
+            <Row gutter={24} style={{ marginTop: 24 }}>
+                <Col span={12}>
+                    <Card title="Stock Quantity Statistics (Top 10)" bordered={false}>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart data={stockChartData}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <RechartsTooltip />
+                                <Legend />
+                                <Bar dataKey="stock" fill="#8884d8" name="Stock Quantity" barSize={30} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </Card>
+                </Col>
+                <Col span={12}>
+                    <Card title="Highest Discount Products (Top 10)" bordered={false}>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart data={discountChartData}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <RechartsTooltip />
+                                <Legend />
+                                <Bar dataKey="discount" fill="#82ca9d" name="Discount (%)" barSize={30} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </Card>
+                </Col>
+            </Row>
         </div>
     );
 };
