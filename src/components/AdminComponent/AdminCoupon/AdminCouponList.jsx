@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
-import { Table, Input, Button, Space, Tag, Switch, Popconfirm, message, Row, Col, Card } from 'antd'; // Thêm Row, Col, Card
+import { Table, Input, Button, Space, Tag, Switch, Popconfirm, message, Row, Col, Card } from 'antd';
 import { SearchOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-// Thêm Recharts imports
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
 import dayjs from 'dayjs';
 import './AdminCoupon.css';
 
-// Mock Data (Giữ nguyên)
-const initialCoupons = [ /* ... */ ];
+const initialCoupons = [
+    { key: 1, id_coupon: 1, active: 1, code: 'GIAM50K', discount_amount: 50, end_date: '2025-12-31', min_order_value: 30, start_date: '2025-01-01' },
+    { key: 2, id_coupon: 2, active: 1, code: 'SALE20K', discount_amount: 20, end_date: '2025-12-31', min_order_value: 20, start_date: '2025-01-01' },
+    { key: 3, id_coupon: 3, active: 1, code: 'VIP100K', discount_amount: 10, end_date: '2025-12-31', min_order_value: 50, start_date: '2025-01-01' },
+    { key: 4, id_coupon: 4, active: 1, code: 'NEW10K', discount_amount: 10, end_date: '2025-12-31', min_order_value: 10, start_date: '2025-01-01' },
+    { key: 7, id_coupon: 7, active: 1, code: 'GIAM50Kabc', discount_amount: 50, end_date: '2025-12-31', min_order_value: 300000, start_date: '2025-01-01' },
+];
 
 const AdminCouponList = () => {
     const [coupons, setCoupons] = useState(initialCoupons);
+    const [searchText, setSearchText] = useState('');
+
     const handleStatusChange = (checked, record) => {
         const newActive = checked ? 1 : 0;
         const updatedCoupons = coupons.map(coupon => {
@@ -117,7 +123,12 @@ const AdminCouponList = () => {
     return (
         <div className="admin-coupon-list">
             <div className="coupon-list-header">
-                <Input />
+                <Input
+                    placeholder="Search by Coupon Code..."
+                    prefix={<SearchOutlined />}
+                    onChange={e => setSearchText(e.target.value)}
+                    style={{ width: 300 }}
+                />
                 <Button type="primary" icon={<PlusOutlined />}>Add Coupon</Button>
             </div>
 
