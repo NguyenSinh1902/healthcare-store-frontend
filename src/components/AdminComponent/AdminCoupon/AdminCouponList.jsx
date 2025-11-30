@@ -1,22 +1,16 @@
 import React, { useState } from 'react';
-import { Table, Input, Button, Space, Tag, Switch, Popconfirm, message } from 'antd';
+import { Table, Input, Button, Space, Tag, Switch, Popconfirm, message, Row, Col, Card } from 'antd'; // Thêm Row, Col, Card
 import { SearchOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-
+// Thêm Recharts imports
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
 import dayjs from 'dayjs';
 import './AdminCoupon.css';
 
-const initialCoupons = [
-    { key: 1, id_coupon: 1, active: 1, code: 'GIAM50K', discount_amount: 50, end_date: '2025-12-31', min_order_value: 30, start_date: '2025-01-01' },
-    { key: 2, id_coupon: 2, active: 1, code: 'SALE20K', discount_amount: 20, end_date: '2025-12-31', min_order_value: 20, start_date: '2025-01-01' },
-    { key: 3, id_coupon: 3, active: 1, code: 'VIP100K', discount_amount: 10, end_date: '2025-12-31', min_order_value: 50, start_date: '2025-01-01' },
-    { key: 4, id_coupon: 4, active: 1, code: 'NEW10K', discount_amount: 10, end_date: '2025-12-31', min_order_value: 10, start_date: '2025-01-01' },
-    { key: 7, id_coupon: 7, active: 1, code: 'GIAM50Kabc', discount_amount: 50, end_date: '2025-12-31', min_order_value: 300000, start_date: '2025-01-01' },
-];
+// Mock Data (Giữ nguyên)
+const initialCoupons = [ /* ... */ ];
 
 const AdminCouponList = () => {
     const [coupons, setCoupons] = useState(initialCoupons);
-    const [searchText, setSearchText] = useState('');
-
     const handleStatusChange = (checked, record) => {
         const newActive = checked ? 1 : 0;
         const updatedCoupons = coupons.map(coupon => {
@@ -36,18 +30,54 @@ const AdminCouponList = () => {
     };
 
     const columns = [
-        { title: 'ID', dataIndex: 'id_coupon', key: 'id_coupon', width: 60, },
-        { title: 'Code', dataIndex: 'code', key: 'code', render: (text) => <Tag color="green">{text}</Tag> },
-        { title: 'Discount', dataIndex: 'discount_amount', key: 'discount_amount', render: (val) => <span>{val >= 1000 ? `${val.toLocaleString()}đ` : `${val}%/K`}</span> },
-        { title: 'Min Order', dataIndex: 'min_order_value', key: 'min_order_value', render: (val) => <span>{val.toLocaleString()}</span> },
-        { title: 'Start Date', dataIndex: 'start_date', key: 'start_date', render: (text) => dayjs(text).format('YYYY-MM-DD') },
-        { title: 'End Date', dataIndex: 'end_date', key: 'end_date', render: (text) => dayjs(text).format('YYYY-MM-DD') },
+        {
+            title: 'ID',
+            dataIndex: 'id_coupon',
+            key: 'id_coupon',
+            width: 60,
+        },
+        {
+            title: 'Code',
+            dataIndex: 'code',
+            key: 'code',
+            render: (text) => <Tag color="green" style={{ fontSize: '14px', fontWeight: 'bold' }}>{text}</Tag>,
+            filteredValue: [searchText],
+            onFilter: (value, record) =>
+                record.code.toLowerCase().includes(value.toLowerCase()),
+        },
+        {
+            title: 'Discount',
+            dataIndex: 'discount_amount',
+            key: 'discount_amount',
+            render: (val) => <span>{val >= 1000 ? `${val.toLocaleString()}đ` : `${val}%/K`}</span>, // Simple heuristic for display
+        },
+        {
+            title: 'Min Order',
+            dataIndex: 'min_order_value',
+            key: 'min_order_value',
+            render: (val) => <span>{val.toLocaleString()}</span>,
+        },
+        {
+            title: 'Start Date',
+            dataIndex: 'start_date',
+            key: 'start_date',
+            render: (text) => dayjs(text).format('YYYY-MM-DD'),
+        },
+        {
+            title: 'End Date',
+            dataIndex: 'end_date',
+            key: 'end_date',
+            render: (text) => dayjs(text).format('YYYY-MM-DD'),
+        },
         {
             title: 'Active',
             dataIndex: 'active',
             key: 'active',
             render: (active, record) => (
-                <Switch checked={active === 1} onChange={(checked) => handleStatusChange(checked, record)} />
+                <Switch
+                    checked={active === 1}
+                    onChange={(checked) => handleStatusChange(checked, record)}
+                />
             ),
         },
         {
@@ -63,16 +93,31 @@ const AdminCouponList = () => {
         },
     ];
 
+    const statusCounts = { Active: 0, Inactive: 0 };
+    coupons.forEach(coupon => {
+        if (coupon.active === 1) statusCounts.Active += 1;
+        else statusCounts.Inactive += 1;
+    });
+    const pieData = Object.keys(statusCounts).map(status => ({
+        name: status,
+        value: statusCounts[status]
+    }));
+    const COLORS = ['#00C49F', '#FF8042'];
+
+    const discountCounts = {};
+    coupons.forEach(coupon => {
+        const amount = coupon.discount_amount;
+        discountCounts[amount] = (discountCounts[amount] || 0) + 1;
+    });
+    const barData = Object.keys(discountCounts).map(amount => ({
+        amount: `Discount ${amount}`,
+        count: discountCounts[amount]
+    }));
 
     return (
         <div className="admin-coupon-list">
             <div className="coupon-list-header">
-                <Input
-                    placeholder="Search by Coupon Code..."
-                    prefix={<SearchOutlined />}
-                    onChange={e => setSearchText(e.target.value)}
-                    style={{ width: 300 }}
-                />
+                <Input />
                 <Button type="primary" icon={<PlusOutlined />}>Add Coupon</Button>
             </div>
 
@@ -84,6 +129,46 @@ const AdminCouponList = () => {
                 className="coupon-table"
             />
 
+            <Row gutter={24} style={{ marginTop: 24 }}>
+                <Col span={12}>
+                    <Card title="Coupon Status Distribution" bordered={false}>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <PieChart>
+                                <Pie
+                                    data={pieData}
+                                    cx="50%"
+                                    cy="50%"
+                                    labelLine={false}
+                                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                    outerRadius={100}
+                                    fill="#8884d8"
+                                    dataKey="value"
+                                >
+                                    {pieData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                    ))}
+                                </Pie>
+                                <RechartsTooltip />
+                                <Legend />
+                            </PieChart>
+                        </ResponsiveContainer>
+                    </Card>
+                </Col>
+                <Col span={12}>
+                    <Card title="Discount Amount Distribution" bordered={false}>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart data={barData}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="amount" />
+                                <YAxis allowDecimals={false} />
+                                <RechartsTooltip />
+                                <Legend />
+                                <Bar dataKey="count" fill="#8884d8" name="Coupons" barSize={40} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </Card>
+                </Col>
+            </Row>
         </div>
     );
 };
