@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Button, theme, Card, Row, Col } from 'antd';
+import { Layout, Button, theme, Card, Row, Col, Table, Tag } from 'antd'; // Thêm Table, Tag
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -56,6 +56,23 @@ const categoryData = [
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
+const recentOrders = [
+    { key: '1', id: '#ORD-001', customer: 'John Doe', total: '$120.00', status: 'Pending' },
+    { key: '2', id: '#ORD-002', customer: 'Jane Smith', total: '$85.50', status: 'Shipped' },
+    { key: '3', id: '#ORD-003', customer: 'Bob Johnson', total: '$200.00', status: 'Delivered' },
+    { key: '4', 'id': '#ORD-004', customer: 'Alice Brown', total: '$45.00', status: 'Processing' },
+    { key: '5', id: '#ORD-005', customer: 'Charlie Wilson', total: '$350.00', status: 'Pending' },
+];
+
+const topProducts = [
+    { key: '1', name: 'Vitamin C 1000mg', sold: 500, price: '$15.00' },
+    { key: '2', name: 'Face Mask (Box)', sold: 450, price: '$10.00' },
+    { key: '3', name: 'Digital Thermometer', sold: 300, price: '$25.00' },
+    { key: '4', name: 'Hand Sanitizer', sold: 280, price: '$5.00' },
+    { key: '5', name: 'Whey Protein', sold: 200, price: '$60.00' },
+];
+
+
 const Dashboard = () => {
     const [collapsed, setCollapsed] = React.useState(false);
     const {
@@ -67,11 +84,33 @@ const Dashboard = () => {
         navigate('/admin/login');
     };
 
+    // Columns cho Recent Orders
+    const orderColumns = [
+        { title: 'Order ID', dataIndex: 'id', key: 'id' },
+        { title: 'Customer', dataIndex: 'customer', key: 'customer' },
+        { title: 'Total', dataIndex: 'total', key: 'total' },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            key: 'status',
+            render: (status) => {
+                let color = status === 'Delivered' ? 'green' : status === 'Pending' ? 'volcano' : 'blue';
+                return <Tag color={color}>{status.toUpperCase()}</Tag>;
+            },
+        },
+    ];
+
+    const productColumns = [
+        { title: 'Product Name', dataIndex: 'name', key: 'name' },
+        { title: 'Sold', dataIndex: 'sold', key: 'sold' },
+        { title: 'Price', dataIndex: 'price', key: 'price' },
+    ];
+
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <AdminSidebar collapsed={collapsed} />
             <Layout>
-                {/* Header Section (Code from Commit 1) */}
+
                 <Header style={{ padding: 0, background: colorBgContainer, display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingRight: '20px' }}>
                     <Button
                         type="text"
@@ -87,7 +126,7 @@ const Dashboard = () => {
                         Logout
                     </Button>
                 </Header>
-
+                
                 <Content
                     style={{
                         margin: '24px 16px',
@@ -97,7 +136,7 @@ const Dashboard = () => {
                         borderRadius: borderRadiusLG,
                     }}
                 >
-                    {/* KPI Cards */}
+
                     <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
                         {kpiData.map((item, index) => (
                             <Col xs={24} sm={12} lg={6} key={index}>
@@ -117,7 +156,6 @@ const Dashboard = () => {
                         ))}
                     </Row>
 
-                    {/* Charts Section */}
                     <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
                         <Col xs={24} lg={16}>
                             <Card title="Revenue & Orders Trend" bordered={false} className="chart-card">
@@ -157,6 +195,19 @@ const Dashboard = () => {
                                         <Legend />
                                     </PieChart>
                                 </ResponsiveContainer>
+                            </Card>
+                        </Col>
+                    </Row>
+
+                    <Row gutter={[16, 16]}>
+                        <Col xs={24} lg={12}>
+                            <Card title="Recent Orders" bordered={false} className="list-card">
+                                <Table columns={orderColumns} dataSource={recentOrders} pagination={false} size="small" />
+                            </Card>
+                        </Col>
+                        <Col xs={24} lg={12}>
+                            <Card title="Top Selling Products" bordered={false} className="list-card">
+                                <Table columns={productColumns} dataSource={topProducts} pagination={false} size="small" />
                             </Card>
                         </Col>
                     </Row>

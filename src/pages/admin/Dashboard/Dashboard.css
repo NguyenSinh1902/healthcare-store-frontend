@@ -46,14 +46,16 @@
 
 .kpi-growth {
     font-size: 12px;
-    color: #52c41a; /* Màu xanh lá cây cho tăng trưởng */
+    color: #52c41a;
 }
 
-.chart-card {
+.chart-card,
+.list-card {
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.chart-card .ant-card-head {
+.chart-card .ant-card-head,
+.list-card .ant-card-head {
     border-bottom: 1px solid #f0f0f0;
 }
