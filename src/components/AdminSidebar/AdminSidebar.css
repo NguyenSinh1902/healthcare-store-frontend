@@ -1,0 +1,24 @@
+
+.admin-sidebar {
+    background: #001529;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+}
+
+.admin-logo-vertical {
+    height: 64px;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.ant-layout-sider-collapsed .admin-logo-vertical {
+    font-size: 14px;
+}
