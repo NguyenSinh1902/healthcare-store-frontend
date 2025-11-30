@@ -5,13 +5,17 @@ import {
     ShopOutlined,
     ShoppingOutlined,
     UserOutlined,
+    TeamOutlined,
+    TagsOutlined,
+    MessageOutlined,
+    SettingOutlined,
 } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './AdminSidebar.css';
 
 const { Sider } = Layout;
 
-const submenuKeys = ['products', 'orders']; 
+const submenuKeys = ['products', 'orders', 'marketing'];
 
 const AdminSidebar = ({ collapsed }) => {
     const navigate = useNavigate();
@@ -33,7 +37,6 @@ const AdminSidebar = ({ collapsed }) => {
             ],
         },
         {
-
             key: 'orders', 
             icon: <ShoppingOutlined />,
             label: 'Orders',
@@ -46,6 +49,30 @@ const AdminSidebar = ({ collapsed }) => {
             key: '/admin/customers',
             icon: <UserOutlined />,
             label: 'Customers',
+        },
+
+        {
+            key: '/admin/staff',
+            icon: <TeamOutlined />,
+            label: 'Staff',
+        },
+        {
+            key: 'marketing',
+            icon: <TagsOutlined />,
+            label: 'Marketing',
+            children: [
+                { key: '/admin/coupons', label: 'Coupons' },
+            ],
+        },
+        {
+            key: '/admin/feedbacks',
+            icon: <MessageOutlined />,
+            label: 'Feedbacks',
+        },
+        {
+            key: '/admin/settings',
+            icon: <SettingOutlined />,
+            label: 'Settings',
         },
 
     ];
