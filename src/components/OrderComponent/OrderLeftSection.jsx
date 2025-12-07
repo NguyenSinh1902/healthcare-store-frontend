@@ -1,133 +1,164 @@
-import React, { useState } from 'react';
-import { 
-    ClockCircleOutlined, 
-    InfoCircleOutlined, 
-    EnvironmentOutlined, 
-    CreditCardOutlined,
-    IdcardOutlined,
-    EditOutlined
+import React, { useState, useEffect } from 'react';
+import {
+  ClockCircleOutlined,
+  InfoCircleOutlined,
+  EnvironmentOutlined,
+  CreditCardOutlined,
+  IdcardOutlined,
+  EditOutlined
 } from '@ant-design/icons';
-import { Modal, Form, Input, Radio, Button } from 'antd';
+import { Modal, Form, Input, Radio } from 'antd';
 import './OrderLeftSection.css';
 import OrderItemsList from './OrderItemsList';
 
-const items = [
-    { id: 1, name: 'Neuroxil 500 Advanced Nerve Relief', price: 25.5, oldPrice: 99.99, image: 'https://placehold.co/64x64' },
-    { id: 2, name: 'CardioPlus 10 Blood Pressure Control', price: 18.9, oldPrice: 99.99, image: 'https://placehold.co/64x64' },
-    { id: 3, name: 'Flexa 200 Rapid Muscle Recovery', price: 75.8, oldPrice: 99.99, image: 'https://placehold.co/64x64' },
-    { id: 4, name: 'VitaCure 7 Immune Strength Formula', price: 55.6, oldPrice: 99.99, image: 'https://placehold.co/64x64' },
-];
-
-const OrderLeftSection = () => {
+// Nhận thêm prop 'items' để truyền xuống danh sách sản phẩm
+const OrderLeftSection = ({
+  deliveryAddress,
+  setDeliveryAddress,
+  paymentMethod,
+  setPaymentMethod,
+  hasError,
+  items // <--- Prop danh sách sản phẩm đã lọc
+}) => {
   const [isDeliveryModalOpen, setIsDeliveryModalOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-  const [deliveryInfo, setDeliveryInfo] = useState('88 Tran Hung Dao Street, District 5, Ho Chi Minh City, Vietnam');
-  const [paymentMethod, setPaymentMethod] = useState('Mastercard **** 3434');
   const [deliveryForm] = Form.useForm();
   const [paymentForm] = Form.useForm();
 
+  // Update form values when props change
+  useEffect(() => {
+    deliveryForm.setFieldsValue({ address: deliveryAddress });
+  }, [deliveryAddress, deliveryForm]);
+
+  useEffect(() => {
+    // Map payment method string to radio value
+    const methodValue = paymentMethod === 'CASH' ? 'cod' : 'card';
+    paymentForm.setFieldsValue({ method: methodValue });
+  }, [paymentMethod, paymentForm]);
+
   const handleDeliveryOk = () => {
     deliveryForm.validateFields().then((values) => {
-        setDeliveryInfo(values.address);
-        setIsDeliveryModalOpen(false);
+      setDeliveryAddress(values.address);
+      setIsDeliveryModalOpen(false);
     });
   };
 
   const handlePaymentOk = () => {
     paymentForm.validateFields().then((values) => {
-        setPaymentMethod(values.method === 'card' ? 'Mastercard **** 3434' : 'Cash on Delivery');
-        setIsPaymentModalOpen(false);
+      setPaymentMethod(values.method === 'card' ? 'CARD' : 'CASH');
+      setIsPaymentModalOpen(false);
     });
   };
 
+  const displayPaymentMethod = paymentMethod === 'CASH' ? 'Cash on Delivery (COD)' : 'Credit Card (Mastercard **** 3434)';
+
   return (
     <div className="order-left-container">
+      {/* --- HEADER --- */}
       <div className="checkout-header-card">
         <div className="ch-left">
-            <div className="icon-circle blue">
-                <IdcardOutlined style={{ fontSize: '18px', color: 'white' }} />
-            </div>
-            <span className="ch-title">Checkout</span>
+          <div className="icon-circle blue">
+            <IdcardOutlined style={{ fontSize: '18px', color: 'white' }} />
+          </div>
+          <span className="ch-title">Checkout</span>
         </div>
         <div className="ch-right">
-            <div className="time-icon-box">
-                <ClockCircleOutlined style={{ color: '#563428', fontSize: '14px' }} />
-            </div>
-            <span className="ch-time">Sep 17, 8:00–10:00 AM</span>
+          <div className="time-icon-box">
+            <ClockCircleOutlined style={{ color: '#563428', fontSize: '14px' }} />
+          </div>
+          <span className="ch-time">Sep 17, 8:00–10:00 AM</span>
         </div>
       </div>
 
-      <div className="info-card">
+      {/* --- DELIVERY CARD --- */}
+      {/* Thêm class card-error nếu hasError = true */}
+      <div className={`info-card ${hasError ? 'card-error' : ''}`}>
         <div className="card-header">
-            <div className="header-left">
-                <span className="card-title">Delivery info</span>
-                <InfoCircleOutlined className="info-icon" />
-            </div>
-            <EditOutlined className="edit-icon" onClick={() => {
-                deliveryForm.setFieldsValue({ address: deliveryInfo });
-                setIsDeliveryModalOpen(true);
-            }} />
+          <div className="header-left">
+            <span className="card-title">Delivery info</span>
+            <InfoCircleOutlined className="info-icon" />
+          </div>
+          <EditOutlined className="edit-icon" onClick={() => {
+            setIsDeliveryModalOpen(true);
+          }} />
         </div>
         <div className="card-content">
-            <span className="content-label">Deliver to</span>
-            <div className="address-row">
-                <div className="icon-box-small">
-                    <EnvironmentOutlined style={{ color: '#2859C5', fontSize: '12px' }} />
-                </div>
-                <span className="address-text">{deliveryInfo}</span>
+          <span className="content-label">Deliver to</span>
+          <div className="address-row">
+            <div className="icon-box-small">
+              <EnvironmentOutlined style={{ color: '#2859C5', fontSize: '12px' }} />
             </div>
+            {/* Logic hiển thị: Nếu có địa chỉ thì hiện, không có thì hiện placeholder */}
+            <span className={`address-text ${!deliveryAddress ? 'text-placeholder' : ''}`}>
+              {deliveryAddress || "Vui lòng nhập địa chỉ nhận hàng..."}
+            </span>
+          </div>
         </div>
+
+        {/* Hiển thị dòng thông báo lỗi màu đỏ */}
+        {hasError && (
+          <div className="error-message">
+            * Địa chỉ giao hàng không được để trống.
+          </div>
+        )}
       </div>
 
+      {/* --- PAYMENT CARD --- */}
       <div className="info-card">
         <div className="card-header">
-            <div className="header-left">
-                <span className="card-title">Payment Method</span>
-                <InfoCircleOutlined className="info-icon" />
-            </div>
-            <EditOutlined className="edit-icon" onClick={() => setIsPaymentModalOpen(true)} />
+          <div className="header-left">
+            <span className="card-title">Payment Method</span>
+            <InfoCircleOutlined className="info-icon" />
+          </div>
+          <EditOutlined className="edit-icon" onClick={() => setIsPaymentModalOpen(true)} />
         </div>
         <div className="card-content">
-            <span className="content-label">Pay With</span>
-            <div className="payment-row">
-                <div className="icon-box-small">
-                    <CreditCardOutlined style={{ color: '#2859C5', fontSize: '12px' }} />
-                </div>
-                <span className="payment-text">{paymentMethod}</span>
+          <span className="content-label">Pay With</span>
+          <div className="payment-row">
+            <div className="icon-box-small">
+              <CreditCardOutlined style={{ color: '#2859C5', fontSize: '12px' }} />
             </div>
+            <span className="payment-text">{displayPaymentMethod}</span>
+          </div>
         </div>
       </div>
 
-      <OrderItemsList />
+      {/* --- ITEMS LIST --- */}
+      {/* Quan trọng: Truyền prop items xuống đây */}
+      <OrderItemsList items={items} />
 
-      <Modal 
-        title="Edit Delivery Address" 
-        open={isDeliveryModalOpen} 
-        onOk={handleDeliveryOk} 
+      {/* --- MODAL DELIVERY --- */}
+      <Modal
+        title="Edit Delivery Address"
+        open={isDeliveryModalOpen}
+        onOk={handleDeliveryOk}
         onCancel={() => setIsDeliveryModalOpen(false)}
         okText="Save"
+        forceRender={true}
       >
         <Form form={deliveryForm} layout="vertical">
-            <Form.Item name="address" label="Address" rules={[{ required: true, message: 'Please input your address!' }]}>
-                <Input.TextArea rows={3} />
-            </Form.Item>
+          <Form.Item name="address" label="Address" rules={[{ required: true, message: 'Please input your address!' }]}>
+            <Input.TextArea rows={3} placeholder="Ex: 12 Nguyen Van Bao, Go Vap..." />
+          </Form.Item>
         </Form>
       </Modal>
 
-      <Modal 
-        title="Select Payment Method" 
-        open={isPaymentModalOpen} 
-        onOk={handlePaymentOk} 
+      {/* --- MODAL PAYMENT --- */}
+      <Modal
+        title="Select Payment Method"
+        open={isPaymentModalOpen}
+        onOk={handlePaymentOk}
         onCancel={() => setIsPaymentModalOpen(false)}
         okText="Save"
+        forceRender={true}
       >
-        <Form form={paymentForm} layout="vertical" initialValues={{ method: 'card' }}>
-            <Form.Item name="method">
-                <Radio.Group>
-                    <Radio value="card" style={{display: 'block', marginBottom: '10px'}}>Credit Card (Mastercard **** 3434)</Radio>
-                    <Radio value="cod" style={{display: 'block'}}>Cash on Delivery (COD)</Radio>
-                </Radio.Group>
-            </Form.Item>
+        <Form form={paymentForm} layout="vertical">
+          <Form.Item name="method">
+            <Radio.Group>
+              <Radio value="card" style={{ display: 'block', marginBottom: '10px' }}>Credit Card (Mastercard **** 3434)</Radio>
+              <Radio value="cod" style={{ display: 'block' }}>Cash on Delivery (COD)</Radio>
+            </Radio.Group>
+          </Form.Item>
         </Form>
       </Modal>
     </div>

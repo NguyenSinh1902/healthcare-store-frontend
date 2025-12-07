@@ -90,7 +90,8 @@
     min-width: 70px;
 }
 
-.address-row, .payment-row {
+.address-row,
+.payment-row {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -181,8 +182,16 @@
     line-height: 20px;
 }
 
-.price-blue { color: #2859C5; font-weight: 600; }
-.price-strike { color: #9C939D; font-weight: 400; text-decoration: line-through; }
+.price-blue {
+    color: #2859C5;
+    font-weight: 600;
+}
+
+.price-strike {
+    color: #9C939D;
+    font-weight: 400;
+    text-decoration: line-through;
+}
 
 .ci-final-price {
     font-family: 'ABeeZee', sans-serif;
@@ -206,4 +215,31 @@
 
 .edit-icon:hover {
     color: #2859C5;
+}
+
+
+.info-card.card-error {
+    border: 1px solid #ff4d4f !important;
+    background-color: #fff1f0;
+    transition: all 0.3s ease;
+}
+
+.error-message {
+    color: #ff4d4f;
+    font-size: 13px;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 10px;
+    padding-left: 82px;
+    font-style: italic;
+}
+
+.address-text.text-placeholder {
+    color: #9C939D;
+    font-style: italic;
+}
+
+@media (max-width: 576px) {
+    .error-message {
+        padding-left: 0;
+    }
 }
