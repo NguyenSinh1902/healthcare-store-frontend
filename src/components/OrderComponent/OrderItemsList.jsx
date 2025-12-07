@@ -1,40 +1,44 @@
 import React from 'react';
+import { CloseOutlined } from '@ant-design/icons';
 import './OrderItemsList.css';
 
-const items = [
-    { id: 1, name: 'Neuroxil 500 Advanced Nerve Relief', price: 25.5, oldPrice: 99.99, image: 'https://placehold.co/64x64' },
-    { id: 2, name: 'CardioPlus 10 Blood Pressure Control', price: 18.9, oldPrice: 99.99, image: 'https://placehold.co/64x64' },
-    { id: 3, name: 'Flexa 200 Rapid Muscle Recovery', price: 75.8, oldPrice: 99.99, image: 'https://placehold.co/64x64' },
-    { id: 4, name: 'VitaCure 7 Immune Strength Formula', price: 55.6, oldPrice: 99.99, image: 'https://placehold.co/64x64' },
-];
+const OrderItemsList = ({ items }) => {
+    return (
+        <div className="items-list-section">
+            <h3 className="items-title">Items Name</h3>
 
-const OrderItemsList = () => {
-  return (
-    <div className="items-list-section">
-        <h3 className="items-title">Items Name</h3>
-        
-        <div className="items-container">
-            {items.map((item) => (
-                <div key={item.id} className="checkout-item">
+            <div className="items-container">
 
-                    <div className="ci-image">
-                        <img src={item.image} alt={item.name} />
-                    </div>
+                {items && items.length > 0 ? (
+                    items.map((item) => (
+                        <div key={item.idCartItem} className="checkout-item">
 
-                    <div className="ci-info">
-                        <div className="ci-name">{item.name}</div>
-                        <div className="ci-price-row">
-                            <span className="price-blue">${item.oldPrice}</span>
-                            <span className="price-strike">${item.oldPrice}</span>
+                            <div className="ci-image">
+                                <img src={item.imageProduct || 'https://placehold.co/64x64'} alt={item.nameProduct} />
+                            </div>
+
+                            <div className="ci-info">
+                                <div className="ci-name">{item.nameProduct}</div>
+                                <div className="ci-price-row">
+                                    <span className="price-blue">${item.unitPrice}</span>
+                                </div>
+                            </div>
+
+                            <div className="ci-qty-badge">
+                                <span className="qty-label">Qty</span>
+                                <CloseOutlined style={{ fontSize: '10px', margin: '0 4px' }} />
+                                <span className="qty-value">{item.quantity}</span>
+                            </div>
+
+                            <div className="ci-final-price">${(item.unitPrice * item.quantity).toFixed(2)}</div>
                         </div>
-                    </div>
-
-                    <div className="ci-final-price">${item.price}</div>
-                </div>
-            ))}
+                    ))
+                ) : (
+                    <p>No items selected.</p>
+                )}
+            </div>
         </div>
-    </div>
-  );
+    );
 };
 
 export default OrderItemsList;
