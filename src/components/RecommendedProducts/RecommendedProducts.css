@@ -1,23 +1,22 @@
-
 .recommended-products {
-  width: 100%;
-  background-color: #F9FCFF;
-  padding: 20px 0;
+    width: 100%;
+    background-color: #F9FCFF;
+    padding: 20px 0;
 }
 
 .recommended__outer {
-  width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
 }
 
 .recommended__inner {
-  width: 100%;
-  padding: 0 135px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
+    width: 100%;
+    padding: 0 135px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
 }
 
 .recommended-header {
@@ -92,23 +91,23 @@
 }
 
 .recommended-container {
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-  width: 100%;
-  overflow-x: auto;
-  padding-bottom: 10px;
-  
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  transition: all 0.3s ease;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 10px;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    /* transition: all 0.3s ease; */
 }
 
 .recommended-container::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
-.recommended-container > div {
+.recommended-container>div {
     flex-shrink: 0;
 }
 
@@ -116,7 +115,7 @@
     flex-wrap: wrap;
     overflow-x: visible;
     justify-content: center;
-    gap: 16px 16px;
+    gap: 15px 15px;
 }
 
 .view-all-container {
