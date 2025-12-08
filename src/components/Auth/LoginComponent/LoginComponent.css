@@ -3,7 +3,7 @@
 .login-page-wrapper {
     width: 100vw;
     height: 100vh;
-    background-color: rgb(255, 255, 255);
+    background-color: #F0F8FF;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,8 +17,8 @@
     background-color: #EBEFFF;
     font-family: 'Inter', sans-serif;
     position: relative;
-    box-shadow: 0 0 50px rgba(255,255,255,0.1);
-    overflow: hidden; 
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+    overflow: hidden;
     border-radius: 20px;
 }
 
@@ -90,7 +90,13 @@
     margin-top: 20px;
     font-size: 16px;
 }
-.text-link { color: #3E3B7F; font-weight: 500; cursor: pointer; margin-left: 5px; }
+
+.text-link {
+    color: #3E3B7F;
+    font-weight: 500;
+    cursor: pointer;
+    margin-left: 5px;
+}
 
 .decorative-shape {
     position: absolute;
@@ -98,8 +104,22 @@
     transform: rotate(-41deg);
     z-index: -1;
 }
-.shape-1 { width: 600px; height: 140px; background-color: #838CF1; bottom: -80px; left: -200px; }
-.shape-2 { width: 550px; height: 130px; background-color: #AFB3FF; bottom: -100px; left: -150px; }
+
+.shape-1 {
+    width: 600px;
+    height: 140px;
+    background-color: #838CF1;
+    bottom: -80px;
+    left: -200px;
+}
+
+.shape-2 {
+    width: 550px;
+    height: 130px;
+    background-color: #AFB3FF;
+    bottom: -100px;
+    left: -150px;
+}
 
 .login-right-section {
     flex: 0.6;
@@ -111,11 +131,61 @@
 .login-floating-img {
     position: absolute;
     top: 50%;
-    left: -280px; 
+    left: -280px;
     transform: translateY(-50%);
     width: auto;
     height: 80%;
     object-fit: contain;
     z-index: 10;
-    filter: drop-shadow(20px 20px 30px rgba(0,0,0,0.2));
+    filter: drop-shadow(20px 20px 30px rgba(0, 0, 0, 0.2));
+}
+
+.ant-message {
+    z-index: 99999 !important;
+}
+
+.ant-message-notice {
+    z-index: 99999 !important;
+}
+
+.back-home-btn {
+    position: absolute;
+    top: 40px;
+    left: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #343170;
+    font-weight: 700;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+
+    background: rgba(255, 255, 255, 0.4);
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(5px);
+
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.back-home-btn .back-icon {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.back-home-btn:hover {
+    background: #ffffff;
+    color: #656ED3;
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 20px rgba(101, 110, 211, 0.2);
+}
+
+.back-home-btn:hover .back-icon {
+    transform: translateX(-5px);
+
 }

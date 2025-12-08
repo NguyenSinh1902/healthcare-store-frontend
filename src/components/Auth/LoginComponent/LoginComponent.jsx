@@ -1,53 +1,130 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { message } from 'antd';
 import SocialLogin from '../SocialLogin';
 import './LoginComponent.css';
-
-import loginImg from '../../../assets/images/image_Login.png'; 
+import loginImg from '../../../assets/images/image_Login.png';
+import { login } from '../../../services/authService';
+import { loginStart, loginSuccess, loginFailed } from '../../../redux/slices/authSlice';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 
 const LoginComponent = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleLogin = (e) => {
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const { isLoading, user } = useSelector((state) => state.auth);
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    navigate('/');
+
+    if (!email || !password) {
+      messageApi.error("Please enter both email and password");
+      return;
+    }
+
+    dispatch(loginStart());
+    try {
+      console.log("Start Login...");
+      const res = await login(email, password);
+
+      const data = res.data ? res.data : res;
+
+      if (data && data.success) {
+
+        messageApi.success("Đăng nhập thành công! Đang chuyển hướng...");
+
+        setTimeout(() => {
+          const userData = {
+            email: email,
+            role: data.role
+          };
+
+          dispatch(loginSuccess({ token: data.token, user: userData }));
+
+        }, 1500);
+
+      } else {
+
+        const errorMsg = data?.message || "Login failed";
+        dispatch(loginFailed(errorMsg));
+        messageApi.error(errorMsg);
+      }
+    } catch (error) {
+      console.error("Login catch error:", error);
+
+      const serverError = error?.response?.data;
+      const errorMessage = serverError?.message || "An error occurred during login.";
+
+      dispatch(loginFailed(errorMessage));
+      messageApi.error(errorMessage);
+    }
   };
+
+  if (user) return null;
 
   return (
     <div className="login-page-wrapper">
+
+      {contextHolder}
+
       <div className="login-container">
 
         <div className="login-left-section">
-            <div className="login-form-wrapper">
-                <h2 className="login-title">Welcome Back!</h2>
-                
-                <form className="login-form" onSubmit={handleLogin}>
-                    <div className="form-group">
-                        <label>Username:</label>
-                        <input type="text" className="custom-input" placeholder="Enter your username" />
-                    </div>
-                    <div className="form-group">
-                        <label>Password:</label>
-                        <input type="password" className="custom-input" placeholder="Enter your password" />
-                    </div>
-                    <button type="submit" className="btn-login">Login</button>
-                </form>
+          <div className="login-form-wrapper">
+            <h2 className="login-title">Welcome Back!</h2>
 
-                <div className="login-footer">
-                    <span className="text-gray">Dont have an account? </span>
-                    <span className="text-link" onClick={() => navigate('/register')}>Register</span>
-                </div>
+            <form className="login-form" onSubmit={handleLogin}>
+              <div className="form-group">
+                <label>Email:</label>
+                <input
+                  type="text"
+                  className="custom-input"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <label>Password:</label>
+                <input
+                  type="password"
+                  className="custom-input"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <button type="submit" className="btn-login" disabled={isLoading}>
+                {isLoading ? "Logging in..." : "Login"}
+              </button>
+            </form>
 
-                <SocialLogin />
+            <div className="login-footer">
+              <span className="text-gray">Dont have an account? </span>
+              <span className="text-link" onClick={() => navigate('/register')}>Register</span>
             </div>
 
-            <div className="decorative-shape shape-1"></div>
-            <div className="decorative-shape shape-2"></div>
+            <SocialLogin />
+          </div>
+
+          <div className="decorative-shape shape-1"></div>
+          <div className="decorative-shape shape-2"></div>
         </div>
 
         <div className="login-right-section">
-
-            <img src={loginImg} alt="Login Illustration" className="login-floating-img" />
+          <img src={loginImg} alt="Login Illustration" className="login-floating-img" />
         </div>
 
       </div>
