@@ -79,6 +79,11 @@ const LoginComponent = () => {
 
       {contextHolder}
 
+      <div className="back-home-btn" onClick={() => navigate('/')}>
+        <ArrowLeftOutlined className="back-icon" />
+        <span>Back to Home</span>
+      </div>
+
       <div className="login-container">
 
         <div className="login-left-section">
