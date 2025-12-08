@@ -1,8 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
+import { useSelector } from 'react-redux';
 import './AdminRegister.css';
 import registerImg from '../../../assets/images/image_Register.png';
+import { register } from '../../../services/authService';
 
+/**
+ * AdminRegister – UI only (no API integration yet).
+ * Mirrors the client RegisterComponent but scoped for admin users.
+ */
 const AdminRegister = () => {
+    const navigate = useNavigate();
+    const { user } = useSelector(state => state.auth);
+
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
@@ -11,24 +22,54 @@ const AdminRegister = () => {
     });
     const [loading, setLoading] = useState(false);
 
+    // If already logged in as admin, redirect to admin dashboard
+    useEffect(() => {
+        if (user?.role === 'admin') {
+            navigate('/admin');
+        }
+    }, [user, navigate]);
+
     const handleChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleRegister = e => {
+    const handleRegister = async e => {
         e.preventDefault();
-        
         if (formData.password !== formData.confirmPassword) {
-            console.log('Passwords do not match!');
+            message.error('Passwords do not match!');
             return;
         }
-
         setLoading(true);
-        setTimeout(() => {
+        try {
+            // Placeholder API call – will be wired later
+            const response = await register(
+                formData.fullName,
+                formData.email,
+                formData.password,
+                formData.confirmPassword,
+                'ADMIN'
+            );
+            if (response && response.success) {
+                message.success('Admin registration successful! Please login.');
+                navigate('/admin/login');
+            } else if (response && response.errors) {
+                response.errors.forEach(err => message.error(err.message));
+            } else {
+                message.error(response?.message || 'Registration failed');
+            }
+        } catch (error) {
+            if (error.response?.data?.errors) {
+                error.response.data.errors.forEach(err => message.error(err.message));
+            } else {
+                message.error(error.response?.data?.message || 'An error occurred during registration.');
+            }
+        } finally {
             setLoading(false);
-            console.log('Registration attempt completed');
-        }, 1500);
+        }
     };
+
+    // Prevent rendering if already redirected
+    if (user?.role === 'admin') return null;
 
     return (
         <div className="admin-register-wrapper">
