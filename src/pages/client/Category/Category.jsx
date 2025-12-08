@@ -9,8 +9,7 @@ import {
 } from "@ant-design/icons";
 import FilterSidebar from "../../../components/FilterSidebar/FilterSidebar";
 import ProductCard from "../../../components/ProductCard/ProductCard";
-// LƯU Ý: Chưa import hàm filterProductsByCategory
-import { getProductsByCategory } from "../../../services/productService";
+import { getProductsByCategory, filterProductsByCategory } from "../../../services/productService";
 import "./Category.css";
 import Short from "../../../assets/images/Short.png";
 
@@ -29,18 +28,29 @@ const CategoryPage = () => {
   const [selectedSort, setSelectedSort] = useState("featured");
 
   const [filterParams, setFilterParams] = useState({});
+
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
 
-  // --- LOGIC THIẾU Ở ĐÂY ---
-  // useEffect này chỉ lấy data theo ID danh mục, chưa quan tâm filter/sort
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
         if (id) {
-          // Chỉ gọi hàm get cơ bản
-          const response = await getProductsByCategory(id);
+          let response;
+
+          const currentFilters = { ...filterParams, sort: selectedSort };
+
+          if (currentFilters.sort === 'price_asc') currentFilters.sort = 'price_low_to_high';
+          if (currentFilters.sort === 'price_desc') currentFilters.sort = 'price_high_to_low';
+
+          const hasFilters = Object.keys(filterParams).length > 0 || selectedSort !== 'featured';
+
+          if (hasFilters) {
+            response = await filterProductsByCategory(id, currentFilters);
+          } else {
+            response = await getProductsByCategory(id);
+          }
 
           if (response && response.success) {
             setProducts(response.data);
@@ -52,7 +62,7 @@ const CategoryPage = () => {
           }
         }
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Error fetching products by category:", error);
         setProducts([]);
       } finally {
         setLoading(false);
@@ -60,12 +70,16 @@ const CategoryPage = () => {
     };
 
     fetchProducts();
-  }, [id]); // Thiếu dependency [filterParams, selectedSort]
+  }, [id, filterParams, selectedSort]);
 
-  // Hàm handle chưa cập nhật state filter
   const handleFilter = (filters) => {
-    console.log("Filter clicked but logic not implemented yet:", filters);
-    // setFilterParams(newFilters); // <-- Dòng này bị thiếu
+    const newFilters = {};
+    if (filters.minPrice !== undefined) newFilters.minPrice = filters.minPrice;
+    if (filters.maxPrice !== undefined) newFilters.maxPrice = filters.maxPrice;
+    if (filters.brand) newFilters.brand = filters.brand;
+
+    setFilterParams(newFilters);
+    setCurrentPage(1);
   };
 
   const currentSortLabel = sortOptions.find(
@@ -73,8 +87,12 @@ const CategoryPage = () => {
   )?.label;
 
   const itemRender = (_, type, originalElement) => {
-    if (type === "prev") return <a>Previous</a>;
-    if (type === "next") return <a>Next</a>;
+    if (type === "prev") {
+      return <a>Previous</a>;
+    }
+    if (type === "next") {
+      return <a>Next</a>;
+    }
     return originalElement;
   };
 
@@ -120,12 +138,22 @@ const CategoryPage = () => {
                     onClick={() => setIsSortOpen(!isSortOpen)}
                   >
                     <div className="sort-text-group">
-                      <img src={Short} alt="Short" style={{ width: "20px", height: "16px" }} />
+                      <img
+                        src={Short}
+                        alt="Short"
+                        style={{ width: "20px", height: "16px" }}
+                      />
                       <span className="sort-label-gray">Sort by: </span>
-                      <span className="sort-label-black">{currentSortLabel}</span>
+                      <span className="sort-label-black">
+                        {currentSortLabel}
+                      </span>
                     </div>
                     <div className="sort-icon">
-                      {isSortOpen ? <UpOutlined style={{ fontSize: "10px" }} /> : <DownOutlined style={{ fontSize: "10px" }} />}
+                      {isSortOpen ? (
+                        <UpOutlined style={{ fontSize: "10px" }} />
+                      ) : (
+                        <DownOutlined style={{ fontSize: "10px" }} />
+                      )}
                     </div>
                   </div>
 
@@ -134,14 +162,17 @@ const CategoryPage = () => {
                       {sortOptions.map((option) => (
                         <div
                           key={option.value}
-                          className={`sort-item ${selectedSort === option.value ? "active" : ""}`}
+                          className={`sort-item ${selectedSort === option.value ? "active" : ""
+                            }`}
                           onClick={() => {
                             setSelectedSort(option.value);
                             setIsSortOpen(false);
                           }}
                         >
                           <span className="sort-item-text">{option.label}</span>
-                          {selectedSort === option.value && <CheckOutlined className="check-icon" />}
+                          {selectedSort === option.value && (
+                            <CheckOutlined className="check-icon" />
+                          )}
                         </div>
                       ))}
                     </div>
@@ -159,7 +190,7 @@ const CategoryPage = () => {
                     </div>
                   ))
                 ) : (
-                  <div>No products found.</div>
+                  <div>No products found in this category.</div>
                 )}
               </div>
 
