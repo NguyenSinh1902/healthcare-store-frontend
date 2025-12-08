@@ -52,23 +52,30 @@
     color: #333;
 }
 
+/* Nút Submit */
 .btn-admin-login {
     width: 100%;
-    padding: 10px 0;
+    padding: 14px 0;
+    margin-top: 10px;
     background: #656ED3;
     color: #fff;
     border: none;
-    border-radius: 6px;
+    border-radius: 10px;
     font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(101, 110, 211, 0.3);
 }
 
 .btn-admin-login:disabled {
-    background: #a0a5c5;
+    background: #CBD5E1;
     cursor: not-allowed;
+    box-shadow: none;
 }
 
 .btn-admin-login:hover:not(:disabled) {
-    background: #5a63c0;
+    background: #5058B0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(101, 110, 211, 0.4);
 }
