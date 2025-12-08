@@ -1,4 +1,4 @@
-
+/* AdminRegister.css */
 .admin-register-wrapper {
     display: flex;
     justify-content: center;
@@ -22,7 +22,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
 }
 
 .admin-register-img {
@@ -53,28 +52,14 @@
     color: #333;
 }
 
-.custom-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    box-sizing: border-box;
-}
-
-.custom-input:focus {
-    border-color: #656ED3;
-    outline: none;
-}
-
 .btn-admin-register {
     width: 100%;
-    padding: 12px 0;
+    padding: 10px 0;
     background: #656ED3;
     color: #fff;
     border: none;
     border-radius: 6px;
     font-size: 16px;
-    font-weight: 600;
     cursor: pointer;
     transition: background 0.3s;
 }
