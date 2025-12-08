@@ -1,10 +1,16 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { message } from 'antd';
+import { addToCartItem } from '../../redux/slices/cartSlice';
 import './ProductCard.css';
 import { HeartOutlined, EyeOutlined, StarFilled } from '@ant-design/icons';
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const {
     id = 1,
@@ -17,12 +23,22 @@ const ProductCard = ({ product }) => {
   } = product || {};
 
   const handleCardClick = () => {
-    navigate(`/product-detail`);
+    navigate(`/product-detail/${id}`);
   };
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    navigate('/cart');
+
+    if (!isAuthenticated) {
+      message.warning("Please login to add items to cart");
+      navigate('/login');
+      return;
+    }
+
+    dispatch(addToCartItem({
+      idProduct: id,
+      quantity: 1
+    }));
   };
 
   return (
