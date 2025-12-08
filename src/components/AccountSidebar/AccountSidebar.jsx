@@ -1,24 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { 
-    UserOutlined, 
-    FileTextOutlined, 
-    ShoppingCartOutlined, 
-    EnvironmentOutlined, 
-    CreditCardOutlined, 
-    BellOutlined, 
-    GiftOutlined, 
-    TagsOutlined, 
-    ReadOutlined, 
-    SettingOutlined, 
-    QuestionCircleOutlined, 
-    LogoutOutlined 
+import {
+    UserOutlined,
+    FileTextOutlined,
+    ShoppingCartOutlined,
+    EnvironmentOutlined,
+    CreditCardOutlined,
+    BellOutlined,
+    GiftOutlined,
+    TagsOutlined,
+    ReadOutlined,
+    SettingOutlined,
+    QuestionCircleOutlined,
+    LogoutOutlined
 } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/slices/authSlice';
+import { getProfile } from '../../services/profileService';
 import './AccountSidebar.css';
 
 const AccountSidebar = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const dispatch = useDispatch();
+    const [userProfile, setUserProfile] = useState(null);
+
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                const response = await getProfile();
+                if (response && response.success) {
+                    setUserProfile(response.data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch sidebar profile", error);
+            }
+        };
+        fetchUserProfile();
+    }, []);
 
     const mainMenuItems = [
         { key: '/account/details', label: 'Account Details', icon: <UserOutlined /> },
@@ -41,22 +60,31 @@ const AccountSidebar = () => {
         navigate(path);
     };
 
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate('/login');
+    };
+
     return (
         <div className="sidebar-wrapper">
 
             <div className="sidebar-group main-group">
 
                 <div className="user-info">
-                    <img src="https://placehold.co/48x48" alt="User" className="user-avatar" />
-                    <span className="user-name">Sinh Le</span>
+                    <img
+                        src={userProfile?.avatarUrl || "https://placehold.co/48x48"}
+                        alt="User"
+                        className="user-avatar"
+                    />
+                    <span className="user-name">{userProfile?.fullName || 'User'}</span>
                 </div>
 
                 <div className="menu-list">
                     {mainMenuItems.map((item) => {
                         const isActive = location.pathname === item.key;
                         return (
-                            <div 
-                                key={item.key} 
+                            <div
+                                key={item.key}
                                 className={`menu-item ${isActive ? 'active' : ''}`}
                                 onClick={() => handleNavigate(item.key)}
                             >
@@ -73,8 +101,8 @@ const AccountSidebar = () => {
                     {settingsMenuItems.map((item) => {
                         const isActive = location.pathname === item.key;
                         return (
-                            <div 
-                                key={item.key} 
+                            <div
+                                key={item.key}
                                 className={`menu-item ${isActive ? 'active' : ''}`}
                                 onClick={() => handleNavigate(item.key)}
                             >
@@ -87,7 +115,7 @@ const AccountSidebar = () => {
             </div>
 
             <div className="sidebar-group logout-group">
-                <div className="menu-item logout">
+                <div className="menu-item logout" onClick={handleLogout}>
                     <span className="menu-icon"><LogoutOutlined /></span>
                     <span className="menu-label">Logout</span>
                 </div>

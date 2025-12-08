@@ -56,7 +56,7 @@
     border-radius: 32px;
     transition: all 0.2s;
 
-    color: #9C939D; 
+    color: #9C939D;
 }
 
 .menu-item:hover {
@@ -97,10 +97,16 @@
 }
 
 .menu-item.logout {
-    color: #2859C5;
+    color: #FF4D4F;
 }
 
 .menu-item.logout .menu-label {
     font-family: 'Inter', sans-serif;
     font-weight: 500;
+}
+
+.menu-item.logout:hover {
+    background-color: #FFF1F0;
+    color: #FF7875;
+    padding-left: 10px;
 }
