@@ -75,7 +75,7 @@ const infoData = [
   { label: "Advertising Approval No", value: "02-XNQC-SYT" },
 ];
 
-const ProductTabs = () => {
+const ProductTabs = ({ description, information }) => {
   const [activeTab, setActiveTab] = useState("description");
 
   return (
@@ -107,14 +107,7 @@ const ProductTabs = () => {
         {activeTab === "description" && (
           <div className="tab-description fade-in">
             <p className="desc-text">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Error in
-              vero sapiente odio, error dolore vero temporibus consequatur,
-              nobis veniam odit dignissimos consectetur quae in perferendis
-              doloribusdebitis corporis, eaque dicta, repellat amet, illum
-              adipisci vel perferendis dolor! Quis vel consequuntur repellat
-              distinctio rem. Corrupti ratione alias odio, error dolore
-              temporibus consequatur, nobis veniam odit laborum dignissimos
-              consectetur quae vero in perferendis provident quis.
+              {description || 'No description available'}
             </p>
 
             <div className="desc-subtitle">Packaging & Delivery</div>
@@ -131,12 +124,9 @@ const ProductTabs = () => {
 
         {activeTab === "information" && (
           <div className="tab-information fade-in">
-            {infoData.map((item, index) => (
-              <div key={index} className="info-row">
-                <span className="info-label">{item.label}: </span>
-                <span className="info-value">{item.value}</span>
-              </div>
-            ))}
+            <p className="desc-text" style={{ whiteSpace: "pre-line" }}>
+              {information || 'No additional information available'}
+            </p>
           </div>
         )}
 
