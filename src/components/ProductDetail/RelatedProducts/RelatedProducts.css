@@ -1,23 +1,23 @@
 .related-products {
-  width: 100%;
-  background-color: #F9FCFF;
-  padding: 20px 0;
-  margin-bottom: 20px;
+    width: 100%;
+    background-color: #F9FCFF;
+    padding: 20px 0;
+    margin-bottom: 20px;
 }
 
 .related__outer {
-  width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
 }
 
 .related__inner {
-  width: 100%;
-  padding: 0 135px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
+    width: 100%;
+    padding: 0 135px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
 }
 
 .related-header {
@@ -92,23 +92,23 @@
 }
 
 .related-container {
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-  width: 100%;
-  overflow-x: auto;
-  padding-bottom: 10px;
-  
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  transition: all 0.3s ease;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 10px;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    /* transition: all 0.3s ease; */
 }
 
 .related-container::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
-.related-container > div {
+.related-container>div {
     flex-shrink: 0;
 }
 
