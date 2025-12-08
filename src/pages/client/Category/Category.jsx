@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Pagination } from "antd";
+import { useParams } from "react-router-dom";
 import {
   CheckOutlined,
   DownOutlined,
@@ -8,6 +9,8 @@ import {
 } from "@ant-design/icons";
 import FilterSidebar from "../../../components/FilterSidebar/FilterSidebar";
 import ProductCard from "../../../components/ProductCard/ProductCard";
+// LƯU Ý: Chưa import hàm filterProductsByCategory
+import { getProductsByCategory } from "../../../services/productService";
 import "./Category.css";
 import Short from "../../../assets/images/Short.png";
 
@@ -18,21 +21,80 @@ const sortOptions = [
 ];
 
 const CategoryPage = () => {
+  const { id } = useParams();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [categoryName, setCategoryName] = useState("Category");
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [selectedSort, setSelectedSort] = useState("featured");
+
+  const [filterParams, setFilterParams] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 12;
+
+  // --- LOGIC THIẾU Ở ĐÂY ---
+  // useEffect này chỉ lấy data theo ID danh mục, chưa quan tâm filter/sort
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        if (id) {
+          // Chỉ gọi hàm get cơ bản
+          const response = await getProductsByCategory(id);
+
+          if (response && response.success) {
+            setProducts(response.data);
+            if (response.data.length > 0) {
+              setCategoryName(response.data[0].categoryName || "Category");
+            }
+          } else {
+            setProducts([]);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [id]); // Thiếu dependency [filterParams, selectedSort]
+
+  // Hàm handle chưa cập nhật state filter
+  const handleFilter = (filters) => {
+    console.log("Filter clicked but logic not implemented yet:", filters);
+    // setFilterParams(newFilters); // <-- Dòng này bị thiếu
+  };
 
   const currentSortLabel = sortOptions.find(
     (opt) => opt.value === selectedSort
   )?.label;
 
   const itemRender = (_, type, originalElement) => {
-    if (type === "prev") {
-      return <a>Previous</a>;
-    }
-    if (type === "next") {
-      return <a>Next</a>;
-    }
+    if (type === "prev") return <a>Previous</a>;
+    if (type === "next") return <a>Next</a>;
     return originalElement;
+  };
+
+  const mappedProducts = products.map((item) => ({
+    id: item.idProduct,
+    name: item.nameProduct,
+    price: item.price,
+    originalPrice: item.oldPrice,
+    discount: item.discountPercent ? `-${item.discountPercent}%` : null,
+    rating: 5,
+    image: item.imageProduct,
+  }));
+
+  const indexOfLastProduct = currentPage * pageSize;
+  const indexOfFirstProduct = indexOfLastProduct - pageSize;
+  const currentProducts = mappedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -42,12 +104,12 @@ const CategoryPage = () => {
           <div className="breadcrumb">
             <span>Home</span>
             <RightOutlined style={{ fontSize: "10px" }} />
-            <span className="current">Eye health supplements</span>
+            <span className="current">{categoryName}</span>
           </div>
 
           <Row gutter={40}>
             <Col span={6} xs={24} md={6}>
-              <FilterSidebar />
+              <FilterSidebar onFilter={handleFilter} />
             </Col>
 
             <Col span={18} xs={24} md={18}>
@@ -58,22 +120,12 @@ const CategoryPage = () => {
                     onClick={() => setIsSortOpen(!isSortOpen)}
                   >
                     <div className="sort-text-group">
-                      <img
-                        src={Short}
-                        alt="Short"
-                        style={{ width: "20px", height: "16px" }}
-                      />
+                      <img src={Short} alt="Short" style={{ width: "20px", height: "16px" }} />
                       <span className="sort-label-gray">Sort by: </span>
-                      <span className="sort-label-black">
-                        {currentSortLabel}
-                      </span>
+                      <span className="sort-label-black">{currentSortLabel}</span>
                     </div>
                     <div className="sort-icon">
-                      {isSortOpen ? (
-                        <UpOutlined style={{ fontSize: "10px" }} />
-                      ) : (
-                        <DownOutlined style={{ fontSize: "10px" }} />
-                      )}
+                      {isSortOpen ? <UpOutlined style={{ fontSize: "10px" }} /> : <DownOutlined style={{ fontSize: "10px" }} />}
                     </div>
                   </div>
 
@@ -82,18 +134,14 @@ const CategoryPage = () => {
                       {sortOptions.map((option) => (
                         <div
                           key={option.value}
-                          className={`sort-item ${
-                            selectedSort === option.value ? "active" : ""
-                          }`}
+                          className={`sort-item ${selectedSort === option.value ? "active" : ""}`}
                           onClick={() => {
                             setSelectedSort(option.value);
                             setIsSortOpen(false);
                           }}
                         >
                           <span className="sort-item-text">{option.label}</span>
-                          {selectedSort === option.value && (
-                            <CheckOutlined className="check-icon" />
-                          )}
+                          {selectedSort === option.value && <CheckOutlined className="check-icon" />}
                         </div>
                       ))}
                     </div>
@@ -102,21 +150,31 @@ const CategoryPage = () => {
               </div>
 
               <div className="product-grid">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
-                  <div key={item} className="product-item-wrapper">
-                    <ProductCard />
-                  </div>
-                ))}
+                {loading ? (
+                  <div>Loading...</div>
+                ) : currentProducts.length > 0 ? (
+                  currentProducts.map((product) => (
+                    <div key={product.id} className="product-item-wrapper">
+                      <ProductCard product={product} />
+                    </div>
+                  ))
+                ) : (
+                  <div>No products found.</div>
+                )}
               </div>
 
-              <div className="pagination-wrapper">
-                <Pagination
-                  defaultCurrent={1}
-                  total={50}
-                  pageSize={9}
-                  itemRender={itemRender}
-                />
-              </div>
+              {mappedProducts.length > 0 && (
+                <div className="pagination-wrapper">
+                  <Pagination
+                    current={currentPage}
+                    total={mappedProducts.length}
+                    pageSize={pageSize}
+                    onChange={handlePageChange}
+                    itemRender={itemRender}
+                    showSizeChanger={false}
+                  />
+                </div>
+              )}
             </Col>
           </Row>
         </div>
