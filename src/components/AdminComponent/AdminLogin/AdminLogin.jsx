@@ -1,30 +1,84 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
 import './AdminLogin.css';
 import loginImg from '../../../assets/images/image_Login.png';
+import { login } from '../../../services/authService';
+import { loginSuccess } from '../../../redux/slices/authSlice';
 
-
+/**
+ * AdminLogin – UI only (no API integration yet).
+ * Provides email & password fields and displays Ant Design messages for errors.
+ */
 const AdminLogin = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { user } = useSelector(state => state.auth);
 
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [loading, setLoading] = useState(false);
+
+    // If already logged in as admin, redirect to admin dashboard (placeholder)
+    useEffect(() => {
+        if (user?.role === 'ADMIN' || user?.role === 'admin') {
+            navigate('/admin');
+        }
+    }, [user, navigate]);
 
     const handleChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleLogin = e => {
+    const handleLogin = async e => {
         e.preventDefault();
         if (!formData.email || !formData.password) {
-            console.log('Please fill in both fields');
+            message.error('Please fill in both fields');
             return;
         }
         setLoading(true);
-        setTimeout(() => {
+        try {
+            // API call
+            console.log('Sending login request:', formData);
+            const response = await login(formData.email, formData.password);
+            console.log('Login response:', response);
+
+            // Note: api.js interceptor returns response.data directly
+            if (response && response.success) {
+                if (response.role === 'ADMIN') {
+                    console.log('Admin login successful');
+                    message.success('Login successful');
+
+                    // Dispatch login success to Redux
+                    const userData = {
+                        email: formData.email,
+                        role: response.role
+                    };
+
+                    dispatch(loginSuccess({
+                        user: userData,
+                        token: response.token
+                    }));
+
+                    navigate('/admin');
+                } else {
+                    console.warn('Access denied: Role is', response.role);
+                    message.error('Access denied. You are not an Admin.');
+                }
+            } else {
+                console.error('Login failed:', response);
+                message.error(response?.message || 'Login failed');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            message.error(error.response?.data?.message || 'An error occurred during login');
+        } finally {
             setLoading(false);
-            console.log('Login attempt completed');
-        }, 1500);
+        }
     };
 
+    // Prevent rendering if already redirected
+    if (user?.role === 'admin') return null;
 
     return (
         <div className="admin-login-wrapper">
