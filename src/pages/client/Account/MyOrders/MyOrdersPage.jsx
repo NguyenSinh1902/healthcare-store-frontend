@@ -1,139 +1,172 @@
-import React, { useEffect, useState } from 'react';
-import { Modal, Descriptions, Table, Tag, message, Divider } from 'antd';
-import { getOrderById } from '../../../../services/orderService';
+import React, { useState, useEffect } from "react";
+import { Row, Col, message } from "antd";
+import AccountSidebar from "../../../../components/AccountSidebar/AccountSidebar";
+import { getMyOrders } from "../../../../services/orderService";
+import OrderDetailsModal from "./OrderDetailsModal";
+import "./MyOrdersPage.css";
+import iconLinear from "../../../../assets/images/outline-linear.png";
+import iconMoney from "../../../../assets/images/outline-money.png";
+import iconReceipt from "../../../../assets/images/outline-receipt.png";
 
-const OrderDetailsModal = ({ open, onCancel, orderId }) => {
-    const [order, setOrder] = useState(null);
-    const [loading, setLoading] = useState(false);
+const MyOrdersPage = () => {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        if (open && orderId) {
-            fetchOrderDetails(orderId);
-        } else {
-            setOrder(null);
-        }
-    }, [open, orderId]);
+  // Modal State
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const fetchOrderDetails = async (id) => {
-        setLoading(true);
-        try {
-            const response = await getOrderById(id);
-            if (response && response.success) {
-                setOrder(response.data);
-            } else {
-                message.error("Failed to load order details");
-            }
-        } catch (error) {
-            console.error("Error fetching order details:", error);
-            message.error("Error fetching order details");
-        } finally {
-            setLoading(false);
-        }
-    };
+  // Tab khớp với Enum Backend
+  const [activeTab, setActiveTab] = useState("All");
+  const tabs = ["All", "Pending", "Confirmed", "Shipping", "Delivered", "Cancelled"];
 
-    const columns = [
-        {
-            title: 'Product',
-            dataIndex: 'productName',
-            key: 'productName',
-            render: (text, record) => (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <img
-                        src={record.imageProduct || "https://placehold.co/40x40"}
-                        alt={text}
-                        style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: 4 }}
-                    />
-                    <span>{text}</span>
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+    setLoading(true);
+    try {
+      const response = await getMyOrders();
+      if (response && response.success) {
+        setOrders(response.data);
+      } else {
+        message.error("Failed to load orders");
+      }
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      message.error("Error fetching orders");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleViewDetails = (orderId) => {
+    setSelectedOrderId(orderId);
+    setIsModalOpen(true);
+  };
+
+  // Logic lọc
+  const getFilteredOrders = () => {
+    if (activeTab === "All") return orders;
+    return orders.filter(o => o.status === activeTab.toUpperCase());
+  };
+
+  // Logic màu sắc Badge
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "PENDING": return "pending";
+      case "CONFIRMED": return "confirmed";
+      case "SHIPPING": return "shipping";
+      case "DELIVERED": return "delivered";
+      case "CANCELLED": return "cancelled";
+      default: return "";
+    }
+  };
+
+  const formatStatus = (status) => {
+    if (!status) return "";
+    return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+  };
+
+  const filteredOrders = getFilteredOrders();
+
+  return (
+    <section className="account-page-wrapper">
+      <div className="account-container">
+        <Row gutter={40}>
+
+          <Col xs={24} lg={6}>
+            <AccountSidebar />
+          </Col>
+
+          <Col xs={24} lg={18}>
+            <div className="my-orders-content">
+
+              <div className="orders-header">
+                <h2 className="page-title">My Orders</h2>
+                <div className="order-tabs">
+                  {tabs.map((tab) => (
+                    <button
+                      key={tab}
+                      className={`tab-btn ${activeTab === tab ? "active" : ""}`}
+                      onClick={() => setActiveTab(tab)}
+                    >
+                      {tab}
+                    </button>
+                  ))}
                 </div>
-            ),
-        },
-        {
-            title: 'Price',
-            dataIndex: 'unitPrice',
-            key: 'unitPrice',
-            render: (price) => `$${price}`,
-        },
-        {
-            title: 'Qty',
-            dataIndex: 'quantity',
-            key: 'quantity',
-        },
-        {
-            title: 'Total',
-            dataIndex: 'totalPrice',
-            key: 'totalPrice',
-            render: (price) => `$${price}`,
-        },
-    ];
+              </div>
 
-    const getStatusColor = (status) => {
-        switch (status) {
-            case 'PENDING': return 'orange';
-            case 'CONFIRMED': return 'blue';
-            case 'SHIPPING': return 'purple';
-            case 'DELIVERED': return 'green';
-            case 'CANCELLED': return 'red';
-            default: return 'default';
-        }
-    };
+              {/* Class này sẽ được CSS để có scroll */}
+              <div className="orders-list">
+                {loading ? (
+                  <p>Loading orders...</p>
+                ) : filteredOrders.length > 0 ? (
+                  filteredOrders.map((order) => (
+                    <div key={order.idOrder} className="order-card">
 
-    return (
-        <Modal
-            title={`Order Details #${orderId}`}
-            open={open}
-            onCancel={onCancel}
-            footer={null}
-            width={800}
-            loading={loading}
-        >
-            {order && (
-                <div style={{ padding: '10px 0' }}>
-                    <Descriptions bordered column={1} size="small">
-                        <Descriptions.Item label="Order Date">
-                            {new Date(order.orderDate).toLocaleString()}
-                        </Descriptions.Item>
-                        <Descriptions.Item label="Status">
-                            <Tag color={getStatusColor(order.status)}>{order.status}</Tag>
-                        </Descriptions.Item>
-                        <Descriptions.Item label="Payment Method">
-                            {order.paymentMethod}
-                        </Descriptions.Item>
-                        <Descriptions.Item label="Delivery Address">
-                            {order.deliveryAddress}
-                        </Descriptions.Item>
-                    </Descriptions>
-
-                    <Divider orientation="left">Items</Divider>
-
-                    <Table
-                        dataSource={order.orderDetails}
-                        columns={columns}
-                        rowKey="idOrderDetail"
-                        pagination={false}
-                        size="small"
-                    />
-
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
-                        <div style={{ width: '300px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                                <span>Subtotal:</span>
-                                <span>${order.totalAmount}</span>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                                <span>Discount:</span>
-                                <span style={{ color: 'green' }}>-${order.couponDiscount}</span>
-                            </div>
-                            <Divider style={{ margin: '10px 0' }} />
-                            <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', fontSize: '16px' }}>
-                                <span>Total:</span>
-                                <span style={{ color: '#2859C5' }}>${order.finalAmount}</span>
-                            </div>
+                      <div className="order-col col-main">
+                        <div className="order-name" title={order.orderDetails && order.orderDetails.length > 0 ? order.orderDetails[0].productName : `Order #${order.idOrder}`}>
+                          {order.orderDetails && order.orderDetails.length > 0
+                            ? order.orderDetails[0].productName + (order.orderDetails.length > 1 ? ` & ${order.orderDetails.length - 1} others` : "")
+                            : `Order #${order.idOrder}`}
                         </div>
+                        <div className="order-date">#{order.idOrder} • {new Date(order.orderDate).toLocaleString()}</div>
+                      </div>
+
+                      <div className="order-col col-price">
+                        <img src={iconMoney} alt="" className="col-icon-img" />
+                        <div className="col-text">
+                          <div className="order-price">${order.finalAmount}</div>
+                          <div className="order-method">{order.paymentMethod}</div>
+                        </div>
+                      </div>
+
+                      <div className="order-col col-qty">
+                        <img src={iconReceipt} alt="" className="col-icon-img" />
+                        <div className="col-text">
+                          <div className="order-item-label">Items</div>
+                          <div className="order-qty-val">{order.orderDetails ? order.orderDetails.length : 0} items</div>
+                        </div>
+                      </div>
+
+                      <div className="order-col col-status">
+                        <div className={`status-badge ${getStatusClass(order.status)}`}>
+                          {formatStatus(order.status)}
+                        </div>
+                        <button
+                          className="btn-reorder"
+                          onClick={() => handleViewDetails(order.idOrder)}
+                          title="View Details"
+                        >
+                          <img
+                            src={iconLinear}
+                            alt="View Details"
+                            className="main-icon-img"
+                          />
+                        </button>
+                      </div>
                     </div>
-                </div>
-            )}
-        </Modal>
-    );
+                  ))
+                ) : (
+                  <p>No orders found.</p>
+                )}
+              </div>
+            </div>
+          </Col>
+        </Row>
+
+        {/* Modal chi tiết đơn hàng */}
+        <OrderDetailsModal
+          open={isModalOpen}
+          onCancel={() => setIsModalOpen(false)}
+          orderId={selectedOrderId}
+        />
+
+      </div>
+    </section>
+  );
 };
 
-export default OrderDetailsModal;
+export default MyOrdersPage;
