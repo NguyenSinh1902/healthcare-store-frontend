@@ -101,6 +101,11 @@ const RegisterComponent = () => {
 
       {contextHolder}
 
+      <div className="back-home-btn" onClick={() => navigate('/')}>
+        <ArrowLeftOutlined className="back-icon" />
+        <span>Back to Home</span>
+      </div>
+
 
       <div className="register-container">
         <div className="register-left-section">
