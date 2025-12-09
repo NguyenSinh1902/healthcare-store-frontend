@@ -4,91 +4,8 @@ import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import ProductCard from "../ProductCard/ProductCard";
 import imageProduct01 from "../../assets/images/imageProduct01.png";
 
-const flashSaleProducts = [
-  {
-    id: 1,
-    name: "Paracetamol",
-    price: 35.5,
-    originalPrice: 160,
-    discount: "-40%",
-    rating: 88,
-    image: imageProduct01,
-  },
-  {
-    id: 2,
-    name: "Cetirizine",
-    price: 35.5,
-    originalPrice: 160,
-    discount: "-40%",
-    rating: 65,
-    image: imageProduct01,
-  },
-  {
-    id: 3,
-    name: "Diphenhydramine",
-    price: 35.5,
-    originalPrice: 160,
-    discount: "-40%",
-    rating: 88,
-    image: imageProduct01,
-  },
-  {
-    id: 4,
-    name: "Pseudoephedrine",
-    price: 35.5,
-    originalPrice: 160,
-    discount: "-40%",
-    rating: 15,
-    image: imageProduct01,
-  },
-  {
-    id: 5,
-    name: "Pseudoephedrine",
-    price: 35.5,
-    originalPrice: 160,
-    discount: "-40%",
-    rating: 15,
-    image: imageProduct01,
-  },
-  {
-    id: 6,
-    name: "Pseudoephedrine",
-    price: 35.5,
-    originalPrice: 160,
-    discount: "-40%",
-    rating: 15,
-    image: imageProduct01,
-  },
-  {
-    id: 7,
-    name: "Pseudoephedrine",
-    price: 35.5,
-    originalPrice: 160,
-    discount: "-40%",
-    rating: 15,
-    image: imageProduct01,
-  },
-  {
-    id: 8,
-    name: "Pseudoephedrine",
-    price: 35.5,
-    originalPrice: 160,
-    discount: "-40%",
-    rating: 15,
-    image: imageProduct01,
-  },
-  {
-    id: 9,
-    name: "Pseudoephedrine",
-    price: 35.5,
-    originalPrice: 160,
-    discount: "-40%",
-    rating: 15,
-    image: imageProduct01,
-  },
-];
 
-const FlashSales = () => {
+const FlashSales = ({ products = [] }) => {
   const scrollContainerRef = useRef(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -198,7 +115,7 @@ const FlashSales = () => {
             className={`flash-sales-container ${isExpanded ? "expanded" : ""}`}
             ref={scrollContainerRef}
           >
-            {flashSaleProducts.map((product) => (
+            {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

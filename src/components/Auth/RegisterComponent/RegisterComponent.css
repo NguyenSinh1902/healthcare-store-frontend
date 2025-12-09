@@ -3,7 +3,7 @@
 .register-page-wrapper {
     width: 100vw;
     height: 100vh;
-    background-color: black;
+    background-color: #F0F8FF;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,10 +14,10 @@
     display: flex;
     width: 1440px;
     height: 720px;
-    background-color: #EBEFFF; 
+    background-color: #EBEFFF;
     font-family: 'Inter', sans-serif;
     position: relative;
-    box-shadow: 0 0 50px rgba(255,255,255,0.1);
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
     overflow: hidden;
     border-radius: 20px;
 }
@@ -26,7 +26,7 @@
 .register-left-section {
     flex: 0.8;
     position: relative;
-    background-color: transparent; 
+    background-color: transparent;
     z-index: 1;
     display: flex;
     justify-content: center;
@@ -40,7 +40,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    padding-left: 250px; 
+    padding-left: 250px;
     z-index: 2;
 }
 
@@ -49,7 +49,7 @@
     max-width: 400px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; 
+    align-items: flex-start;
 }
 
 .register-title {
@@ -114,7 +114,13 @@
     width: 100%;
     text-align: center;
 }
-.text-link { color: #343170; font-weight: 800; cursor: pointer; margin-left: 5px; }
+
+.text-link {
+    color: #343170;
+    font-weight: 800;
+    cursor: pointer;
+    margin-left: 5px;
+}
 
 .register-floating-img {
     position: absolute;
@@ -124,14 +130,14 @@
     width: 120%;
     max-width: 800px;
     object-fit: contain;
-    z-index: 10; 
-    filter: drop-shadow(10px 10px 20px rgba(0,0,0,0.15));
+    z-index: 10;
+    filter: drop-shadow(10px 10px 20px rgba(0, 0, 0, 0.15));
 }
 
 .dec-shape-reg {
     position: absolute;
     border-radius: 100px;
-    z-index: 0; 
+    z-index: 0;
 }
 
 .shape-reg-1 {
@@ -151,4 +157,105 @@
     left: 100px;
     transform: rotate(-5deg);
     opacity: 0.8;
+}
+
+/* Nút quay về trang chủ */
+.back-home-btn {
+    position: absolute;
+    /* Vị trí: Đặt ở góc trên bên trái là chuẩn UX nhất */
+    top: 40px;
+    left: 50px;
+
+    /* Nếu bạn thích để ở DƯỚI cùng màn hình thì dùng 3 dòng này thay cho top/left ở trên:
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    */
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    /* Màu sắc & Font */
+    color: #343170;
+    /* Màu tím đậm giống nút Login */
+    font-weight: 700;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+
+    /* Tạo khung nền mờ (Glass effect nhẹ) */
+    background: rgba(255, 255, 255, 0.4);
+    padding: 10px 20px;
+    border-radius: 30px;
+    /* Bo tròn kiểu viên thuốc */
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(5px);
+
+    cursor: pointer;
+    z-index: 100;
+    /* Đảm bảo luôn nổi lên trên */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.back-home-btn .back-icon {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+/* Hiệu ứng khi di chuột vào */
+.back-home-btn:hover {
+    background: #ffffff;
+    /* Sáng lên */
+    color: #656ED3;
+    /* Đổi sang màu tím nhạt hơn */
+    transform: translateY(-2px);
+    /* Bay nhẹ lên */
+    box-shadow: 0 8px 20px rgba(101, 110, 211, 0.2);
+}
+
+.back-home-btn:hover .back-icon {
+    transform: translateX(-5px);
+    /* Mũi tên thụt lùi tạo cảm giác "Back" */
+}
+
+/* Verification Step Styles */
+.verify-description {
+    font-size: 16px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.verify-description strong {
+    color: #343170;
+    font-weight: 700;
+}
+
+.btn-resend {
+    width: 100% !;
+    height: 50px;
+    background-color: transparent;
+    border: 2px solid #343170;
+    border-radius: 15px;
+    color: #343170;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+}
+
+.btn-resend:hover {
+    background-color: #343170;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-resend:disabled,
+.btn-register:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
 }

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Degular+Demo:wght@400;600&family=Poppins:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Degular+Demo:wght@400;600&family=Poppins:wght@400;500;600&display=swap');
 
 .items-list-section {
     background: white;
@@ -8,8 +8,8 @@
 }
 
 .items-title {
-    font-family: 'Poppins', sans-serif; 
-    font-size: 20px; 
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
     font-weight: 600;
     color: #2859C5;
     margin-bottom: 24px;
@@ -25,15 +25,17 @@
 .checkout-item {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 16px;
     padding: 16px 0;
     border-bottom: 1px solid #F8F7F8;
+    width: 100%;
 }
 
 .checkout-item:last-child {
     border-bottom: none;
 }
 
+/* --- CỘT 1: ẢNH --- */
 .ci-image {
     width: 64px;
     height: 64px;
@@ -53,35 +55,113 @@
     mix-blend-mode: multiply;
 }
 
+/* --- CỘT 2: THÔNG TIN TÊN & GIÁ --- */
 .ci-info {
-    flex: 1;
+    /* KEY CHANGE: Đặt width cố định khoảng 40-45% thay vì flex: 1 */
+    /* Điều này tạo ra khoảng trống ở giữa để cục Qty tự động căn vào */
+    flex: 0 0 45%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
+    justify-content: center;
 }
 
 .ci-name {
     font-family: 'ABeeZee', sans-serif;
-    font-size: 14px;
+    font-size: 18px;
     color: #0D0C0D;
     line-height: 20px;
-    font-weight: 400;
+    font-weight: 600;
+    /* Xử lý text dài */
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .ci-price-row {
-    display: flex;
-    gap: 8px;
     font-family: 'Degular Demo', sans-serif;
     font-size: 14px;
     line-height: 20px;
 }
 
-.price-blue { color: #2859C5; font-weight: 600; }
-.price-strike { color: #9C939D; font-weight: 400; text-decoration: line-through; }
+.price-blue {
+    color: #2859C5;
+    font-weight: 600;
+}
 
+/* --- CỘT 3: QUANTITY BADGE (ĐÃ SỬA) --- */
+.ci-qty-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #ECF6FF;
+    /* Nền xanh nhạt */
+    color: #2859C5;
+    /* Chữ xanh */
+    /* border: 1px solid #BFDBFE; */
+    /* Có thể bỏ border cho mềm mại */
+
+    padding: 6px 16px;
+    border-radius: 20px;
+    /* Bo tròn kiểu viên thuốc */
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+
+    /* KEY CHANGE: Margin auto giúp badge tự chạy ra giữa khoảng trống còn lại */
+    margin: 0 auto;
+}
+
+.qty-label {
+    opacity: 0.7;
+    font-weight: 400;
+    margin-right: 4px;
+}
+
+.qty-value {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* --- CỘT 4: TỔNG TIỀN --- */
 .ci-final-price {
     font-family: 'ABeeZee', sans-serif;
     font-size: 18px;
     font-weight: 400;
     color: #0D0C0D;
+    text-align: right;
+    min-width: 80px;
+    /* Giữ thẳng hàng cột giá bên phải */
+}
+
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 576px) {
+    .checkout-item {
+        gap: 10px;
+    }
+
+    .ci-info {
+        /* Trên mobile không gian hẹp, cho info chiếm lại không gian */
+        flex: 1;
+    }
+
+    .ci-qty-badge {
+        margin: 0;
+        /* Bỏ căn giữa trên mobile */
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    .qty-label {
+        display: none;
+        /* Ẩn chữ Qty trên mobile */
+    }
+
+    .ci-final-price {
+        font-size: 16px;
+        min-width: auto;
+    }
 }

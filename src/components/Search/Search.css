@@ -6,9 +6,40 @@
     background-color: white;
     border-radius: 20px;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+
+    /* --- SỬA ĐOẠN NÀY --- */
     padding: 10px 0;
     margin-top: 10px;
+
+    /* 1 item cao khoảng 74px. 5 items + padding = khoảng 380-400px */
+    max-height: 365px;
+
+    /* Cho phép cuộn dọc */
+    overflow-y: auto;
+    /* Ẩn thanh cuộn ngang */
+    overflow-x: hidden;
+}
+
+/* --- THÊM ĐOẠN NÀY ĐỂ THANH CUỘN ĐẸP HƠN --- */
+.search-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.search-dropdown::-webkit-scrollbar-track {
+    background: transparent;
+    margin-top: 20px;
+    /* Tránh đè lên bo góc trên */
+    margin-bottom: 20px;
+    /* Tránh đè lên bo góc dưới */
+}
+
+.search-dropdown::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.search-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
 }
 
 .search-item {

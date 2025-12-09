@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap');
+
+.admin-register-wrapper {
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+}
+
+.admin-register-container {
+    display: flex;
+    width: 1200px;
+    height: 650px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.admin-register-left {
+    flex: 1;
+    position: relative;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-dec-shape {
+    position: absolute;
+    border-radius: 100px;
+    opacity: 0.3;
+}
+
+.admin-dec-shape.shape-1 {
+    width: 300px;
+    height: 600px;
+    background-color: #ffffff;
+    top: -200px;
+    left: 50px;
+    transform: rotate(-15deg);
+}
+
+.admin-dec-shape.shape-2 {
+    width: 250px;
+    height: 500px;
+    background-color: rgba(255, 255, 255, 0.5);
+    bottom: -150px;
+    right: 30px;
+    transform: rotate(20deg);
+}
+
+.admin-register-img {
+    width: 90%;
+    max-width: 450px;
+    object-fit: contain;
+    z-index: 10;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.2));
+}
+
+.admin-register-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 60px;
+    background-color: #ffffff;
+}
+
+.admin-register-form-wrapper {
+    width: 100%;
+    max-width: 400px;
+}
+
+.admin-register-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #2d3748;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.admin-register-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+    color: #4a5568;
+}
+
+.custom-input {
+    width: 100%;
+    height: 48px;
+    background-color: #f7fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 0 16px;
+    font-size: 15px;
+    outline: none;
+    box-sizing: border-box;
+    color: #2d3748;
+    transition: all 0.3s ease;
+}
+
+.custom-input:focus {
+    border-color: #667eea;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.btn-admin-register {
+    width: 100%;
+    height: 48px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-admin-register:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.btn-admin-register:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-resend {
+    width: 100%;
+    height: 48px;
+    background-color: transparent;
+    border: 2px solid #667eea;
+    border-radius: 12px;
+    color: #667eea;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-resend:hover:not(:disabled) {
+    background-color: #667eea;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-resend:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.admin-register-footer {
+    margin-top: 25px;
+    font-size: 15px;
+    width: 100%;
+    text-align: center;
+}
+
+.text-gray {
+    color: #718096;
+}
+
+.text-link {
+    color: #667eea;
+    font-weight: 700;
+    cursor: pointer;
+    margin-left: 5px;
+    transition: color 0.3s ease;
+}
+
+.text-link:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* Verification Step Styles */
+.verify-description {
+    font-size: 15px;
+    color: #718096;
+    text-align: center;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.verify-description strong {
+    color: #667eea;
+    font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .admin-register-container {
+        width: 90%;
+        height: auto;
+        flex-direction: column;
+    }
+
+    .admin-register-left {
+        display: none;
+    }
+
+    .admin-register-right {
+        padding: 60px 40px;
+    }
+}

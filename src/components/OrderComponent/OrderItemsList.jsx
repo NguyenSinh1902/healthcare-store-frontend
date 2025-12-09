@@ -1,40 +1,54 @@
 import React from 'react';
+// import { useSelector } from 'react-redux'; // <-- Bỏ hoặc comment dòng này
+import { CloseOutlined } from '@ant-design/icons';
 import './OrderItemsList.css';
 
-const items = [
-    { id: 1, name: 'Neuroxil 500 Advanced Nerve Relief', price: 25.5, oldPrice: 99.99, image: 'https://placehold.co/64x64' },
-    { id: 2, name: 'CardioPlus 10 Blood Pressure Control', price: 18.9, oldPrice: 99.99, image: 'https://placehold.co/64x64' },
-    { id: 3, name: 'Flexa 200 Rapid Muscle Recovery', price: 75.8, oldPrice: 99.99, image: 'https://placehold.co/64x64' },
-    { id: 4, name: 'VitaCure 7 Immune Strength Formula', price: 55.6, oldPrice: 99.99, image: 'https://placehold.co/64x64' },
-];
+// 1. Nhận prop 'items' từ cha (OrderLeftSection)
+const OrderItemsList = ({ items }) => {
 
-const OrderItemsList = () => {
-  return (
-    <div className="items-list-section">
-        <h3 className="items-title">Items Name</h3>
-        
-        <div className="items-container">
-            {items.map((item) => (
-                <div key={item.id} className="checkout-item">
+    // Không lấy từ Redux nữa, dùng biến items được truyền vào
+    // const { items } = useSelector((state) => state.cart); 
 
-                    <div className="ci-image">
-                        <img src={item.image} alt={item.name} />
-                    </div>
+    return (
+        <div className="items-list-section">
+            <h3 className="items-title">Items Name</h3>
 
-                    <div className="ci-info">
-                        <div className="ci-name">{item.name}</div>
-                        <div className="ci-price-row">
-                            <span className="price-blue">${item.oldPrice}</span>
-                            <span className="price-strike">${item.oldPrice}</span>
+            <div className="items-container">
+                {/* Sử dụng biến items từ props */}
+                {items && items.length > 0 ? (
+                    items.map((item) => (
+                        <div key={item.idCartItem} className="checkout-item">
+
+                            {/* CỘT 1: ẢNH */}
+                            <div className="ci-image">
+                                <img src={item.imageProduct || 'https://placehold.co/64x64'} alt={item.nameProduct} />
+                            </div>
+
+                            {/* CỘT 2: TÊN & ĐƠN GIÁ */}
+                            <div className="ci-info">
+                                <div className="ci-name">{item.nameProduct}</div>
+                                <div className="ci-price-row">
+                                    <span className="price-blue">${item.unitPrice}</span>
+                                </div>
+                            </div>
+
+                            {/* CỘT 3: SỐ LƯỢNG */}
+                            <div className="ci-qty-badge">
+                                <span className="qty-label">Qty</span>
+                                <CloseOutlined style={{ fontSize: '10px', margin: '0 4px' }} />
+                                <span className="qty-value">{item.quantity}</span>
+                            </div>
+
+                            {/* CỘT 4: TỔNG TIỀN */}
+                            <div className="ci-final-price">${(item.unitPrice * item.quantity).toFixed(2)}</div>
                         </div>
-                    </div>
-
-                    <div className="ci-final-price">${item.price}</div>
-                </div>
-            ))}
+                    ))
+                ) : (
+                    <p>No items selected.</p>
+                )}
+            </div>
         </div>
-    </div>
-  );
+    );
 };
 
 export default OrderItemsList;

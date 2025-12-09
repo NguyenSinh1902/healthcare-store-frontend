@@ -1,21 +1,43 @@
 import React, { useState } from 'react';
 import { HeartOutlined, MinusOutlined, PlusOutlined, SafetyCertificateOutlined, SyncOutlined, TruckOutlined } from '@ant-design/icons';
-import { Rate, Divider } from 'antd';
+import { Rate, Divider, message } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { addToCartItem as addItem } from '../../../redux/slices/cartSlice';
 import './ProductInfo.css';
 
-const ProductInfo = () => {
+const ProductInfo = ({ product }) => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [quantity, setQuantity] = useState(1);
+    const { isAuthenticated } = useSelector((state) => state.auth);
+
+    // If no product data, return null
+    if (!product) return null;
 
     const handleQuantity = (type) => {
         if (type === 'plus') setQuantity(quantity + 1);
         else if (type === 'minus' && quantity > 1) setQuantity(quantity - 1);
     };
 
+    const handleAddToCart = () => {
+        if (!isAuthenticated) {
+            message.warning("Please login to add items to cart");
+            navigate('/login');
+            return;
+        }
+
+        dispatch(addItem({
+            idProduct: product.idProduct,
+            quantity: quantity
+        }));
+    };
+
     return (
         <div className="product-info-wrapper">
 
-            <h1 className="pi-title">Havic HV G-92 Gamepad</h1>
-            
+            <h1 className="pi-title">{product.nameProduct}</h1>
+
             <div className="pi-meta">
                 <div className="pi-rating">
 
@@ -24,18 +46,18 @@ const ProductInfo = () => {
                 </div>
                 <div className="pi-stock-status">
                     <span>|</span>
-                    <span className="in-stock">In Stock</span>
+                    <span className="in-stock">{product.stockQuantity > 0 ? 'In Stock' : 'Out of Stock'}</span>
                 </div>
             </div>
 
-            <div className="pi-price">$192.00</div>
+            <div className="pi-price">${product.price}</div>
 
             <p className="pi-description">
-                Prices include tax. Shipping and other charges (if applicable) will be shown when ordering.
+                {product.description}
             </p>
 
             <div className="pi-brand">
-                Brand: <span className="brand-name">Nature Made</span>
+                Brand: <span className="brand-name">{product.brand}</span>
             </div>
 
             <Divider style={{ margin: '20px 0', borderColor: 'black' }} />
@@ -48,7 +70,7 @@ const ProductInfo = () => {
                     <button className="pi-qty-btn plus" onClick={() => handleQuantity('plus')}><PlusOutlined /></button>
                 </div>
 
-                <button className="btn-add-cart">Add To Cart</button>
+                <button className="btn-add-cart" onClick={handleAddToCart}>Add To Cart</button>
 
                 <div className="wishlist-box">
                     <HeartOutlined style={{ fontSize: '20px' }} />

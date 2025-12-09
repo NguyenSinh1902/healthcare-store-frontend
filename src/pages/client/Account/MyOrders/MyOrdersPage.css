@@ -6,6 +6,7 @@
     padding: 40px 0;
     min-height: 100vh;
 }
+
 .account-container {
     width: 100%;
     max-width: 1440px;
@@ -38,7 +39,20 @@
 .order-tabs {
     display: flex;
     gap: 12px;
+    overflow-x: auto;
+    /* Cho phép cuộn ngang nếu nhiều tab quá */
+    padding-bottom: 5px;
 }
+
+.order-tabs::-webkit-scrollbar {
+    height: 4px;
+}
+
+.order-tabs::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
 
 .tab-btn {
     padding: 12px 24px;
@@ -51,6 +65,7 @@
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
+    white-space: nowrap;
 }
 
 .tab-btn:hover {
@@ -64,10 +79,37 @@
     font-weight: 600;
 }
 
+/* --- LOGIC SCROLL --- */
 .orders-list {
     display: flex;
     flex-direction: column;
     gap: 16px;
+
+    /* Tính toán: 7 items * 125px + 6 gaps * 16px ~= 980px */
+    max-height: 980px;
+    overflow-y: auto;
+    /* Hiện thanh cuộn dọc */
+    padding-right: 10px;
+    /* Để nội dung không bị dính vào thanh cuộn */
+}
+
+/* Style thanh cuộn cho đẹp */
+.orders-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.orders-list::-webkit-scrollbar-track {
+    background: #F1F1F1;
+    border-radius: 4px;
+}
+
+.orders-list::-webkit-scrollbar-thumb {
+    background: #D1D1D1;
+    border-radius: 4px;
+}
+
+.orders-list::-webkit-scrollbar-thumb:hover {
+    background: #A0A0A0;
 }
 
 .order-card {
@@ -80,6 +122,8 @@
     gap: 20px;
     height: 125px;
     box-sizing: border-box;
+    flex-shrink: 0;
+    /* Đảm bảo không bị co lại khi scroll */
 }
 
 .main-icon-img {
@@ -112,7 +156,7 @@
     font-family: 'Inter', sans-serif;
     font-size: 20px;
     font-weight: 600;
-    color: black;
+    color: #1E3E62;
     letter-spacing: 0.5px;
     line-height: 1.2;
     white-space: nowrap;
@@ -123,7 +167,8 @@
     display: block;
 }
 
-.col-price, .col-qty {
+.col-price,
+.col-qty {
     flex: 1.5;
     flex-direction: row;
     align-items: flex-start;
@@ -143,15 +188,17 @@
     align-items: flex-start;
 }
 
-.order-price, .order-item-label {
+.order-price,
+.order-item-label {
     font-family: 'Poppins', sans-serif;
     font-size: 20px;
     font-weight: 600;
-    color: #0D0C0D;
+    color: #1E3E62;
     line-height: 1;
 }
 
-.order-method, .order-qty-val {
+.order-method,
+.order-qty-val {
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
     color: #686069;
@@ -167,16 +214,46 @@
     gap: 16px;
 }
 
+/* Style chung cho Badge */
 .status-badge {
     padding: 8px 12px;
-    background-color: #F5FBF5;
-    border: 1px solid #117E11;
     border-radius: 14px;
-    color: #117E11;
     font-family: 'Degular Demo', sans-serif;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     white-space: nowrap;
+    border: 1px solid transparent;
+}
+
+/* --- MÀU SẮC CHO TỪNG TRẠNG THÁI --- */
+.status-badge.delivered {
+    background-color: #F5FBF5;
+    border-color: #117E11;
+    color: #117E11;
+}
+
+.status-badge.pending {
+    background-color: #FFF7E6;
+    border-color: #FA8C16;
+    color: #FA8C16;
+}
+
+.status-badge.confirmed {
+    background-color: #E6F7FF;
+    border-color: #1890FF;
+    color: #1890FF;
+}
+
+.status-badge.shipping {
+    background-color: #F9F0FF;
+    border-color: #722ED1;
+    color: #722ED1;
+}
+
+.status-badge.cancelled {
+    background-color: #FFF1F0;
+    border-color: #FF4D4F;
+    color: #FF4D4F;
 }
 
 .btn-reorder {
@@ -203,9 +280,31 @@
         gap: 12px;
         padding: 16px;
     }
-    .col-main { flex: 2; }
-    .col-price, .col-qty { flex: 1.2; gap: 8px; }
-    .col-status { flex: 1.5; gap: 8px; }
-    .order-name, .order-price, .order-item-label { font-size: 18px; }
-    .order-date, .order-method, .order-qty-val { font-size: 14px; }
+
+    .col-main {
+        flex: 2;
+    }
+
+    .col-price,
+    .col-qty {
+        flex: 1.2;
+        gap: 8px;
+    }
+
+    .col-status {
+        flex: 1.5;
+        gap: 8px;
+    }
+
+    .order-name,
+    .order-price,
+    .order-item-label {
+        font-size: 18px;
+    }
+
+    .order-date,
+    .order-method,
+    .order-qty-val {
+        font-size: 14px;
+    }
 }
