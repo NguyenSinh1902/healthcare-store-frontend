@@ -6,27 +6,32 @@
   position: relative;
   overflow: hidden;
   font-family: 'Poppins', sans-serif;
-  transition: box-shadow 0.3s ease;
+  border: 1px solid transparent;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
 }
 
 .product-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 12px 24px rgba(16, 72, 194, 0.15);
+  transform: translateY(-5px);
 }
 
-.product-image-container {
+.pc-product-image-container {
   width: 100%;
   height: 251px;
-  background-color: #EEEEEE;
+  background-color: #F5F5F5;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 .product-image {
   width: 224px;
   height: 176px;
   object-fit: contain;
+  transition: transform 0.5s ease;
 }
 
 .discount-badge {
@@ -136,4 +141,35 @@
   font-size: 14px;
   font-weight: 600;
   line-height: 21px;
+}
+
+.add-to-cart-layer {
+  position: absolute;
+  bottom: -50px;
+  left: 0;
+  width: 100%;
+  height: 41px;
+  background-color: #8FBFFA;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  transition: bottom 0.3s ease;
+  cursor: pointer;
+}
+
+.add-to-cart-layer:hover {
+  background-color: #6faae8;
+}
+
+.product-card:hover .add-to-cart-layer {
+  bottom: 0;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05);
+  transition: transform 0.5s ease;
 }
