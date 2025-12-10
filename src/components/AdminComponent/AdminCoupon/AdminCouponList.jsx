@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, Button, Space, Tag, Switch, Popconfirm, message, Row, Col, Card, Modal, Form, InputNumber, Select } from 'antd';
+import { Table, Input, Button, Space, Tag, Switch, Popconfirm, message, Row, Col, Card, Modal, Form, InputNumber, Select, DatePicker } from 'antd';
 import { SearchOutlined, DeleteOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
 import dayjs from 'dayjs';
@@ -106,7 +106,7 @@ const AdminCouponList = () => {
             title: 'Discount',
             dataIndex: 'discount_amount',
             key: 'discount_amount',
-            render: (val) => <span>{val >= 1000 ? `${val.toLocaleString()}đ` : `${val}%/K`}</span>, // Simple heuristic for display
+            render: (val) => <span>{val >= 1000 ? `${val.toLocaleString()}đ` : `${val}`}</span>, // Simple heuristic for display
         },
         {
             title: 'Min Order',
@@ -258,11 +258,11 @@ const AdminCouponList = () => {
                     <Form.Item name="min_order_value" label="Min Order Value" rules={[{ required: true }]}>
                         <InputNumber min={0} style={{ width: '100%' }} />
                     </Form.Item>
-                    <Form.Item name="start_date" label="Start Date" rules={[{ required: true }]}>
-                        <Input />
+                    <Form.Item name="start_date" label="Start Date" rules={[{ required: true, message: 'Please select start date' }]}>
+                        <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" />
                     </Form.Item>
-                    <Form.Item name="end_date" label="End Date" rules={[{ required: true }]}>
-                        <Input />
+                    <Form.Item name="end_date" label="End Date" rules={[{ required: true, message: 'Please select end date' }]}>
+                        <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" />
                     </Form.Item>
                     {!editingCoupon && (
                         <Form.Item name="status" label="Status" rules={[{ required: true }]} initialValue="ACTIVE">
