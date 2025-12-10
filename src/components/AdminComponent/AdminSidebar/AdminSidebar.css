@@ -1,24 +1,108 @@
 /* AdminSidebar.css */
+
+/* Main Sidebar Container */
 .admin-sidebar {
-    background: #001529;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(180deg, #2859C5 0%, #1e45a0 100%) !important;
+    /* Bold Blue Gradient */
+    box-shadow: 4px 0 16px rgba(40, 89, 197, 0.2);
+    border-right: none;
 }
 
+/* Sidebar Logo Area */
 .admin-logo-vertical {
-    height: 64px;
+    height: 80px;
     margin: 0;
-    background: rgba(255, 255, 255, 0.1);
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #fff;
-    font-weight: bold;
-    font-size: 18px;
+    color: #ffffff;
+    /* White text on blue bg */
+    font-weight: 800;
+    font-size: 24px;
     overflow: hidden;
     white-space: nowrap;
+    transition: all 0.3s ease;
+    letter-spacing: -0.5px;
+    font-family: 'Poppins', sans-serif;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Collapsed State Logo */
+.ant-layout-sider-collapsed .admin-logo-vertical {
+    font-size: 18px;
+    letter-spacing: 0;
+}
+
+/* --- OVERRIDE ANT MENU STYLES --- */
+.admin-sidebar .ant-menu.ant-menu-dark,
+.admin-sidebar .ant-menu-dark .ant-menu-sub,
+.admin-sidebar .ant-menu.ant-menu-dark .ant-menu-sub {
+    background: transparent !important;
+    /* Transparent to show gradient */
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Menu Item Default State */
+.admin-sidebar .ant-menu-dark .ant-menu-item,
+.admin-sidebar .ant-menu-dark .ant-menu-submenu-title {
+    color: rgba(255, 255, 255, 0.8) !important;
+    margin: 4px 12px;
+    width: calc(100% - 24px);
+    border-radius: 8px;
     transition: all 0.2s;
 }
 
-.ant-layout-sider-collapsed .admin-logo-vertical {
-    font-size: 14px;
+/* Icon Color */
+.admin-sidebar .ant-menu-dark .ant-menu-item .anticon,
+.admin-sidebar .ant-menu-dark .ant-menu-submenu-title .anticon {
+    color: rgba(255, 255, 255, 0.8);
+    transition: color 0.2s;
+}
+
+/* Hover State */
+.admin-sidebar .ant-menu-dark .ant-menu-item:hover,
+.admin-sidebar .ant-menu-dark .ant-menu-submenu-title:hover {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    /* Glassy effect */
+}
+
+.admin-sidebar .ant-menu-dark .ant-menu-item:hover .anticon,
+.admin-sidebar .ant-menu-dark .ant-menu-submenu-title:hover .anticon {
+    color: #ffffff;
+}
+
+/* Selected State */
+.admin-sidebar .ant-menu-dark .ant-menu-item-selected {
+    background-color: #ffffff !important;
+    /* White bg */
+    color: #2859C5 !important;
+    /* Blue text */
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.admin-sidebar .ant-menu-dark .ant-menu-item-selected .anticon {
+    color: #2859C5 !important;
+    /* Blue icon */
+}
+
+/* Submenu Popup (for collapsed state or nested) */
+.ant-menu-dark.ant-menu-submenu-popup>.ant-menu {
+    background-color: #1e45a0 !important;
+    /* Dark blue for popup */
+}
+
+.ant-menu-dark.ant-menu-submenu-popup .ant-menu-item {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.ant-menu-dark.ant-menu-submenu-popup .ant-menu-item:hover {
+    color: white !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.ant-menu-dark.ant-menu-submenu-popup .ant-menu-item-selected {
+    background-color: white !important;
+    color: #2859C5 !important;
 }

@@ -2,7 +2,8 @@
 
 .account-page-wrapper {
     width: 100%;
-    background-color: white;
+    background-color: #f8f9fa;
+    /* Màu nền nhẹ nhàng cho toàn trang */
     padding: 40px 0;
     min-height: 100vh;
 }
@@ -15,101 +16,144 @@
     box-sizing: border-box;
 }
 
-.account-details-content {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.page-title {
-    font-family: 'Degular Demo', sans-serif;
-    font-size: 24px;
-    font-weight: 600;
-    color: #0D0C0D;
-    margin: 0 0 16px 0;
-    letter-spacing: 0.4px;
-}
-
-.details-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.detail-card {
-    background-color: white;
-    border: 1px solid #F0EEF0;
-    border-radius: 16px;
-    padding: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: box-shadow 0.2s;
-}
-
-.detail-card:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-}
-
-.detail-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    max-width: 80%;
-}
-
-.detail-label {
-    font-family: 'Poppins', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    color: #0D0C0D;
-    line-height: 22px;
-}
-
-.detail-value {
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    color: #9C939D;
-    line-height: 20px;
-    word-wrap: break-word;
-}
-
-.btn-edit-pink {
-    background: none;
-    border: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    
-    font-family: 'Degular Demo', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    color: #B6349A;
-    padding: 8px 12px;
+/* --- NEW CLIENT PROFILE CARD STYLE --- */
+.client-profile-card {
+    background: #FBFBFE;
     border-radius: 20px;
-    transition: background 0.2s;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    /* Bóng đổ mềm */
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #eaeaea;
 }
 
-.btn-edit-pink:hover {
-    background-color: #FCF0F8;
+/* Header: Cover + Avatar */
+.client-profile-header {
+    position: relative;
+    margin-bottom: 60px;
+    /* Chừa chỗ cho avatar đè xuống */
 }
 
-.icon-edit-wrapper {
-    width: 22px;
-    height: 22px;
+.client-cover-photo {
+    width: 100%;
+    height: 180px;
+    background-color: #ddd;
+}
+
+.client-cover-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.client-avatar-section {
+    position: absolute;
+    bottom: -50px;
+    left: 40px;
+    /* Avatar lệch trái thay vì giữa */
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+}
+
+.client-avatar-box {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 4px solid white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: white;
+    overflow: hidden;
+}
+
+.client-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.client-username {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    padding-bottom: 15px;
+    /* Căn chỉnh với text */
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+}
+
+.client-user-role {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+    position: absolute;
+    bottom: -25px;
+    /* Nằm dưới tên */
+    left: 120px;
+    /* Canh lề với text tên */
+    white-space: nowrap;
+}
+
+/* Edit Button (Absolute Top Right) */
+.btn-edit-absolute {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: white;
+    color: #333;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s;
     display: flex;
     align-items: center;
-    justify-content: center;
-
-    border: 1.5px solid #B6349A;
-    border-radius: 4px;
-    font-size: 12px;
+    gap: 6px;
 }
 
-.icon-edit-wrapper .anticon {
-    color: #B6349A;
+.btn-edit-absolute:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+/* Body Content */
+.client-profile-body {
+    padding: 30px 40px 50px 40px;
+}
+
+.client-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.info-item.full-width {
+    grid-column: span 2;
+}
+
+.info-label {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #888;
+    font-weight: 600;
+}
+
+.info-value {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
 }
 
 /* Responsive */
@@ -117,9 +161,31 @@
     .account-container {
         padding: 0 20px;
     }
-    
-    .detail-card {
-        flex-direction: row;
-        align-items: flex-start;
+
+    .client-avatar-section {
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -60px;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .client-username {
+        padding-bottom: 0;
+        text-align: center;
+    }
+
+    .client-user-role {
+        position: static;
+        text-align: center;
+    }
+
+    .client-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .info-item.full-width {
+        grid-column: span 1;
     }
 }

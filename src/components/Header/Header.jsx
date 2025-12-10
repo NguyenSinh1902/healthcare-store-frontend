@@ -198,7 +198,7 @@ const Header = () => {
                     {isAuthenticated ? (
                       <>
                         {/* User Info Mini */}
-                        <div className="user-mini-profile" style={{ padding: '0 20px' }}>
+                        <div className="user-mini-profile">
                           <img src="https://placehold.co/48x48" alt="Avatar" />
                           <div>
                             <div className="user-name">{user?.fullName || user?.email || "User"}</div>

@@ -150,8 +150,8 @@ const AdminCouponList = () => {
                             code: record.code,
                             discount_amount: record.discount_amount,
                             min_order_value: record.min_order_value,
-                            start_date: dayjs(record.start_date).format('YYYY-MM-DD'),
-                            end_date: dayjs(record.end_date).format('YYYY-MM-DD'),
+                            start_date: record.start_date ? dayjs(record.start_date) : null,
+                            end_date: record.end_date ? dayjs(record.end_date) : null,
                             status: record.status
                         });
                         setIsEditModalVisible(true);
@@ -223,8 +223,8 @@ const AdminCouponList = () => {
                             code: values.code,
                             discountAmount: values.discount_amount,
                             minOrderValue: values.min_order_value,
-                            startDate: values.start_date,
-                            endDate: values.end_date,
+                            startDate: values.start_date ? values.start_date.format('YYYY-MM-DD') : null,
+                            endDate: values.end_date ? values.end_date.format('YYYY-MM-DD') : null,
                         };
                         // For create, add status field
                         if (!editingCoupon) {

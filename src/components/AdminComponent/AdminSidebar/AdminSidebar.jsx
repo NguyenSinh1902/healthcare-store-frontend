@@ -87,7 +87,7 @@ const AdminSidebar = ({ collapsed }) => {
     return (
         <Sider trigger={null} collapsible collapsed={collapsed} className="admin-sidebar">
             <div className="admin-logo-vertical">
-                {collapsed ? 'HS' : 'Healthcare Store'}
+                {collapsed ? 'GP' : 'GreenPlus'}
             </div>
             <Menu
                 theme="dark"

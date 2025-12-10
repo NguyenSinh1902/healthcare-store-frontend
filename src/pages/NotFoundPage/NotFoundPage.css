@@ -1,0 +1,66 @@
+/* NotFoundPage.css */
+
+.not-found-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+    /* Màu nền nhẹ */
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.not-found-content {
+    text-align: center;
+    background: white;
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    max-width: 600px;
+    width: 100%;
+}
+
+.not-found-image {
+    margin-bottom: 30px;
+}
+
+.not-found-image img {
+    max-width: 100%;
+    height: auto;
+    max-height: 300px;
+    object-fit: contain;
+}
+
+.not-found-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 16px;
+}
+
+.not-found-desc {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.btn-back-home {
+    background-color: #2859C5;
+    /* Use brand color */
+    border-color: #2859C5;
+    height: 48px;
+    padding: 0 32px;
+    font-weight: 600;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(40, 89, 197, 0.3);
+    border-radius: 8px;
+}
+
+.btn-back-home:hover {
+    background-color: #1e45a0;
+    border-color: #1e45a0;
+    transform: translateY(-2px);
+    transition: all 0.3s;
+}

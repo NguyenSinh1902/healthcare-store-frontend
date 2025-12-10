@@ -18,7 +18,14 @@ const CartItem = ({ item, onRemove, onUpdateQuantity }) => {
 
                 {/* Thông tin tên + giá */}
                 <div className="cart-item-info">
-                    <div className="item-name">{name}</div>
+                    <div className="item-name" title={name}>{name}</div>
+
+                    {/* Badge Out of Business - Giả sử check theo stock hoặc status */}
+                    {/* Logic tạm: nếu status === 'out_of_stock' hoặc stockQuantity === 0 */}
+                    {item.stockQuantity === 0 && (
+                        <div className="out-of-business-badge">Out of business</div>
+                    )}
+
                     <div className="item-price-row">
                         <span className="price-current">${price}</span>
                         <span className="price-original">${originalPrice}</span>

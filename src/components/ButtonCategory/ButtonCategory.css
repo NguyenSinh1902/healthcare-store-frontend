@@ -25,7 +25,7 @@
 .category-container {
     display: flex;
     width: 1170px;
-    height: 365px;
+    height: 349px;
     background-color: #FEFEFE;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -43,7 +43,7 @@
     /* --- THÊM DÒNG NÀY --- */
     overflow-y: auto;
     /* Cho phép cuộn dọc */
-    height: 90%;
+    height: 100%;
     /* Đảm bảo chiều cao ăn theo cha */
 }
 

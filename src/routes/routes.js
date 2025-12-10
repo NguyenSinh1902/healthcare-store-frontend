@@ -19,6 +19,7 @@ import StaffPage from "../pages/admin/Staff/StaffPage";
 import CouponPage from "../pages/admin/Coupon/CouponPage";
 import AdminProfilePage from "../pages/admin/Profile/AdminProfilePage";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
+import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 
 const routes = [
   { path: "/", element: <HomePage />, isShowHeader: true },
@@ -64,6 +65,9 @@ const routes = [
   // Public Admin Routes
   { path: "/admin/login", element: <AdminLogin />, isShowHeader: false },
   { path: "/admin/register", element: <AdminRegister />, isShowHeader: false },
+
+  // 404 Route
+  { path: "*", element: <NotFoundPage />, isShowHeader: false },
 ];
 
 

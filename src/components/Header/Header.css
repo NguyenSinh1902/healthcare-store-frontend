@@ -296,34 +296,48 @@
   border-top: 1px solid #F0F0F0;
 }
 
-/* --- USER DROPDOWN --- */
 .user-dropdown {
-  width: 250px;
+  width: 300px;
   padding: 8px 0;
 }
 
 .user-mini-profile {
-  margin-bottom: 15px;
+  padding: 15px 0px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .user-mini-profile img {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
 .user-name {
-  font-weight: 600;
-  font-size: 15px;
+  font-weight: 700;
+  font-size: 16px;
   color: #0D0C0D;
+  margin-bottom: 2px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }
 
 .user-email {
-  font-size: 12px;
-  color: #888;
+  font-size: 13px;
+  color: #666;
+
+  /* Xử lý text dài */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  display: block;
 }
 
 .dropdown-divider {

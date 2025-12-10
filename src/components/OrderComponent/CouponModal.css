@@ -102,30 +102,33 @@
 .coupon-list {
     padding: 30px;
     display: grid;
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 30px; 
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
     justify-items: center;
-    max-height: 350px;
-    overflow-y: auto; 
+    max-height: 433px;
+    overflow-y: auto;
     scrollbar-width: thin;
 }
 
 .coupon-list::-webkit-scrollbar {
     width: 8px;
 }
+
 .coupon-list::-webkit-scrollbar-track {
-    background: #F1F1F1; 
+    background: #F1F1F1;
 }
+
 .coupon-list::-webkit-scrollbar-thumb {
-    background: #CCCCCC; 
+    background: #CCCCCC;
     border-radius: 4px;
 }
+
 .coupon-list::-webkit-scrollbar-thumb:hover {
     background: #2859C5;
 }
 
 .coupon-card {
-    width: 100%; 
+    width: 100%;
     max-width: 343px;
     border-radius: 20px;
     overflow: hidden;
@@ -138,7 +141,7 @@
     background-color: #2859C5;
     padding: 32px 20px 20px 20px;
     position: relative;
-    background-image: 
+    background-image:
         radial-gradient(circle at 50% -5px, #EEEEEE 20px, transparent 21px),
         radial-gradient(circle at 50% 100%, #FFFFFF 5px, transparent 6px);
     background-size: 65px 100%, 10px 100%;

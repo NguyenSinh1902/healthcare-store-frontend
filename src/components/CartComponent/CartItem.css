@@ -48,9 +48,25 @@
     font-size: 18px;
     color: #0D0C0D;
     line-height: 20px;
-    max-width: 250px;
+    max-width: 170px;
+    /* Giới hạn chiều rộng theo yêu cầu */
     font-weight: 600;
-    /* Giới hạn chiều rộng tên */
+
+    /* Thêm thuộc tính để hiển thị ... */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.out-of-business-badge {
+    display: inline-block;
+    background-color: #9C939D;
+    color: white;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    width: fit-content;
 }
 
 .item-price-row {

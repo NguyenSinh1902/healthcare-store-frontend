@@ -70,14 +70,14 @@ const AccountSidebar = () => {
 
             <div className="sidebar-group main-group">
 
-                <div className="user-info">
+                {/* <div className="user-info">
                     <img
                         src={userProfile?.avatarUrl || "https://placehold.co/48x48"}
                         alt="User"
                         className="user-avatar"
                     />
                     <span className="user-name">{userProfile?.fullName || 'User'}</span>
-                </div>
+                </div> */}
 
                 <div className="menu-list">
                     {mainMenuItems.map((item) => {
