@@ -1,38 +1,80 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Input, Button, Space, Tag, Switch, Popconfirm, message, Avatar, Row, Col, Card } from 'antd';
 import { SearchOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
 import dayjs from 'dayjs';
 import './AdminStaff.css';
+import { getAllAdminStaff, updateStaffStatus, deleteStaff } from '../../../services/adminStaffService';
 
-const initialStaff = [
-    { key: 11, id_user: 11, address: null, created_at: '2025-11-28 16:36:24', email: 'khoi2@gmail.com', full_name: 'sinh', phone: null, role: 'ADMIN', avatar_url: null, date_of_birth: null, status: 'INACTIVE' },
-    { key: 12, id_user: 12, address: null, created_at: '2025-11-28 16:38:43', email: 'ABC02@gmail.com', full_name: 'Nguyen Van Dac', phone: null, role: 'ADMIN', avatar_url: null, date_of_birth: null, status: 'ACTIVE' },
-    { key: 13, id_user: 13, address: null, created_at: '2025-11-28 16:42:06', email: 'khoi02@gmail.com', full_name: 'sinh', phone: null, role: 'ADMIN', avatar_url: null, date_of_birth: null, status: 'ACTIVE' },
-    { key: 14, id_user: 14, address: null, created_at: '2025-11-28 16:43:37', email: 'khoi03@gmail.com', full_name: 'sinh', phone: null, role: 'ADMIN', avatar_url: null, date_of_birth: null, status: 'ACTIVE' },
-    { key: 15, id_user: 15, address: null, created_at: '2025-11-28 16:43:56', email: 'khoi04@gmail.com', full_name: 'sinh', phone: null, role: 'ADMIN', avatar_url: null, date_of_birth: null, status: 'ACTIVE' },
-];
 
 const AdminStaffList = () => {
-    const [staff, setStaff] = useState(initialStaff);
+    const [staff, setStaff] = useState([]);
     const [searchText, setSearchText] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleStatusChange = (checked, record) => {
-        const newStatus = checked ? 'ACTIVE' : 'INACTIVE';
-        const updatedStaff = staff.map(user => {
-            if (user.id_user === record.id_user) {
-                return { ...user, status: newStatus };
+    // Fetch staff from backend (ADMIN role)
+    const fetchStaff = async () => {
+        setLoading(true);
+        try {
+            const response = await getAllAdminStaff();
+            if (response && response.success) {
+                const transformed = response.data.map(u => ({
+                    key: u.idUser,
+                    id_user: u.idUser,
+                    full_name: u.fullName,
+                    email: u.email,
+                    avatar_url: u.avatarUrl,
+                    role: u.role,
+                    status: u.status,
+                    created_at: u.createdAt,
+                }));
+                setStaff(transformed);
+            } else {
+                message.error('Failed to fetch staff');
             }
-            return user;
-        });
-        setStaff(updatedStaff);
-        message.success(`Staff ${record.full_name} is now ${newStatus}`);
+        } catch (err) {
+            console.error('Fetch staff error:', err);
+            message.error('Error fetching staff');
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleDelete = (key) => {
-        const newData = staff.filter((item) => item.key !== key);
-        setStaff(newData);
-        message.success('Staff deleted successfully');
+    useEffect(() => {
+        fetchStaff();
+    }, []);
+
+
+    const handleStatusChange = async (checked, record) => {
+        const newStatus = checked ? 'ACTIVE' : 'INACTIVE';
+        try {
+            await updateStaffStatus(record.id_user, newStatus);
+            const updatedStaff = staff.map(user => {
+                if (user.id_user === record.id_user) {
+                    return { ...user, status: newStatus };
+                }
+                return user;
+            });
+            setStaff(updatedStaff);
+            message.success(`Staff ${record.full_name} status updated to ${newStatus}`);
+        } catch (err) {
+            console.error(err);
+            message.error('Failed to update staff status');
+        }
+    };
+
+    const handleDelete = async (key) => {
+        const record = staff.find(item => item.key === key);
+        if (!record) return;
+        try {
+            await deleteStaff(record.id_user);
+            const newData = staff.filter((item) => item.key !== key);
+            setStaff(newData);
+            message.success('Staff deleted successfully');
+        } catch (err) {
+            console.error(err);
+            message.error('Failed to delete staff');
+        }
     };
 
     const columns = [
@@ -107,6 +149,7 @@ const AdminStaffList = () => {
         },
     ];
 
+    // Prepare Data for Charts
     const statusCounts = {};
     staff.forEach(user => {
         statusCounts[user.status] = (statusCounts[user.status] || 0) + 1;
@@ -117,6 +160,7 @@ const AdminStaffList = () => {
     }));
     const COLORS = ['#00C49F', '#FF8042'];
 
+    // Group by Registration Date
     const registrationByDate = {};
     staff.forEach(user => {
         const date = dayjs(user.created_at).format('YYYY-MM-DD');
@@ -143,10 +187,12 @@ const AdminStaffList = () => {
                 dataSource={staff}
                 pagination={{ pageSize: 10 }}
                 rowKey="key"
+                loading={loading}
                 className="staff-table"
                 scroll={{ x: 1000 }}
             />
 
+            {/* Charts Section */}
             <Row gutter={24} style={{ marginTop: 24 }}>
                 <Col span={12}>
                     <Card title="Staff Status Distribution" bordered={false}>
