@@ -55,10 +55,31 @@
     gap: 20px;
 }
 
+.form-group {
+    position: relative;
+    width: 100%;
+}
+
 .form-group label {
     font-size: 16px;
     margin-bottom: 8px;
     display: block;
+}
+
+.password-toggle-icon {
+    position: absolute;
+    right: 15px;
+    top: 52px;
+    /* Adjusted based on label height + input vertical padding/height */
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+    font-size: 18px;
+    z-index: 10;
+}
+
+.password-toggle-icon:hover {
+    color: #343170;
 }
 
 .custom-input {
@@ -140,51 +161,37 @@
     filter: drop-shadow(20px 20px 30px rgba(0, 0, 0, 0.2));
 }
 
-/* Ép thông báo của Ant Design luôn nằm trên cùng */
 .ant-message {
     z-index: 99999 !important;
 }
 
-/* Nếu dùng contextHolder (Antd v5), đôi khi cần class này */
 .ant-message-notice {
     z-index: 99999 !important;
 }
 
-/* Nút quay về trang chủ */
 .back-home-btn {
     position: absolute;
-    /* Vị trí: Đặt ở góc trên bên trái là chuẩn UX nhất */
     top: 40px;
     left: 50px;
-
-    /* Nếu bạn thích để ở DƯỚI cùng màn hình thì dùng 3 dòng này thay cho top/left ở trên:
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    */
 
     display: flex;
     align-items: center;
     gap: 10px;
 
-    /* Màu sắc & Font */
     color: #343170;
-    /* Màu tím đậm giống nút Login */
     font-weight: 700;
     font-size: 16px;
     font-family: 'Inter', sans-serif;
 
-    /* Tạo khung nền mờ (Glass effect nhẹ) */
     background: rgba(255, 255, 255, 0.4);
     padding: 10px 20px;
     border-radius: 30px;
-    /* Bo tròn kiểu viên thuốc */
+
     border: 1px solid rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(5px);
 
     cursor: pointer;
     z-index: 100;
-    /* Đảm bảo luôn nổi lên trên */
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
@@ -194,18 +201,14 @@
     transition: transform 0.3s ease;
 }
 
-/* Hiệu ứng khi di chuột vào */
 .back-home-btn:hover {
     background: #ffffff;
-    /* Sáng lên */
     color: #656ED3;
-    /* Đổi sang màu tím nhạt hơn */
     transform: translateY(-2px);
-    /* Bay nhẹ lên */
     box-shadow: 0 8px 20px rgba(101, 110, 211, 0.2);
 }
 
 .back-home-btn:hover .back-icon {
     transform: translateX(-5px);
-    /* Mũi tên thụt lùi tạo cảm giác "Back" */
+
 }

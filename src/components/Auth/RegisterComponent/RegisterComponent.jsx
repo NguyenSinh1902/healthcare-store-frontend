@@ -7,7 +7,7 @@ import SocialLogin from '../SocialLogin';
 import './RegisterComponent.css';
 import registerImg from '../../../assets/images/image_Register.png';
 import { register, verifyAccount } from '../../../services/authService';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 
 const RegisterComponent = () => {
   const navigate = useNavigate();
@@ -24,6 +24,9 @@ const RegisterComponent = () => {
     password: '',
     confirmPassword: ''
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [verificationCode, setVerificationCode] = useState('');
   const [loading, setLoading] = useState(false);
@@ -64,7 +67,7 @@ const RegisterComponent = () => {
       if (data && data.success) {
         messageApi.success(data.message || 'Registration successful! Please check your email to verify account.');
         setRegisteredEmail(data.email || formData.email);
-        setStep('verify'); // Move to verification step
+        setStep('verify');
       } else {
         messageApi.error(data?.message || 'Registration failed');
       }
@@ -206,7 +209,7 @@ const RegisterComponent = () => {
                   <div className="form-group">
                     <label>Password:</label>
                     <input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       name="password"
                       className="custom-input"
                       placeholder="........."
@@ -214,11 +217,17 @@ const RegisterComponent = () => {
                       onChange={handleChange}
                       required
                     />
+                    <span
+                      className="password-toggle-icon"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <EyeTwoTone /> : <EyeInvisibleOutlined />}
+                    </span>
                   </div>
                   <div className="form-group">
                     <label>Confirm Password:</label>
                     <input
-                      type="password"
+                      type={showConfirmPassword ? "text" : "password"}
                       name="confirmPassword"
                       className="custom-input"
                       placeholder="Confirm your password"
@@ -226,6 +235,12 @@ const RegisterComponent = () => {
                       onChange={handleChange}
                       required
                     />
+                    <span
+                      className="password-toggle-icon"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    >
+                      {showConfirmPassword ? <EyeTwoTone /> : <EyeInvisibleOutlined />}
+                    </span>
                   </div>
                   <button type="submit" className="btn-register" disabled={loading}>
                     {loading ? 'Signing Up...' : 'Sign Up'}

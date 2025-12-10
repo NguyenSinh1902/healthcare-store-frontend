@@ -92,12 +92,33 @@
     gap: 20px;
 }
 
+.form-group {
+    position: relative;
+    width: 100%;
+}
+
 .form-group label {
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 8px;
     display: block;
     color: #4a5568;
+}
+
+.password-toggle-icon {
+    position: absolute;
+    right: 15px;
+    top: 48px;
+    /* Slightly adjusted for Admin styling */
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+    font-size: 18px;
+    z-index: 10;
+}
+
+.password-toggle-icon:hover {
+    color: #667eea;
 }
 
 .custom-input {
