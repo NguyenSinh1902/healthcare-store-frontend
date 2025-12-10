@@ -128,14 +128,14 @@ const OrderPage = () => {
                 paymentMethod={paymentMethod}
                 setPaymentMethod={setPaymentMethod}
                 hasError={addressError}
-                items={checkoutItems}
+                items={checkoutItems} // 7. Truyền danh sách đã lọc xuống để hiển thị
               />
             </Col>
 
             <Col xs={24} lg={8}>
               <div className="summary-sticky">
                 <CheckoutSummary
-                  itemsTotal={checkoutTotal}
+                  itemsTotal={checkoutTotal} // 8. Truyền tổng tiền đã tính lại
                   selectedCoupon={selectedCoupon}
                   onApplyCoupon={setSelectedCoupon}
                   onRemoveCoupon={() => setSelectedCoupon(null)}

@@ -105,10 +105,14 @@
   font-size: 15px;
 }
 
+/* Container chứa 3 icon: Notification, Cart, User */
 .header__actions {
   display: flex;
+  /* [QUAN TRỌNG] Để xếp các phần tử con nằm ngang */
   align-items: center;
+  /* Căn giữa theo chiều dọc */
   gap: 24px;
+  /* Khoảng cách giữa các icon */
 }
 
 .header__location .icon {
@@ -124,6 +128,8 @@
   filter: invert(100%);
 }
 
+
+/* Làm tôi màn hình khi click vô category */
 .menu-overlay {
   position: fixed;
   top: 0;
@@ -136,8 +142,14 @@
 }
 
 
+/* Header.css */
+
+/* ... giữ nguyên code cũ ... */
+
+/* Wrapper để định vị dropdown tương đối với icon */
 .action-item-wrapper {
   position: relative;
+  /* Quan trọng */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -148,13 +160,20 @@
   transition: background 0.2s;
 }
 
+.action-item-wrapper:hover {
+  /* background-color: #979797; */
+}
+
 .action-icon-img {
+  /* Đảm bảo ảnh không bị méo */
   object-fit: contain;
 }
 
+/* Badge thông báo đỏ */
 .notification-badge {
   position: absolute;
   top: -2px;
+  /* Dịch lên trên một chút */
   right: -9px;
   background-color: #FF4D4F;
   color: white;
@@ -169,21 +188,26 @@
   border: 2px solid white;
 }
 
+/* --- DROPDOWN MENU CHUNG --- */
 .dropdown-menu {
   position: absolute;
   top: 50px;
+  /* Cách icon 1 đoạn */
   right: -10px;
+  /* Canh phải */
   background-color: white;
   border-radius: 16px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
   border: 1px solid #F0F0F0;
   z-index: 1002;
+  /* Cao hơn overlay */
   overflow: hidden;
   animation: fadeIn 0.2s ease-out;
   cursor: default;
-
+  /* Reset con trỏ chuột trong menu */
 }
 
+/* Mũi tên tam giác nhỏ trỏ lên icon */
 .dropdown-menu::before {
   content: "";
   position: absolute;
@@ -209,6 +233,7 @@
   }
 }
 
+/* --- NOTIFICATION DROPDOWN --- */
 .notification-dropdown {
   width: 320px;
 }
@@ -238,6 +263,7 @@
 
 .noti-item.unread {
   background-color: #F0F8FF;
+  /* Màu xanh nhạt cho tin chưa đọc */
 }
 
 .noti-title {
@@ -270,6 +296,7 @@
   border-top: 1px solid #F0F0F0;
 }
 
+/* --- USER DROPDOWN --- */
 .user-dropdown {
   width: 250px;
   padding: 8px 0;
@@ -334,6 +361,7 @@
   background-color: #FFF1F0;
 }
 
+/* --- GUEST VIEW (CHƯA ĐĂNG NHẬP) --- */
 .guest-view {
   padding: 10px 20px;
   display: flex;
@@ -359,6 +387,7 @@
   margin: 0;
   line-height: 1.4;
   padding: 0 10px;
+  /* Thụt vào xíu cho đỡ tràn */
 }
 
 .guest-actions {
@@ -368,6 +397,7 @@
   gap: 15px;
 }
 
+/* Nút Login to đẹp */
 .btn-login-full {
   width: 100%;
   padding: 10px 0;
@@ -385,6 +415,7 @@
   background-color: #1a42a0;
 }
 
+/* Dòng đăng ký */
 .guest-register-row {
   font-size: 13px;
   color: #333;

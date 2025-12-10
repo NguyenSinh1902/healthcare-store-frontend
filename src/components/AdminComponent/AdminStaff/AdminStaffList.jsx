@@ -6,6 +6,8 @@ import dayjs from 'dayjs';
 import './AdminStaff.css';
 import { getAllAdminStaff, updateStaffStatus, deleteStaff } from '../../../services/adminStaffService';
 
+// Mock Data for Staff (Admins)
+// Data will be fetched from backend via adminStaffService
 
 const AdminStaffList = () => {
     const [staff, setStaff] = useState([]);

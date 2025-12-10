@@ -1,6 +1,7 @@
 import api from './api';
 
 export const register = (fullName, email, password, confirmPassword, role) => {
+
     return api.post('/auth/register', {
         fullName,
         email,
@@ -12,4 +13,8 @@ export const register = (fullName, email, password, confirmPassword, role) => {
 
 export const login = (email, password) => {
     return api.post('/auth/login', { email, password });
+};
+
+export const verifyAccount = (email, verificationCode) => {
+    return api.post('/auth/verify', { email, verificationCode });
 };

@@ -6,3 +6,69 @@
     min-height: 100vh;
     background: linear-gradient(135deg, #f0f4ff, #d9e6ff);
 }
+
+.admin-register-container {
+    display: flex;
+    width: 900px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.admin-register-left {
+    flex: 1;
+    background: #656ED3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-register-img {
+    max-width: 100%;
+    height: auto;
+}
+
+.admin-register-right {
+    flex: 1;
+    padding: 40px;
+}
+
+.admin-register-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    margin-bottom: 24px;
+    color: #1E3E62;
+}
+
+.admin-register-form .form-group {
+    margin-bottom: 20px;
+}
+
+.admin-register-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #333;
+}
+
+.btn-admin-register {
+    width: 100%;
+    padding: 10px 0;
+    background: #656ED3;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-admin-register:disabled {
+    background: #a0a5c5;
+    cursor: not-allowed;
+}
+
+.btn-admin-register:hover:not(:disabled) {
+    background: #5a63c0;
+}

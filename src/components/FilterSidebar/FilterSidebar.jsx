@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Slider } from 'antd';
 import { ArrowRightOutlined } from '@ant-design/icons';
+// Bạn nhớ kiểm tra lại đường dẫn ảnh ReloadIcon này nhé
 import ReloadIcon from '../../assets/images/ReloadOutlined.png';
 
 import './FilterSidebar.css';
 
 const FilterSidebar = ({ onFilter }) => {
-
+  // --- CẤU HÌNH ---
   const MAX_PRICE = 1000;
   const DEFAULT_RANGE = [0, MAX_PRICE];
 
@@ -19,10 +20,12 @@ const FilterSidebar = ({ onFilter }) => {
 
   const brandOptions = ['Blackmores', 'Swisse', 'Centrum', 'Nature Made'];
 
+  // --- STATE ---
   const [priceRange, setPriceRange] = useState(DEFAULT_RANGE);
   const [selectedPriceRadio, setSelectedPriceRadio] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState(null);
 
+  // --- HANDLERS ---
   const handleSliderChange = (value) => {
     setPriceRange(value);
     if (selectedPriceRadio !== null) {
@@ -73,6 +76,7 @@ const FilterSidebar = ({ onFilter }) => {
   return (
     <div className="filter-sidebar">
 
+      {/* HEADER */}
       <div className="filter-header">
         <h3 className="filter-title">Filters</h3>
         <div className="filter-reset-btn" onClick={handleReset} title="Reset Filter">
@@ -82,9 +86,11 @@ const FilterSidebar = ({ onFilter }) => {
 
       <div className="filter-container">
 
+        {/* --- PRICE SECTION --- */}
         <div className="filter-section">
           <h4 className="section-title-filter">Price</h4>
 
+          {/* Slider */}
           <div className="price-slider-wrapper">
             <Slider
               range
@@ -100,12 +106,16 @@ const FilterSidebar = ({ onFilter }) => {
             />
           </div>
 
+          {/* Inputs Display */}
           <div className="price-inputs">
             <div className="price-box">${priceRange[0]}</div>
             <ArrowRightOutlined style={{ color: '#2859C5' }} />
             <div className="price-box">${priceRange[1]}</div>
           </div>
 
+          {/* Đã xóa nút Confirm ở đây */}
+
+          {/* Radio Options */}
           <div className="filter-options">
             {priceOptions.map((option) => (
               <label key={option.value} className="custom-radio">
@@ -123,6 +133,7 @@ const FilterSidebar = ({ onFilter }) => {
           </div>
         </div>
 
+        {/* --- BRAND SECTION --- */}
         <div className="filter-section">
           <h4 className="section-title-filter">Brand</h4>
           <div className="filter-options">
@@ -142,6 +153,7 @@ const FilterSidebar = ({ onFilter }) => {
           </div>
         </div>
 
+        {/* --- CONFIRM BUTTON (Chuyển xuống đây) --- */}
         <button className="btn-confirm" onClick={handleConfirm}>
           Confirm Filter
         </button>

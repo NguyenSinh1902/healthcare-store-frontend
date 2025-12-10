@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Modal, Form, Input, DatePicker, message } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
+import { Row, Col, Modal, Form, Input, DatePicker, message, Upload, Button } from 'antd';
+import { EditOutlined, UploadOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import AccountSidebar from '../../../../components/AccountSidebar/AccountSidebar';
 import { getProfile, updateProfile } from '../../../../services/profileService';
@@ -10,6 +10,7 @@ const AccountDetailsPage = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [avatarFile, setAvatarFile] = useState(null);
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -50,15 +51,23 @@ const AccountDetailsPage = () => {
     try {
       const values = await form.validateFields();
       const updateData = {
-        ...values,
-        dateOfBirth: values.dateOfBirth ? values.dateOfBirth.format('YYYY-MM-DD') : null
+        fullName: values.fullName,
+        phone: values.phone,
+        address: values.address,
+        dateOfBirth: values.dateOfBirth ? values.dateOfBirth.format('YYYY-MM-DD') : null,
       };
+
+      // Add avatar file if selected
+      if (avatarFile) {
+        updateData.avatar = avatarFile;
+      }
 
       const response = await updateProfile(updateData);
       if (response && response.success) {
         message.success("Profile updated successfully");
         setProfile(response.data);
         setIsModalOpen(false);
+        setAvatarFile(null);
       } else {
         message.error(response.message || "Failed to update profile");
       }
@@ -136,8 +145,27 @@ const AccountDetailsPage = () => {
             <Form.Item name="dateOfBirth" label="Date of Birth">
               <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" />
             </Form.Item>
-            <Form.Item name="avatarUrl" label="Avatar URL">
-              <Input />
+            <Form.Item label="Avatar">
+              <Upload
+                beforeUpload={(file) => {
+                  setAvatarFile(file);
+                  return false; // Prevent auto upload
+                }}
+                onRemove={() => setAvatarFile(null)}
+                maxCount={1}
+                accept="image/*"
+              >
+                <Button icon={<UploadOutlined />}>Select Avatar Image</Button>
+              </Upload>
+              {profile?.avatarUrl && !avatarFile && (
+                <div style={{ marginTop: 8 }}>
+                  <img
+                    src={profile.avatarUrl}
+                    alt="Current Avatar"
+                    style={{ width: 60, height: 60, borderRadius: '50%', objectFit: 'cover' }}
+                  />
+                </div>
+              )}
             </Form.Item>
           </Form>
         </Modal>

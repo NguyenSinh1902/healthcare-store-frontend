@@ -10,6 +10,9 @@ import { getAllOrders, updateOrderStatus } from '../../../services/adminOrderSer
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
+// Orders will be fetched from backend via adminOrderService
+
+// Order details will be fetched per order via API when needed
 
 const AdminOrderList = () => {
     const [orders, setOrders] = useState([]);
@@ -22,6 +25,7 @@ const AdminOrderList = () => {
     const [newStatus, setNewStatus] = useState('');
     const [loading, setLoading] = useState(false);
 
+    // Fetch orders from backend
     const fetchOrders = async () => {
         setLoading(true);
         try {

@@ -7,22 +7,25 @@ import './LoginComponent.css';
 import loginImg from '../../../assets/images/image_Login.png';
 import { login } from '../../../services/authService';
 import { loginStart, loginSuccess, loginFailed } from '../../../redux/slices/authSlice';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined } from '@ant-design/icons'; // 1. Import Icon
 
 const LoginComponent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // 1. Dùng Hook useMessage thay vì message tĩnh (quan trọng cho Antd v5)
   const [messageApi, contextHolder] = message.useMessage();
 
+  // Lấy thêm 'user' từ Redux để kiểm tra trạng thái đăng nhập
   const { isLoading, user } = useSelector((state) => state.auth);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  // --- LOGIC MỚI: Chặn truy cập nếu đã đăng nhập ---
   useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate('/'); // Nếu đã có user, đá về trang chủ ngay
     }
   }, [user, navigate]);
 
@@ -38,25 +41,26 @@ const LoginComponent = () => {
     try {
       console.log("Start Login...");
       const res = await login(email, password);
-
+      // Dòng sửa logic lấy data (như đã bàn ở trên)
       const data = res.data ? res.data : res;
 
       if (data && data.success) {
-
+        // 1. CHỈ HIỆN THÔNG BÁO TRƯỚC
         messageApi.success("Đăng nhập thành công! Đang chuyển hướng...");
 
+        // 2. ĐỢI 1.5s RỒI MỚI DISPATCH VÀ CHUYỂN TRANG
         setTimeout(() => {
           const userData = {
             email: email,
             role: data.role
           };
-
+          // Lúc này mới cập nhật Redux -> useEffect mới chạy -> Chuyển trang
           dispatch(loginSuccess({ token: data.token, user: userData }));
-
+          // navigate('/') // Không cần dòng này nữa vì useEffect sẽ tự làm
         }, 1500);
 
       } else {
-
+        // Server trả về 200 nhưng báo lỗi (success: false)
         const errorMsg = data?.message || "Login failed";
         dispatch(loginFailed(errorMsg));
         messageApi.error(errorMsg);
@@ -64,6 +68,7 @@ const LoginComponent = () => {
     } catch (error) {
       console.error("Login catch error:", error);
 
+      // 3. Xử lý lỗi an toàn (tránh crash app)
       const serverError = error?.response?.data;
       const errorMessage = serverError?.message || "An error occurred during login.";
 
@@ -72,13 +77,15 @@ const LoginComponent = () => {
     }
   };
 
+  // Nếu đang redirect, có thể return null để tránh nháy giao diện
   if (user) return null;
 
   return (
     <div className="login-page-wrapper">
-
+      {/* 4. Đặt contextHolder ở đây để hiển thị thông báo */}
       {contextHolder}
 
+      {/* 2. THÊM NÚT BACK TO HOME TẠI ĐÂY */}
       <div className="back-home-btn" onClick={() => navigate('/')}>
         <ArrowLeftOutlined className="back-icon" />
         <span>Back to Home</span>

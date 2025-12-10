@@ -47,7 +47,7 @@ const HomePage = () => {
       price: item.price,
       originalPrice: item.oldPrice,
       discount: item.discountPercent ? `-${item.discountPercent}%` : null,
-      rating: 5, // API doesn't provide rating yet(fake data)
+      rating: 5, // API doesn't provide rating yet
       image: item.imageProduct,
     }));
   };

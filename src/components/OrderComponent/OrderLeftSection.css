@@ -218,26 +218,33 @@
 }
 
 
+/* Khi có lỗi, viền thẻ chuyển sang màu đỏ */
 .info-card.card-error {
     border: 1px solid #ff4d4f !important;
+    /* Màu đỏ của Ant Design */
     background-color: #fff1f0;
+    /* Nền hồng nhạt để cảnh báo */
     transition: all 0.3s ease;
 }
 
+/* Dòng text thông báo lỗi */
 .error-message {
     color: #ff4d4f;
     font-size: 13px;
     font-family: 'Poppins', sans-serif;
     margin-top: 10px;
     padding-left: 82px;
+    /* Canh lề cho thẳng hàng với text địa chỉ */
     font-style: italic;
 }
 
+/* Style cho placeholder khi chưa nhập địa chỉ */
 .address-text.text-placeholder {
     color: #9C939D;
     font-style: italic;
 }
 
+/* Responsive cho message lỗi trên mobile */
 @media (max-width: 576px) {
     .error-message {
         padding-left: 0;

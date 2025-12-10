@@ -6,6 +6,9 @@ import dayjs from 'dayjs';
 import './AdminUser.css';
 import { getAllAdminUsers, updateUserStatus, deleteUser } from '../../../services/adminUserService';
 
+// Mock Data based on user request
+
+
 const AdminUserList = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);

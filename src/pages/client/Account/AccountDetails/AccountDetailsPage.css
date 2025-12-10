@@ -112,6 +112,7 @@
     color: #B6349A;
 }
 
+/* Responsive */
 @media (max-width: 992px) {
     .account-container {
         padding: 0 20px;

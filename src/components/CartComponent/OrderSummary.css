@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Degular+Demo:wght@400;600&family=Inter:wght@400;600&family=Poppins:wght@400;600&display=swap');
 
+/* Container chính để giữ vị trí (nếu cần sticky sau này) */
 .order-summary-container {
     width: 100%;
     display: flex;
@@ -7,9 +8,11 @@
     gap: 10px;
 }
 
+/* Cái thẻ trắng bo tròn */
 .summary-card {
     background: white;
     border-radius: 32px;
+    /* Bo góc 32px chuẩn */
     border: 1px solid #F8F7F8;
     padding: 32px;
     box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.04);
@@ -19,6 +22,7 @@
     gap: 24px;
 }
 
+/* --- 1. Progress Bar --- */
 .progress-section {
     display: flex;
     flex-direction: column;
@@ -28,6 +32,7 @@
 .progress-bar-bg {
     width: 100%;
     height: 6px;
+    /* Figma: 6px */
     background-color: #FAF8F9;
     border-radius: 12px;
     position: relative;
@@ -39,6 +44,7 @@
     background-color: #2859C5;
     border-radius: 24px;
     transition: width 0.5s ease;
+    /* Hiệu ứng chạy mượt */
 }
 
 .progress-text {
@@ -49,6 +55,7 @@
     line-height: 20px;
 }
 
+/* --- 2. Info Section --- */
 .summary-info {
     display: flex;
     flex-direction: column;
@@ -75,6 +82,7 @@
     justify-content: space-between;
     align-items: center;
     padding-left: 16px;
+    /* Thụt đầu dòng theo Figma */
 }
 
 .row-label {
@@ -93,6 +101,7 @@
 
 .row-value.strike-through {
     color: #9C939D;
+    /* Màu xám nhạt */
     text-decoration: line-through;
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
@@ -124,10 +133,12 @@
     color: black;
 }
 
+/* --- 3. Checkout Button --- */
 .btn-checkout {
     width: 100%;
     background-color: #2859C5;
     border-radius: 39px;
+    /* Bo tròn kiểu viên thuốc */
     border: none;
     padding: 12px 24px;
 
@@ -158,23 +169,33 @@
     font-weight: 600;
     font-size: 16px;
     min-width: 60px;
+    /* Cố định chiều rộng để số tiền thẳng hàng */
     text-align: right;
 }
 
+/* ... Code cũ giữ nguyên ... */
+
 .btn-checkout {
+    /* Các thuộc tính cũ... */
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
+/* --- THÊM STYLE CHO TRẠNG THÁI DISABLED --- */
 .btn-checkout:disabled,
 .btn-checkout.disabled {
     background-color: #E0E0E0;
+    /* Màu xám */
     color: #9C9C9C;
+    /* Chữ xám đậm hơn chút */
     cursor: not-allowed;
+    /* Con trỏ chuột hình tròn gạch chéo */
     pointer-events: none;
+    /* Chắc chắn không nhận sự kiện click */
     border: 1px solid #d9d9d9;
 }
 
+/* Khi disabled thì ẩn hoặc đổi màu luôn cả icon bên trong nếu muốn */
 .btn-checkout:disabled .btn-content,
 .btn-checkout:disabled .btn-price {
     opacity: 0.6;

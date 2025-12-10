@@ -15,11 +15,6 @@ import './AdminSidebar.css';
 
 const { Sider } = Layout;
 
-<<<<<<< HEAD
-=======
-const submenuKeys = ['products', 'orders', 'marketing'];
-
->>>>>>> origin/feature/admin-order-fe
 const AdminSidebar = ({ collapsed }) => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -40,29 +35,15 @@ const AdminSidebar = ({ collapsed }) => {
             ],
         },
         {
-<<<<<<< HEAD
             key: '/admin/orders',
             icon: <ShoppingOutlined />,
             label: 'Orders',
-=======
-            key: 'orders', 
-            icon: <ShoppingOutlined />,
-            label: 'Orders',
-            children: [
-                { key: '/admin/orders', label: 'All Orders' },
-                { key: '/admin/orders/pending', label: 'Pending Orders' }, 
-            ],
->>>>>>> origin/feature/admin-order-fe
         },
         {
             key: '/admin/customers',
             icon: <UserOutlined />,
             label: 'Customers',
         },
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/feature/admin-order-fe
         {
             key: '/admin/staff',
             icon: <TeamOutlined />,
@@ -86,23 +67,15 @@ const AdminSidebar = ({ collapsed }) => {
             icon: <SettingOutlined />,
             label: 'Settings',
         },
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/feature/admin-order-fe
     ];
 
     const onClick = (e) => {
         navigate(e.key);
     };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/feature/admin-coupon-fe
+    // Determine selected key based on current path
     const selectedKey = location.pathname;
-
+    // Determine open keys (submenus) based on current path
     const defaultOpenKeys = [];
     if (selectedKey.includes('/products') || selectedKey.includes('/categories')) {
         defaultOpenKeys.push('products');
@@ -110,11 +83,6 @@ const AdminSidebar = ({ collapsed }) => {
     if (selectedKey.includes('/coupons')) {
         defaultOpenKeys.push('marketing');
     }
-=======
-    const selectedKey = location.pathname;
-
-    const defaultOpenKeys = submenuKeys.filter(key => selectedKey.includes(`/${key}`));
->>>>>>> origin/feature/admin-order-fe
 
     return (
         <Sider trigger={null} collapsible collapsed={collapsed} className="admin-sidebar">

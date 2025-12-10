@@ -20,12 +20,16 @@ const AdminProductList = () => {
     const [fileList, setFileList] = useState([]);
     const [thumbnailFileList, setThumbnailFileList] = useState([]);
 
+    // Fetch products from API
     const fetchProducts = async () => {
         setLoading(true);
         try {
             const response = await getAllProducts();
             if (response && response.success) {
-
+                // Determine if 'active' field exists and filter if necessary, 
+                // but user said API returns active ones for GET /all.
+                // However, user also said "get all này toàn sản phẩm "active": true" 
+                // and for delete we should probably just re-fetch.
                 setProducts(response.data);
             } else {
                 message.error('Failed to fetch products');
@@ -75,10 +79,11 @@ const AdminProductList = () => {
             stockQuantity: record.stockQuantity,
             description: record.description,
             information: record.information,
-            idCategory: record.idCategory,
+            idCategory: record.idCategory, // API returns idCategory as number
             productGroup: record.productGroup,
         });
-
+        // We don't pre-fill file inputs with objects usually, just show current image text if needed, 
+        // but for now we'll start with empty file lists. User can upload new ones to replace.
         setFileList([]);
         setThumbnailFileList([]);
         setIsModalVisible(true);
@@ -99,7 +104,7 @@ const AdminProductList = () => {
 
             formData.append('nameProduct', tempValues.nameProduct);
             formData.append('brand', tempValues.brand);
-            // formData.append('price', '');
+            // formData.append('price', ''); // User said price is empty
             formData.append('oldPrice', tempValues.oldPrice);
             formData.append('discountPercent', tempValues.discountPercent);
             formData.append('stockQuantity', tempValues.stockQuantity);
@@ -108,13 +113,16 @@ const AdminProductList = () => {
             formData.append('idCategory', tempValues.idCategory);
             formData.append('productGroup', tempValues.productGroup);
 
+            // 👇 SỬA ĐOẠN XỬ LÝ ẢNH CHÍNH
             if (fileList.length > 0) {
-
+                // fileList[0] chính là file rồi, không cần .originFileObj
                 formData.append('image', fileList[0]);
             }
 
+            // 👇 SỬA ĐOẠN XỬ LÝ THUMBNAILS
             if (thumbnailFileList.length > 0) {
                 thumbnailFileList.forEach(file => {
+                    // Tương tự, file ở đây là raw file do beforeUpload trả về
                     formData.append('thumbnailFiles', file);
                 });
             }
@@ -199,7 +207,7 @@ const AdminProductList = () => {
         },
         {
             title: 'Category',
-            dataIndex: 'categoryName',
+            dataIndex: 'categoryName', // Display name, but edit uses idCategory
             key: 'categoryName',
             width: 120,
         },
@@ -469,7 +477,7 @@ const AdminProductList = () => {
                                     onRemove={() => setFileList([])}
                                     beforeUpload={(file) => {
                                         setFileList([file]);
-                                        return false;
+                                        return false; // Prevent automatic upload
                                     }}
                                 >
                                     <Button icon={<UploadOutlined />}>Select Image</Button>
