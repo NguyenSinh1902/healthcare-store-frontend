@@ -2,7 +2,7 @@
 
 .cart-page {
     width: 100%;
-    background-color: #FAFAFA; /* Nền tổng thể hơi xám nhẹ để nổi bật các card trắng */
+    background-color: #FAFAFA;
     padding-bottom: 80px;
     min-height: 100vh;
 }
@@ -16,12 +16,11 @@
 
 .cart-page__inner {
     width: 100%;
-    padding: 0 135px; /* Padding chuẩn 135px */
+    padding: 0 135px;
     box-sizing: border-box;
     padding-top: 10px;
 }
 
-/* --- Breadcrumb --- */
 .breadcrumb {
     padding: 0 0 30px 0;
     color: #9A9A9A;
@@ -37,11 +36,10 @@
 }
 
 .breadcrumb .current {
-    color: black; /* Màu đen cho trang hiện tại */
+    color: black;
     cursor: default;
 }
 
-/* --- Khoảng cách các section --- */
 .section-spacer {
     margin-bottom: 20px;
 }
@@ -74,7 +72,6 @@
 }
 
 .summary-spacer {
-
     position: sticky;
     top: 20px;
 }

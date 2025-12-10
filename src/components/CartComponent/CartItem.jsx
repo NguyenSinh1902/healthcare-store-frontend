@@ -3,12 +3,10 @@ import { PlusOutlined, MinusOutlined, DeleteOutlined } from '@ant-design/icons';
 import './CartItem.css';
 
 const CartItem = ({ item, onRemove, onUpdateQuantity }) => {
-    // Destructuring dữ liệu từ props
     const { id, name, price, originalPrice, quantity, image } = item;
 
     return (
         <div className="cart-item-wrapper">
-
             <div className="cart-item-left">
 
                 <div className="cart-item-image-box">
@@ -26,7 +24,6 @@ const CartItem = ({ item, onRemove, onUpdateQuantity }) => {
 
             <div className="cart-item-actions">
                 <div className="qty-control">
-
                     <button
                         className="qty-btn minus"
                         onClick={() => onUpdateQuantity(id, quantity - 1)}

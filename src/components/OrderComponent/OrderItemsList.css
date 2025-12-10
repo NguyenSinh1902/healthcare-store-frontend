@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Degular+Demo:wght@400;600&family=Poppins:wght@400;500;600&display=swap');
+
+.items-list-section {
+    background: white;
+    border-radius: 32px;
+    padding: 32px;
+    box-shadow: 0px 0px 32px rgba(28, 24, 27, 0.03);
+}
+
+.items-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #2859C5;
+    margin-bottom: 24px;
+    margin-top: 0;
+    line-height: 20px;
+}
+
+.items-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkout-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid #F8F7F8;
+    width: 100%;
+}
+
+.checkout-item:last-child {
+    border-bottom: none;
+}
+
+/* --- CỘT 1: ẢNH --- */
+.ci-image {
+    width: 64px;
+    height: 64px;
+    background-color: #F8F7F8;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ci-image img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+}
+
+.ci-info {
+    flex: 0 0 45%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    justify-content: center;
+}
+
+.ci-name {
+    font-family: 'ABeeZee', sans-serif;
+    font-size: 18px;
+    color: #0D0C0D;
+    line-height: 20px;
+    font-weight: 600;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ci-price-row {
+    font-family: 'Degular Demo', sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.price-blue {
+    color: #2859C5;
+    font-weight: 600;
+}
+
+.ci-qty-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ECF6FF;
+    color: #2859C5;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+
+    margin: 0 auto;
+}
+
+.qty-label {
+    opacity: 0.7;
+    font-weight: 400;
+    margin-right: 4px;
+}
+
+.qty-value {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.ci-final-price {
+    font-family: 'ABeeZee', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: #0D0C0D;
+    text-align: right;
+    min-width: 80px;
+}
+
+@media (max-width: 576px) {
+    .checkout-item {
+        gap: 10px;
+    }
+
+    .ci-info {
+        flex: 1;
+    }
+
+    .ci-qty-badge {
+        margin: 0;
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    .qty-label {
+        display: none;
+    }
+
+    .ci-final-price {
+        font-size: 16px;
+        min-width: auto;
+    }
+}

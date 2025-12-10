@@ -68,12 +68,10 @@ const CartPage = () => {
     fetchRecommended();
   }, [dispatch, isAuthenticated, navigate]);
 
- 
   const subtotal = useMemo(() => {
     if (!sortedItems.length) return 0;
 
     return sortedItems.reduce((total, item) => {
-
       if (selectedRowKeys.includes(item.idCartItem)) {
         return total + (item.unitPrice * item.quantity);
       }
@@ -83,23 +81,21 @@ const CartPage = () => {
 
   const handleSelectAll = (e) => {
     if (e.target.checked) {
-
       const activeIds = sortedItems
         .filter(item => item.active !== false)
         .map(item => item.idCartItem);
       setSelectedRowKeys(activeIds);
     } else {
-
       setSelectedRowKeys([]);
     }
   };
+
 
   const handleSelectOne = (id, checked) => {
     if (checked) {
 
       setSelectedRowKeys(prev => [...prev, id]);
     } else {
-
       setSelectedRowKeys(prev => prev.filter(key => key !== id));
     }
   };
@@ -114,7 +110,6 @@ const CartPage = () => {
     if (newQuantity < 1) return;
     dispatch(updateCartItemQuantity({ idCartItem: id, quantity: newQuantity }));
   };
-
 
   const handleCheckout = () => {
     if (selectedRowKeys.length === 0) {
@@ -144,6 +139,7 @@ const CartPage = () => {
           </div>
 
           <Row gutter={40}>
+
             <Col xs={24} lg={16}>
               <div className="section-spacer">
                 <StoreLocation />
@@ -156,7 +152,7 @@ const CartPage = () => {
                     checked={isAllSelected}
                     onChange={handleSelectAll}
                     disabled={activeItemsCount === 0}
-                    style={{ marginRight: '10px', transform: 'scale(1.2)' }} 
+                    style={{ marginRight: '10px', transform: 'scale(1.2)' }}
                   />
                   <h2 className="cart-section-title" style={{ margin: 0 }}>
                     Select All ({selectedRowKeys.length} / {activeItemsCount} active items)
@@ -173,7 +169,6 @@ const CartPage = () => {
                           alignItems: 'center',
                           opacity: isInactive ? 0.6 : 1,
                           backgroundColor: isInactive ? '#f5f5f5' : 'transparent',
-                          // pointerEvents: isInactive ? 'none' : 'auto', <--- REMOVED THIS
                           position: 'relative',
                           padding: '10px 0',
                           borderBottom: '1px solid #f0f0f0'
@@ -236,7 +231,6 @@ const CartPage = () => {
 
             <Col xs={24} lg={8}>
               <div className="summary-spacer">
- 
                 <OrderSummary subtotal={subtotal} onCheckout={handleCheckout} />
               </div>
             </Col>
