@@ -1,0 +1,19 @@
+
+.admin-order-list {
+    background: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.order-list-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    gap: 16px;
+}
+
+.order-table .ant-table-thead>tr>th {
+    background: #f0f2f5;
+    font-weight: 600;
+}
