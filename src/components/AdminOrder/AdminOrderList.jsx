@@ -1,40 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Input, Button, Space, Tag, Modal, Select, message, DatePicker, Row, Col, Card } from 'antd';
 import { SearchOutlined, EyeOutlined, EditOutlined } from '@ant-design/icons';
 import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
 import AdminOrderDetail from './AdminOrderDetail';
 import './AdminOrder.css';
 import dayjs from 'dayjs';
+import { getAllOrders, updateOrderStatus } from '../../../services/adminOrderService';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-const initialOrders = [
-    { key: 2, id_order: 2, coupon_discount: '50,000', delivery_address: '88 Nguyễn Văn Cừ, Quận 5, TP.HCM', final_amount: 0, order_date: '2025-11-11 12:58:29', payment_method: 'CASH', status: 'CONFIRMED', total_amount: 292.5, id_coupon: 1, id_user: 1 },
-    { key: 3, id_order: 3, coupon_discount: '50,000', delivery_address: '88 Nguyễn Văn Cừ, Quận 5, TP.HCM', final_amount: 0, order_date: '2025-11-11 13:03:41', payment_method: 'CASH', status: 'SHIPPING', total_amount: 260, id_coupon: 1, id_user: 2 },
-    { key: 4, id_order: 4, coupon_discount: '50', delivery_address: '88 Nguyễn Văn Cừ, Quận 5, TP.HCM', final_amount: 210, order_date: '2025-11-11 13:07:05', payment_method: 'CASH', status: 'SHIPPING', total_amount: 260, id_coupon: 1, id_user: 3 },
-    { key: 5, id_order: 5, coupon_discount: '50', delivery_address: '88 Nguyễn Văn Cừ, Quận 5, TP.HCM', final_amount: 210, order_date: '2025-11-11 13:23:03', payment_method: 'CASH', status: 'CONFIRMED', total_amount: 260, id_coupon: 1, id_user: 1 },
-    { key: 13, id_order: 13, coupon_discount: '20', delivery_address: '12 Nguyen Van Bao, Go Vap, HCM', final_amount: 922.5, order_date: '2025-11-27 07:18:58', payment_method: 'CASH', status: 'SHIPPING', total_amount: 942.5, id_coupon: 2, id_user: 5 },
-    { key: 14, id_order: 14, coupon_discount: '10', delivery_address: '12 Nguyen Van Bao, Go Vap, HCM', final_amount: 965, order_date: '2025-11-27 07:37:51', payment_method: 'CASH', status: 'CONFIRMED', total_amount: 975, id_coupon: 4, id_user: 5 },
-    { key: 15, id_order: 15, coupon_discount: '10', delivery_address: '12 Nguyen Van Bao, Go Vap, HCM', final_amount: 250, order_date: '2025-11-27 15:10:07', payment_method: 'CASH', status: 'CONFIRMED', total_amount: 260, id_coupon: 4, id_user: 2 },
-];
-
-const mockOrderDetails = [
-    { id_order_detail: 1, quantity: 2, total_price: 65, unit_price: 32.5, id_order: 2, id_product: 1, name_product: 'Blackmores01', image_product: 'https://placehold.co/50x50?text=P1' },
-    { id_order_detail: 2, quantity: 3, total_price: 97.5, unit_price: 32.5, id_order: 2, id_product: 2, name_product: 'Blackmores02', image_product: 'https://placehold.co/50x50?text=P2' },
-    { id_order_detail: 3, quantity: 4, total_price: 130, unit_price: 32.5, id_order: 2, id_product: 3, name_product: 'Product 3', image_product: 'https://placehold.co/50x50?text=P3' },
-    { id_order_detail: 4, quantity: 4, total_price: 130, unit_price: 32.5, id_order: 3, id_product: 2, name_product: 'Blackmores02', image_product: 'https://placehold.co/50x50?text=P2' },
-    { id_order_detail: 5, quantity: 4, total_price: 130, unit_price: 32.5, id_order: 3, id_product: 3, name_product: 'Product 3', image_product: 'https://placehold.co/50x50?text=P3' },
-    { id_order_detail: 6, quantity: 4, total_price: 130, unit_price: 32.5, id_order: 4, id_product: 2, name_product: 'Blackmores02', image_product: 'https://placehold.co/50x50?text=P2' },
-    { id_order_detail: 7, quantity: 4, total_price: 130, unit_price: 32.5, id_order: 4, id_product: 3, name_product: 'Product 3', image_product: 'https://placehold.co/50x50?text=P3' },
-    { id_order_detail: 22, quantity: 4, total_price: 130, unit_price: 32.5, id_order: 13, id_product: 1, name_product: 'Blackmores01', image_product: 'https://placehold.co/50x50?text=P1' },
-    { id_order_detail: 23, quantity: 5, total_price: 162.5, unit_price: 32.5, id_order: 13, id_product: 3, name_product: 'Product 3', image_product: 'https://placehold.co/50x50?text=P3' },
-    { id_order_detail: 24, quantity: 5, total_price: 162.5, unit_price: 32.5, id_order: 14, id_product: 1, name_product: 'Blackmores01', image_product: 'https://placehold.co/50x50?text=P1' },
-    { id_order_detail: 25, quantity: 6, total_price: 195, unit_price: 32.5, id_order: 14, id_product: 5, name_product: 'Product 5', image_product: 'https://placehold.co/50x50?text=P5' },
-];
 
 const AdminOrderList = () => {
-    const [orders, setOrders] = useState(initialOrders);
+    const [orders, setOrders] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedOrderDetails, setSelectedOrderDetails] = useState([]);
@@ -42,30 +20,77 @@ const AdminOrderList = () => {
     const [isEditStatusModalVisible, setIsEditStatusModalVisible] = useState(false);
     const [currentOrder, setCurrentOrder] = useState(null);
     const [newStatus, setNewStatus] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const fetchOrders = async () => {
+        setLoading(true);
+        try {
+            const response = await getAllOrders();
+            if (response && response.success) {
+                const transformed = response.data.map(o => ({
+                    key: o.idOrder,
+                    id_order: o.idOrder,
+                    id_user: o.idUser,
+                    order_date: o.orderDate,
+                    total_amount: o.totalAmount,
+                    coupon_discount: o.couponDiscount,
+                    final_amount: o.finalAmount,
+                    payment_method: o.paymentMethod,
+                    status: o.status,
+                    delivery_address: o.deliveryAddress,
+                    orderDetails: (o.orderDetails || []).map(d => ({
+                        id_order_detail: d.idOrderDetail,
+                        id_product: d.idProduct,
+                        image_product: d.imageProduct,
+                        name_product: d.productName,
+                        quantity: d.quantity,
+                        unit_price: d.unitPrice,
+                        total_price: d.totalPrice
+                    }))
+                }));
+                setOrders(transformed);
+            } else {
+                message.error('Failed to fetch orders');
+            }
+        } catch (err) {
+            console.error('Fetch orders error:', err);
+            message.error('Error fetching orders');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchOrders();
+    }, []);
+
 
     const handleViewDetails = (record) => {
-        const details = mockOrderDetails.filter(detail => detail.id_order === record.id_order);
+        const details = record.orderDetails || [];
         setSelectedOrderDetails(details);
         setSelectedOrderId(record.id_order);
         setIsModalVisible(true);
     };
-
     const handleEditStatus = (record) => {
         setCurrentOrder(record);
         setNewStatus(record.status);
         setIsEditStatusModalVisible(true);
     };
 
-    const handleSaveStatus = () => {
-        const updatedOrders = orders.map(order => {
-            if (order.id_order === currentOrder.id_order) {
-                return { ...order, status: newStatus };
+    const handleSaveStatus = async () => {
+        try {
+            const response = await updateOrderStatus(currentOrder.id_order, newStatus);
+            if (response && response.success) {
+                message.success(`Order #${currentOrder.id_order} status updated to ${newStatus}`);
+                fetchOrders();
+            } else {
+                message.error('Failed to update order status');
             }
-            return order;
-        });
-        setOrders(updatedOrders);
+        } catch (err) {
+            console.error('Update status error:', err);
+            message.error('Error updating order status');
+        }
         setIsEditStatusModalVisible(false);
-        message.success(`Order #${currentOrder.id_order} status updated to ${newStatus}`);
     };
 
     const columns = [
@@ -122,8 +147,10 @@ const AdminOrderList = () => {
             width: 120,
             render: (status) => {
                 let color = 'geekblue';
+                if (status === 'PENDING') color = 'purple';
                 if (status === 'CONFIRMED') color = 'green';
                 if (status === 'SHIPPING') color = 'orange';
+                if (status === 'DELIVERED') color = 'blue';
                 if (status === 'CANCELLED') color = 'red';
                 return <Tag color={color}>{status}</Tag>;
             },
@@ -163,6 +190,7 @@ const AdminOrderList = () => {
         },
     ];
 
+    // Prepare Data for Charts
     const statusCounts = {};
     orders.forEach(order => {
         statusCounts[order.status] = (statusCounts[order.status] || 0) + 1;
@@ -171,8 +199,9 @@ const AdminOrderList = () => {
         name: status,
         value: statusCounts[status]
     }));
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
+    const COLORS = ['#800080', '#0088FE', '#00C49F', '#FFBB28', '#FF8042']; // PENDING, CONFIRMED, SHIPPING, DELIVERED, CANCELLED
 
+    // Group by Date for Line Chart
     const revenueByDate = {};
     orders.forEach(order => {
         const date = dayjs(order.order_date).format('YYYY-MM-DD');
@@ -203,10 +232,12 @@ const AdminOrderList = () => {
                 )}
                 pagination={{ pageSize: 10 }}
                 rowKey="key"
+                loading={loading}
                 className="order-table"
                 scroll={{ x: 1500 }}
             />
 
+            {/* Charts Section */}
             <Row gutter={24} style={{ marginTop: 24 }}>
                 <Col span={12}>
                     <Card title="Order Status Distribution" bordered={false}>
@@ -248,6 +279,7 @@ const AdminOrderList = () => {
                 </Col>
             </Row>
 
+            {/* View Details Modal */}
             <Modal
                 title={`Order Details #${selectedOrderId}`}
                 open={isModalVisible}
@@ -258,6 +290,7 @@ const AdminOrderList = () => {
                 <AdminOrderDetail data={selectedOrderDetails} />
             </Modal>
 
+            {/* Edit Status Modal */}
             <Modal
                 title={`Update Status for Order #${currentOrder?.id_order}`}
                 open={isEditStatusModalVisible}
