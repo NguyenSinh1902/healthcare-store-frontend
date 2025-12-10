@@ -14,14 +14,12 @@ const ButtonCategory = ({ onClose }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Fetch parent categories on mount
   useEffect(() => {
     const fetchParents = async () => {
       try {
         const response = await getParentCategories();
         if (response && response.success) {
           setCategories(response.data);
-          // Set first category as active by default if available
           if (response.data.length > 0) {
             setActiveCategoryId(response.data[0].idCategory);
           }
@@ -33,7 +31,6 @@ const ButtonCategory = ({ onClose }) => {
     fetchParents();
   }, []);
 
-  // Fetch subcategories when activeCategoryId changes
   useEffect(() => {
     const fetchSubs = async () => {
       if (!activeCategoryId) return;
@@ -58,7 +55,6 @@ const ButtonCategory = ({ onClose }) => {
   }, [activeCategoryId]);
 
   const handleNavigate = (id) => {
-    // Navigate to category page with ID
     navigate(`/category/${id}`);
 
     if (onClose) {

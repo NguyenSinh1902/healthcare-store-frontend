@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './ProductImage.css';
 
-// images prop is an array of image URLs for the product
 const ProductImage = ({ images = [] }) => {
     const defaultImages = ['https://placehold.co/500x600?text=No+Image'];
     const imgList = images.length > 0 ? images : defaultImages;

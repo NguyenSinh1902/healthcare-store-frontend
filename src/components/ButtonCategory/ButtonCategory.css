@@ -39,15 +39,10 @@
     flex-direction: column;
     padding: 20px 0;
     border-right: 1px solid #eee;
-
-    /* --- THÊM DÒNG NÀY --- */
     overflow-y: auto;
-    /* Cho phép cuộn dọc */
     height: 90%;
-    /* Đảm bảo chiều cao ăn theo cha */
 }
 
-/* Tùy chỉnh thanh cuộn cho Sidebar */
 .category-sidebar::-webkit-scrollbar {
     width: 6px;
 }

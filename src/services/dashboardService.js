@@ -1,9 +1,5 @@
 import api from './api';
 
-/**
- * Get dashboard statistics (total revenue, orders, products, customers)
- * GET /api/dashboard/stats
- */
 export const getStats = async () => {
     try {
         const response = await api.get('/dashboard/stats');
@@ -14,10 +10,6 @@ export const getStats = async () => {
     }
 };
 
-/**
- * Get revenue and orders trend by month
- * GET /api/dashboard/trend
- */
 export const getTrend = async () => {
     try {
         const response = await api.get('/dashboard/trend');
@@ -28,10 +20,6 @@ export const getTrend = async () => {
     }
 };
 
-/**
- * Get category sales distribution
- * GET /api/dashboard/category-distribution
- */
 export const getCategoryDistribution = async () => {
     try {
         const response = await api.get('/dashboard/category-distribution');
@@ -42,10 +30,6 @@ export const getCategoryDistribution = async () => {
     }
 };
 
-/**
- * Get recent orders (5 latest)
- * GET /api/dashboard/recent-orders
- */
 export const getRecentOrders = async () => {
     try {
         const response = await api.get('/dashboard/recent-orders');
@@ -56,10 +40,6 @@ export const getRecentOrders = async () => {
     }
 };
 
-/**
- * Get top selling products (5 top)
- * GET /api/dashboard/top-products
- */
 export const getTopProducts = async () => {
     try {
         const response = await api.get('/dashboard/top-products');

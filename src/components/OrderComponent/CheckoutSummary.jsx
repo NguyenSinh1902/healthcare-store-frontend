@@ -90,7 +90,7 @@ const CheckoutSummary = ({ itemsTotal = 0, selectedCoupon, onApplyCoupon, onRemo
         open={isCouponModalOpen}
         onCancel={() => setIsCouponModalOpen(false)}
         onApply={onApplyCoupon}
-        cartTotal={itemsTotal} // <--- THÊM DÒNG NÀY: Truyền tổng tiền vào modal
+        cartTotal={itemsTotal}
       />
     </div>
   );

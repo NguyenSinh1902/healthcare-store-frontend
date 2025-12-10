@@ -31,7 +31,6 @@ const Search = ({ query, onClose }) => {
       }
     };
 
-    // Debounce search
     const timeoutId = setTimeout(() => {
       fetchResults();
     }, 500);
@@ -39,9 +38,8 @@ const Search = ({ query, onClose }) => {
     return () => clearTimeout(timeoutId);
   }, [query]);
 
-  // SỬA LẠI HÀM NÀY
   const handleItemClick = (e, id) => {
-    e.stopPropagation(); // <--- Dòng quan trọng: Ngăn chặn click lan ra header__search
+    e.stopPropagation();
 
     navigate(`/product-detail/${id}`);
     if (onClose) {
@@ -60,7 +58,6 @@ const Search = ({ query, onClose }) => {
           <div
             key={item.idProduct}
             className="search-item"
-            // Truyền event (e) vào hàm xử lý
             onClick={(e) => handleItemClick(e, item.idProduct)}
           >
             <img

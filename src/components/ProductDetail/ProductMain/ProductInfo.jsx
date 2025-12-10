@@ -12,7 +12,6 @@ const ProductInfo = ({ product }) => {
     const [quantity, setQuantity] = useState(1);
     const { isAuthenticated } = useSelector((state) => state.auth);
 
-    // If no product data, return null
     if (!product) return null;
 
     const handleQuantity = (type) => {

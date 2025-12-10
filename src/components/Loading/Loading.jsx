@@ -2,10 +2,6 @@ import React from 'react';
 import { Spin } from 'antd';
 import './Loading.css';
 
-/**
- * Reusable Loading Component
- * Can be used as overlay or inline
- */
 const Loading = ({
     size = 'large',
     tip = 'Loading...',

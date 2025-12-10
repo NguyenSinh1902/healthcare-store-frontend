@@ -15,9 +15,8 @@ import './OrderPage.css';
 const OrderPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation(); // 2. Hook lấy state từ navigate
+  const location = useLocation();
 
-  // Lấy toàn bộ giỏ hàng từ Redux
   const { items, totalAmount } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
 
@@ -26,28 +25,23 @@ const OrderPage = () => {
   const [selectedCoupon, setSelectedCoupon] = useState(null);
   const [addressError, setAddressError] = useState(false);
 
-  // 3. Lấy danh sách ID đã chọn từ CartPage gửi sang
-  // Nếu không có (ví dụ user truy cập trực tiếp link), mặc định là mảng rỗng
   const selectedCartItemIds = location.state?.selectedCartItemIds || [];
 
   useEffect(() => {
     dispatch(fetchCart());
     fetchUserProfile();
 
-    // Nếu vào trang này mà chưa chọn sản phẩm nào -> Đá về giỏ hàng
     if (!location.state?.selectedCartItemIds || location.state.selectedCartItemIds.length === 0) {
       message.warning("Vui lòng chọn sản phẩm từ giỏ hàng trước!");
       navigate('/cart');
     }
   }, [dispatch, navigate, location.state]);
 
-  // 4. Lọc ra danh sách item cần thanh toán (Chỉ những item có ID trong list đã chọn)
   const checkoutItems = useMemo(() => {
     if (!items) return [];
     return items.filter(item => selectedCartItemIds.includes(item.idCartItem));
   }, [items, selectedCartItemIds]);
 
-  // 5. Tính lại tổng tiền dựa trên danh sách đã lọc
   const checkoutTotal = useMemo(() => {
     return checkoutItems.reduce((total, item) => total + (item.unitPrice * item.quantity), 0);
   }, [checkoutItems]);
@@ -87,16 +81,13 @@ const OrderPage = () => {
       deliveryAddress: deliveryAddress.trim(),
       paymentMethod: paymentMethod,
       idCoupon: selectedCoupon ? selectedCoupon.idCoupon : null,
-      selectedCartItemIds: selectedCartItemIds // 6. Gửi danh sách ID xuống Backend
+      selectedCartItemIds: selectedCartItemIds
     };
 
     try {
       const response = await createOrder(orderData);
       if (response && response.success) {
         message.success("Đặt hàng thành công!");
-        // Lưu ý: clearCartAction của Redux thường xóa hết. 
-        // Nếu muốn chuẩn, bạn nên dispatch 1 action mới là removeSelectedItems(ids)
-        // Nhưng tạm thời fetchCart lại để đồng bộ với BE là an toàn nhất.
         dispatch(fetchCart());
         navigate('/order-success');
       } else {
@@ -128,14 +119,14 @@ const OrderPage = () => {
                 paymentMethod={paymentMethod}
                 setPaymentMethod={setPaymentMethod}
                 hasError={addressError}
-                items={checkoutItems} // 7. Truyền danh sách đã lọc xuống để hiển thị
+                items={checkoutItems}
               />
             </Col>
 
             <Col xs={24} lg={8}>
               <div className="summary-sticky">
                 <CheckoutSummary
-                  itemsTotal={checkoutTotal} // 8. Truyền tổng tiền đã tính lại
+                  itemsTotal={checkoutTotal}
                   selectedCoupon={selectedCoupon}
                   onApplyCoupon={setSelectedCoupon}
                   onRemoveCoupon={() => setSelectedCoupon(null)}

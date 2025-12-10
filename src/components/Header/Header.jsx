@@ -12,7 +12,6 @@ import iconAccount from "../../assets/images/icon-account.png";
 import bxMap from "../../assets/images/bx_map.png";
 import weuiBack from "../../assets/images/weui_back-outlined.png";
 
-// Ant Design Icons cho đẹp
 import { UserOutlined, FileTextOutlined, LogoutOutlined, SettingOutlined } from '@ant-design/icons';
 
 import ButtonCategory from "../ButtonCategory/ButtonCategory";
@@ -53,15 +52,13 @@ const Header = () => {
     navigate('/login');
   };
 
-  // Hàm toggle cho Notification
   const toggleNotifications = (e) => {
     e.stopPropagation();
     const current = showNotifications;
-    handleCloseAll(); // Đóng hết cái khác
-    setShowNotifications(!current); // Bật/tắt cái này
+    handleCloseAll();
+    setShowNotifications(!current);
   };
 
-  // Hàm toggle cho User Menu
   const toggleUserMenu = (e) => {
     e.stopPropagation();
     const current = showUserMenu;

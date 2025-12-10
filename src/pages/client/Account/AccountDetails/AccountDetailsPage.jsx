@@ -80,7 +80,7 @@ const AccountDetailsPage = () => {
   const accountInfo = profile ? [
     { label: 'Full Name', value: profile.fullName },
     { label: 'Mobile Number', value: profile.phone },
-    { label: 'Email Address', value: profile.email }, // Email usually read-only
+    { label: 'Email Address', value: profile.email },
     { label: 'Address', value: profile.address },
     { label: 'Date of Birth', value: profile.dateOfBirth },
   ] : [];

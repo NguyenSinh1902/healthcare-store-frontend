@@ -3,26 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import { CreditCardOutlined } from '@ant-design/icons';
 import './OrderSummary.css';
 
-// 1. Nhận thêm prop onCheckout từ cha truyền xuống
 const OrderSummary = ({ subtotal = 0, onCheckout }) => {
     const navigate = useNavigate();
 
     const deliveryFee = 0;
     const total = subtotal + deliveryFee;
-
-    // Logic: Nếu tổng tiền = 0 (tức là chưa chọn món nào hoặc giỏ hàng rỗng) -> Disable nút
     const isCartEmpty = total <= 0;
 
     const freeShipGoal = 150;
     const progressPercent = Math.min((subtotal / freeShipGoal) * 100, 100);
 
-    // 2. Hàm xử lý khi bấm nút
     const handleBtnClick = () => {
         if (onCheckout) {
-            // Nếu cha có truyền hàm xử lý xuống thì gọi nó
+
             onCheckout();
         } else {
-            // Fallback: Nếu không có thì tự chuyển (giữ logic cũ cho an toàn)
             navigate('/order');
         }
     };
@@ -48,7 +43,6 @@ const OrderSummary = ({ subtotal = 0, onCheckout }) => {
                     <div className="summary-row-group">
                         <div className="summary-row">
                             <span className="row-label">Items total</span>
-                            {/* Hiển thị tổng tiền của CÁC MÓN ĐÃ CHỌN */}
                             <span className="row-value">${subtotal.toFixed(2)}</span>
                         </div>
                         <div className="summary-row">
@@ -63,11 +57,10 @@ const OrderSummary = ({ subtotal = 0, onCheckout }) => {
                     </div>
                 </div>
 
-                {/* --- 3. Checkout Button --- */}
                 <button
                     className={`btn-checkout ${isCartEmpty ? 'disabled' : ''}`}
                     disabled={isCartEmpty}
-                    onClick={handleBtnClick} // <--- SỬA Ở ĐÂY: Gọi hàm handleBtnClick thay vì navigate trực tiếp
+                    onClick={handleBtnClick}
                 >
                     <div className="btn-content">
                         <CreditCardOutlined style={{ fontSize: '20px' }} />

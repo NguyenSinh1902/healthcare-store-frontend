@@ -18,14 +18,12 @@ const ProductDetailPage = () => {
     const fetchProductAndRelated = async () => {
       try {
         setLoading(true);
-        // 1. Fetch main product
         const productRes = await getProductById(id);
 
         if (productRes && productRes.success) {
           const productData = productRes.data;
           setProduct(productData);
 
-          // 2. Fetch related products if category exists
           if (productData.idCategory) {
             const relatedRes = await getProductsByCategory(productData.idCategory);
             if (relatedRes && relatedRes.success) {

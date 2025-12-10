@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import './AdminLogin.css';
 import loginImg from '../../../assets/images/image_Login.png';
 import { login } from '../../../services/authService';
@@ -15,6 +16,7 @@ const AdminLogin = () => {
 
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     // If already logged in as admin, redirect to admin dashboard
     useEffect(() => {
@@ -99,7 +101,7 @@ const AdminLogin = () => {
                             <div className="form-group">
                                 <label>Password</label>
                                 <input
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     name="password"
                                     className="custom-input"
                                     placeholder="********"
@@ -107,6 +109,12 @@ const AdminLogin = () => {
                                     onChange={handleChange}
                                     required
                                 />
+                                <span
+                                    className="password-toggle-icon"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? <EyeTwoTone /> : <EyeInvisibleOutlined />}
+                                </span>
                             </div>
                             <button type="submit" className="btn-admin-login" disabled={loading}>
                                 {loading ? 'Signing In...' : 'Sign In'}

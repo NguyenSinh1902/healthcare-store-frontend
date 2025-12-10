@@ -1,9 +1,5 @@
 import api from './api';
 
-/**
- * Fetch all orders (admin view)
- * GET /orders/all
- */
 export const getAllOrders = async () => {
     try {
         const response = await api.get('/orders/all');
@@ -14,10 +10,7 @@ export const getAllOrders = async () => {
     }
 };
 
-/**
- * Update order status
- * PUT /orders/{idOrder}/status?status={status}
- */
+
 export const updateOrderStatus = async (idOrder, status) => {
     try {
         const response = await api.put(`/orders/${idOrder}/status?status=${status}`);

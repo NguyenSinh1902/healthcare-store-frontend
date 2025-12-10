@@ -40,7 +40,6 @@
     display: flex;
     gap: 12px;
     overflow-x: auto;
-    /* Cho phép cuộn ngang nếu nhiều tab quá */
     padding-bottom: 5px;
 }
 
@@ -79,21 +78,15 @@
     font-weight: 600;
 }
 
-/* --- LOGIC SCROLL --- */
 .orders-list {
     display: flex;
     flex-direction: column;
     gap: 16px;
-
-    /* Tính toán: 7 items * 125px + 6 gaps * 16px ~= 980px */
     max-height: 980px;
     overflow-y: auto;
-    /* Hiện thanh cuộn dọc */
     padding-right: 10px;
-    /* Để nội dung không bị dính vào thanh cuộn */
 }
 
-/* Style thanh cuộn cho đẹp */
 .orders-list::-webkit-scrollbar {
     width: 6px;
 }
@@ -123,7 +116,6 @@
     height: 125px;
     box-sizing: border-box;
     flex-shrink: 0;
-    /* Đảm bảo không bị co lại khi scroll */
 }
 
 .main-icon-img {
@@ -205,7 +197,6 @@
     line-height: 1;
 }
 
-/* Col 4: Status */
 .col-status {
     flex: 1.8;
     flex-direction: row;
@@ -214,7 +205,6 @@
     gap: 16px;
 }
 
-/* Style chung cho Badge */
 .status-badge {
     padding: 8px 12px;
     border-radius: 14px;
@@ -225,7 +215,6 @@
     border: 1px solid transparent;
 }
 
-/* --- MÀU SẮC CHO TỪNG TRẠNG THÁI --- */
 .status-badge.delivered {
     background-color: #F5FBF5;
     border-color: #117E11;

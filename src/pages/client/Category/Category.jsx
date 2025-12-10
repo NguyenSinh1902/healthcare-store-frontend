@@ -27,12 +27,10 @@ const CategoryPage = () => {
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [selectedSort, setSelectedSort] = useState("featured");
 
-  // --- STATE CHO FILTER ---
   const [filterParams, setFilterParams] = useState({});
 
-  // --- THÊM STATE CHO PHÂN TRANG ---
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 12; // 3 cột x 4 hàng = 12 sản phẩm
+  const pageSize = 12;
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -40,14 +38,11 @@ const CategoryPage = () => {
       try {
         if (id) {
           let response;
-          // Combine current sort with other filters
           const currentFilters = { ...filterParams, sort: selectedSort };
 
-          // Map sort values to backend expected values
           if (currentFilters.sort === 'price_asc') currentFilters.sort = 'price_low_to_high';
           if (currentFilters.sort === 'price_desc') currentFilters.sort = 'price_high_to_low';
 
-          // Check if any filter (besides default sort) is active or if sort is not default
           const hasFilters = Object.keys(filterParams).length > 0 || selectedSort !== 'featured';
 
           if (hasFilters) {
@@ -70,9 +65,6 @@ const CategoryPage = () => {
         setProducts([]);
       } finally {
         setLoading(false);
-        // Reset về trang 1 khi đổi danh mục hoặc filter
-        // Note: might want to keep page if just sorting, but for now reset is safer
-        // setCurrentPage(1); 
       }
     };
 
@@ -80,8 +72,7 @@ const CategoryPage = () => {
   }, [id, filterParams, selectedSort]);
 
   const handleFilter = (filters) => {
-    // filters: { minPrice, maxPrice, brand }
-    // Clean up null/undefined values
+
     const newFilters = {};
     if (filters.minPrice !== undefined) newFilters.minPrice = filters.minPrice;
     if (filters.maxPrice !== undefined) newFilters.maxPrice = filters.maxPrice;
@@ -115,15 +106,12 @@ const CategoryPage = () => {
     image: item.imageProduct,
   }));
 
-  // --- LOGIC CẮT DỮ LIỆU ĐỂ HIỂN THỊ ---
   const indexOfLastProduct = currentPage * pageSize;
   const indexOfFirstProduct = indexOfLastProduct - pageSize;
   const currentProducts = mappedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
-  // Hàm xử lý khi bấm chuyển trang
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    // Cuộn lên đầu trang sản phẩm cho trải nghiệm tốt hơn (tuỳ chọn)
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -209,12 +197,12 @@ const CategoryPage = () => {
               {mappedProducts.length > 0 && (
                 <div className="pagination-wrapper">
                   <Pagination
-                    current={currentPage}        // Trang hiện tại
-                    total={mappedProducts.length} // Tổng số lượng sản phẩm
-                    pageSize={pageSize}           // 12 sản phẩm/trang
-                    onChange={handlePageChange}   // Hàm xử lý đổi trang
+                    current={currentPage}
+                    total={mappedProducts.length}
+                    pageSize={pageSize}
+                    onChange={handlePageChange}
                     itemRender={itemRender}
-                    showSizeChanger={false}       // Ẩn nút chọn số lượng/trang nếu không cần
+                    showSizeChanger={false}
                   />
                 </div>
               )}

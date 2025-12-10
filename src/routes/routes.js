@@ -18,6 +18,7 @@ import AdminUserPage from "../pages/admin/User/UserPage";
 import StaffPage from "../pages/admin/Staff/StaffPage";
 import CouponPage from "../pages/admin/Coupon/CouponPage";
 import AdminProfilePage from "../pages/admin/Profile/AdminProfilePage";
+import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 
 const routes = [
   { path: "/", element: <HomePage />, isShowHeader: true },
@@ -50,16 +51,20 @@ const routes = [
     path: "/register", element: <RegisterPage />, isShowHeader: false
   },
 
-  { path: "/admin", element: <Dashboard />, isShowHeader: false },
-  { path: "/admin/products", element: <ProductPage />, isShowHeader: false },
-  { path: "/admin/categories", element: <AdminCategoryPage />, isShowHeader: false },
-  { path: "/admin/orders", element: <AdminOrderPage />, isShowHeader: false },
-  { path: "/admin/customers", element: <AdminUserPage />, isShowHeader: false },
-  { path: "/admin/staff", element: <StaffPage />, isShowHeader: false },
-  { path: "/admin/coupons", element: <CouponPage />, isShowHeader: false },
-  { path: "/admin/profile", element: <AdminProfilePage />, isShowHeader: false },
+  // Protected Admin Routes
+  { path: "/admin", element: <ProtectedRoute><Dashboard /></ProtectedRoute>, isShowHeader: false },
+  { path: "/admin/products", element: <ProtectedRoute><ProductPage /></ProtectedRoute>, isShowHeader: false },
+  { path: "/admin/categories", element: <ProtectedRoute><AdminCategoryPage /></ProtectedRoute>, isShowHeader: false },
+  { path: "/admin/orders", element: <ProtectedRoute><AdminOrderPage /></ProtectedRoute>, isShowHeader: false },
+  { path: "/admin/customers", element: <ProtectedRoute><AdminUserPage /></ProtectedRoute>, isShowHeader: false },
+  { path: "/admin/staff", element: <ProtectedRoute><StaffPage /></ProtectedRoute>, isShowHeader: false },
+  { path: "/admin/coupons", element: <ProtectedRoute><CouponPage /></ProtectedRoute>, isShowHeader: false },
+  { path: "/admin/profile", element: <ProtectedRoute><AdminProfilePage /></ProtectedRoute>, isShowHeader: false },
+
+  // Public Admin Routes
   { path: "/admin/login", element: <AdminLogin />, isShowHeader: false },
   { path: "/admin/register", element: <AdminRegister />, isShowHeader: false },
 ];
+
 
 export default routes;

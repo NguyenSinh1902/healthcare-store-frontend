@@ -35,7 +35,6 @@
     border-bottom: none;
 }
 
-/* --- CỘT 1: ẢNH --- */
 .ci-image {
     width: 64px;
     height: 64px;
@@ -55,10 +54,7 @@
     mix-blend-mode: multiply;
 }
 
-/* --- CỘT 2: THÔNG TIN TÊN & GIÁ --- */
 .ci-info {
-    /* KEY CHANGE: Đặt width cố định khoảng 40-45% thay vì flex: 1 */
-    /* Điều này tạo ra khoảng trống ở giữa để cục Qty tự động căn vào */
     flex: 0 0 45%;
     display: flex;
     flex-direction: column;
@@ -72,7 +68,6 @@
     color: #0D0C0D;
     line-height: 20px;
     font-weight: 600;
-    /* Xử lý text dài */
     white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -89,29 +84,18 @@
     font-weight: 600;
 }
 
-/* --- CỘT 3: QUANTITY BADGE (ĐÃ SỬA) --- */
 .ci-qty-badge {
     display: flex;
     align-items: center;
     justify-content: center;
-
     background-color: #ECF6FF;
-    /* Nền xanh nhạt */
     color: #2859C5;
-    /* Chữ xanh */
-    /* border: 1px solid #BFDBFE; */
-    /* Có thể bỏ border cho mềm mại */
-
     padding: 6px 16px;
     border-radius: 20px;
-    /* Bo tròn kiểu viên thuốc */
-
     font-family: 'Poppins', sans-serif;
     font-size: 13px;
     font-weight: 500;
     white-space: nowrap;
-
-    /* KEY CHANGE: Margin auto giúp badge tự chạy ra giữa khoảng trống còn lại */
     margin: 0 auto;
 }
 
@@ -126,7 +110,6 @@
     font-size: 14px;
 }
 
-/* --- CỘT 4: TỔNG TIỀN --- */
 .ci-final-price {
     font-family: 'ABeeZee', sans-serif;
     font-size: 18px;
@@ -134,30 +117,25 @@
     color: #0D0C0D;
     text-align: right;
     min-width: 80px;
-    /* Giữ thẳng hàng cột giá bên phải */
 }
 
-/* --- RESPONSIVE MOBILE --- */
 @media (max-width: 576px) {
     .checkout-item {
         gap: 10px;
     }
 
     .ci-info {
-        /* Trên mobile không gian hẹp, cho info chiếm lại không gian */
         flex: 1;
     }
 
     .ci-qty-badge {
         margin: 0;
-        /* Bỏ căn giữa trên mobile */
         padding: 4px 8px;
         font-size: 12px;
     }
 
     .qty-label {
         display: none;
-        /* Ẩn chữ Qty trên mobile */
     }
 
     .ci-final-price {

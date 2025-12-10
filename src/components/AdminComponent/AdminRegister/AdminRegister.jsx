@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import './AdminRegister.css';
 import registerImg from '../../../assets/images/image_Register.png';
 import { register, verifyAccount } from '../../../services/authService';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 
 const AdminRegister = () => {
     const navigate = useNavigate();
@@ -24,7 +25,9 @@ const AdminRegister = () => {
     const [verificationCode, setVerificationCode] = useState('');
     const [loading, setLoading] = useState(false);
 
-    // If already logged in as admin, redirect to admin dashboard
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
     useEffect(() => {
         if (user?.role === 'ADMIN' || user?.role === 'admin') {
             navigate('/admin');
@@ -166,7 +169,7 @@ const AdminRegister = () => {
                                     <div className="form-group">
                                         <label>Password</label>
                                         <input
-                                            type="password"
+                                            type={showPassword ? "text" : "password"}
                                             name="password"
                                             className="custom-input"
                                             placeholder="........."
@@ -174,11 +177,17 @@ const AdminRegister = () => {
                                             onChange={handleChange}
                                             required
                                         />
+                                        <span
+                                            className="password-toggle-icon"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                        >
+                                            {showPassword ? <EyeTwoTone /> : <EyeInvisibleOutlined />}
+                                        </span>
                                     </div>
                                     <div className="form-group">
                                         <label>Confirm Password</label>
                                         <input
-                                            type="password"
+                                            type={showConfirmPassword ? "text" : "password"}
                                             name="confirmPassword"
                                             className="custom-input"
                                             placeholder="Confirm password"
@@ -186,6 +195,12 @@ const AdminRegister = () => {
                                             onChange={handleChange}
                                             required
                                         />
+                                        <span
+                                            className="password-toggle-icon"
+                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        >
+                                            {showConfirmPassword ? <EyeTwoTone /> : <EyeInvisibleOutlined />}
+                                        </span>
                                     </div>
                                     <button type="submit" className="btn-admin-register" disabled={loading}>
                                         {loading ? 'Signing Up...' : 'Sign Up'}

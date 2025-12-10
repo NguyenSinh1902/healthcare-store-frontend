@@ -4,7 +4,6 @@ import ProductImage from './ProductImage';
 import ProductInfo from './ProductInfo';
 
 const ProductMain = ({ product }) => {
-  // product.thumbnails is an array of image URLs; fallback to placeholder if missing
   const images = product && product.thumbnails && product.thumbnails.length > 0
     ? product.thumbnails
     : ['https://placehold.co/500x600?text=No+Image'];

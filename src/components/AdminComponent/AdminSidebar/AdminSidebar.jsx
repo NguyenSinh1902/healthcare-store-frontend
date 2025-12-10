@@ -73,9 +73,8 @@ const AdminSidebar = ({ collapsed }) => {
         navigate(e.key);
     };
 
-    // Determine selected key based on current path
     const selectedKey = location.pathname;
-    // Determine open keys (submenus) based on current path
+
     const defaultOpenKeys = [];
     if (selectedKey.includes('/products') || selectedKey.includes('/categories')) {
         defaultOpenKeys.push('products');

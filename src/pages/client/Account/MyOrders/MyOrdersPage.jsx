@@ -16,7 +16,6 @@ const MyOrdersPage = () => {
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Tab khớp với Enum Backend
   const [activeTab, setActiveTab] = useState("All");
   const tabs = ["All", "Pending", "Confirmed", "Shipping", "Delivered", "Cancelled"];
 
@@ -46,13 +45,11 @@ const MyOrdersPage = () => {
     setIsModalOpen(true);
   };
 
-  // Logic lọc
   const getFilteredOrders = () => {
     if (activeTab === "All") return orders;
     return orders.filter(o => o.status === activeTab.toUpperCase());
   };
 
-  // Logic màu sắc Badge
   const getStatusClass = (status) => {
     switch (status) {
       case "PENDING": return "pending";
@@ -98,7 +95,6 @@ const MyOrdersPage = () => {
                 </div>
               </div>
 
-              {/* Class này sẽ được CSS để có scroll */}
               <div className="orders-list">
                 {loading ? (
                   <p>Loading orders...</p>
@@ -157,7 +153,6 @@ const MyOrdersPage = () => {
           </Col>
         </Row>
 
-        {/* Modal chi tiết đơn hàng */}
         <OrderDetailsModal
           open={isModalOpen}
           onCancel={() => setIsModalOpen(false)}

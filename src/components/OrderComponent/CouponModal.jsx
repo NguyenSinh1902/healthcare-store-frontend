@@ -9,7 +9,6 @@ const CouponModal = ({ open, onCancel, onApply, cartTotal = 0 }) => {
   const [loading, setLoading] = useState(false);
   const [searchCode, setSearchCode] = useState('');
 
-  // 1. Khởi tạo Hook message (Quan trọng để hiển thị thông báo trên Modal)
   const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
@@ -29,7 +28,6 @@ const CouponModal = ({ open, onCancel, onApply, cartTotal = 0 }) => {
       }
     } catch (error) {
       console.error("Failed to fetch coupons", error);
-      // Dùng messageApi thay vì message thường
       messageApi.error("Failed to load coupons");
       setCoupons([]);
     } finally {
@@ -64,13 +62,11 @@ const CouponModal = ({ open, onCancel, onApply, cartTotal = 0 }) => {
   };
 
   const handleApply = (coupon) => {
-    // 2. Validate Active
     if (coupon.active === false) {
       messageApi.error("Mã giảm giá này hiện đang bị khóa!");
       return;
     }
 
-    // 3. Validate Date (Hạn sử dụng)
     if (coupon.endDate) {
       const now = new Date();
       const endDate = new Date(coupon.endDate);
@@ -82,18 +78,16 @@ const CouponModal = ({ open, onCancel, onApply, cartTotal = 0 }) => {
       }
     }
 
-    // 4. Validate Min Order (Ép kiểu Number để so sánh chính xác)
     const currentTotal = Number(cartTotal);
     const minOrder = Number(coupon.minOrderValue);
 
     if (currentTotal < minOrder) {
-      // Format tiền tệ cho dễ nhìn
+
       const formattedMinOrder = minOrder.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
       messageApi.error(`Đơn hàng cần tối thiểu ${formattedMinOrder} để sử dụng mã này!`);
       return;
     }
 
-    // Thỏa mãn hết điều kiện
     messageApi.success("Áp dụng mã giảm giá thành công!");
     onApply(coupon);
     onCancel();
@@ -108,7 +102,6 @@ const CouponModal = ({ open, onCancel, onApply, cartTotal = 0 }) => {
       className="coupon-modal-wrapper"
       centered
     >
-      {/* 5. Đặt contextHolder ở đây để render thông báo */}
       {contextHolder}
 
       <div className="coupon-container">

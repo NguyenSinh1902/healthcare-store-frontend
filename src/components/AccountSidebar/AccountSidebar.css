@@ -105,12 +105,8 @@
     font-weight: 500;
 }
 
-/* Thêm hiệu ứng Hover riêng cho nút Logout (Tùy chọn cho đẹp) */
 .menu-item.logout:hover {
     background-color: #FFF1F0;
-    /* Nền đỏ rất nhạt khi di chuột vào */
     color: #FF7875;
-    /* Màu chữ đỏ nhạt hơn chút */
     padding-left: 10px;
-    /* Giữ hiệu ứng đẩy chữ sang phải */
 }

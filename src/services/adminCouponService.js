@@ -1,9 +1,5 @@
 import api from './api';
 
-/**
- * Get all coupons (admin view)
- * GET /coupons
- */
 export const getAllCoupons = async () => {
     try {
         const response = await api.get('/coupons');
@@ -14,10 +10,6 @@ export const getAllCoupons = async () => {
     }
 };
 
-/**
- * Create a new coupon
- * POST /coupons
- */
 export const createCoupon = async (payload) => {
     try {
         const response = await api.post('/coupons', payload);
@@ -28,10 +20,6 @@ export const createCoupon = async (payload) => {
     }
 };
 
-/**
- * Update an existing coupon (without status)
- * PUT /coupons/{idCoupon}
- */
 export const updateCoupon = async (idCoupon, payload) => {
     try {
         const response = await api.put(`/coupons/${idCoupon}`, payload);
@@ -42,10 +30,6 @@ export const updateCoupon = async (idCoupon, payload) => {
     }
 };
 
-/**
- * Update coupon status
- * PUT /coupons/{idCoupon}/status?status={status}
- */
 export const updateCouponStatus = async (idCoupon, status) => {
     try {
         const response = await api.put(`/coupons/${idCoupon}/status?status=${status}`);
@@ -56,10 +40,6 @@ export const updateCouponStatus = async (idCoupon, status) => {
     }
 };
 
-/**
- * Delete a coupon (soft delete)
- * DELETE /coupons/{idCoupon}
- */
 export const deleteCoupon = async (idCoupon) => {
     try {
         const response = await api.delete(`/coupons/${idCoupon}`);
