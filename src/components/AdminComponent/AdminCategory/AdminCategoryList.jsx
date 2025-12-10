@@ -1,42 +1,137 @@
-import React, { useState } from 'react';
-import { Table, Input, Button, Space, Tag, Popconfirm, Card, Row, Col, Image } from 'antd';
-import { SearchOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import React, { useState, useEffect } from 'react';
+import { Table, Input, Button, Space, Tag, Popconfirm, Card, Row, Col, Image, Modal, Form, Select, Upload, message } from 'antd';
+import { SearchOutlined, PlusOutlined, EditOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
+import { getAllCategories, createCategory, updateCategory, deleteCategory } from '../../../services/categoryService';
+import Loading from '../../Loading/Loading';
 import './AdminCategory.css';
 
-const initialCategories = [
-    { key: 1, id_category: 1, name_category: 'Thực phẩm chức năng', description: 'Con của danh mục Thực phẩm chức năng', image_category: 'https://placehold.co/50x50?text=TPCN', parent_category_id: null },
-    { key: 2, id_category: 2, name_category: 'Dược mỹ phẩm', description: 'Con của danh mục Thực phẩm chức năng', image_category: 'https://placehold.co/50x50?text=DMP', parent_category_id: null },
-    { key: 3, id_category: 3, name_category: 'Chăm sóc cá nhân', description: 'Con của danh mục Thực phẩm chức năng', image_category: 'https://placehold.co/50x50?text=CSCN', parent_category_id: null },
-    { key: 4, id_category: 4, name_category: 'Vitamin', description: 'Con của danh mục Thực phẩm chức năng', image_category: 'https://placehold.co/50x50?text=Vit', parent_category_id: 1 },
-    { key: 5, id_category: 5, name_category: 'Khoáng chất', description: 'Con của danh mục Thực phẩm chức năng', image_category: 'https://placehold.co/50x50?text=Khoang', parent_category_id: 2 },
-    { key: 6, id_category: 6, name_category: 'Sữa rửa mặt', description: 'Con của danh mục Thực phẩm chức năng', image_category: 'https://placehold.co/50x50?text=SRM', parent_category_id: 3 },
-    { key: 7, id_category: 7, name_category: 'Kem dưỡng da', description: 'Con của danh mục Thực phẩm chức năng', image_category: 'https://placehold.co/50x50?text=Kem', parent_category_id: 3 },
-    { key: 8, id_category: 8, name_category: 'Dầu gội', description: 'Con của danh mục Thực phẩm chức năng', image_category: 'https://placehold.co/50x50?text=DauGoi', parent_category_id: 3 },
-    { key: 14, id_category: 14, name_category: 'Thiết bị y tế', description: 'Con của danh mục Thực phẩm chức năng', image_category: 'https://placehold.co/50x50?text=TBYT', parent_category_id: null },
-    { key: 15, id_category: 15, name_category: 'Khẩu trang', description: 'Con của danh mục Thực phẩm chức năng', image_category: 'https://placehold.co/50x50?text=KT', parent_category_id: null },
-];
+const { Option } = Select;
+const { TextArea } = Input;
 
 const AdminCategoryList = () => {
     const [searchText, setSearchText] = useState('');
-    const [categories, setCategories] = useState(initialCategories);
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [submitLoading, setSubmitLoading] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [editingCategory, setEditingCategory] = useState(null);
+    const [form] = Form.useForm();
+    const [fileList, setFileList] = useState([]);
 
-    const handleDelete = (key) => {
-        const newData = categories.filter((item) => item.key !== key);
-        setCategories(newData);
+    const fetchCategories = async () => {
+        setLoading(true);
+        try {
+            const response = await getAllCategories();
+            if (response && response.success) {
+                setCategories(response.data);
+            } else {
+                message.error('Failed to fetch categories');
+            }
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+            message.error('An error occurred while fetching categories');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const handleDelete = async (id) => {
+        try {
+            const response = await deleteCategory(id);
+            if (response && response.success) {
+                message.success('Category deleted successfully');
+                fetchCategories();
+            } else {
+                message.error('Failed to delete category');
+            }
+        } catch (error) {
+            console.error('Delete error:', error);
+            message.error('An error occurred while deleting');
+        }
+    };
+
+    const showAddModal = () => {
+        setEditingCategory(null);
+        form.resetFields();
+        setFileList([]);
+        setIsModalVisible(true);
+    };
+
+    const showEditModal = (record) => {
+        setEditingCategory(record);
+        form.setFieldsValue({
+            nameCategory: record.nameCategory,
+            description: record.description,
+            parentCategoryId: record.parentCategoryId,
+        });
+        setFileList([]);
+        setIsModalVisible(true);
+    };
+
+    const handleModalCancel = () => {
+        setIsModalVisible(false);
+        form.resetFields();
+        setFileList([]);
+    };
+
+    const handleModalOk = async () => {
+        setSubmitLoading(true);
+        try {
+            const values = await form.validateFields();
+            const formData = new FormData();
+
+            formData.append('nameCategory', values.nameCategory);
+            formData.append('description', values.description);
+            if (values.parentCategoryId) {
+                formData.append('parentCategoryId', values.parentCategoryId);
+            }
+
+            if (fileList.length > 0) {
+                // Use originFileObj from the state directly
+                formData.append('image', fileList[0]);
+            }
+
+            let response;
+            if (editingCategory) {
+                response = await updateCategory(editingCategory.idCategory, formData);
+            } else {
+                response = await createCategory(formData);
+            }
+
+            if (response && response.success) {
+                message.success(`Category ${editingCategory ? 'updated' : 'created'} successfully`);
+                setIsModalVisible(false);
+                form.resetFields();
+                setFileList([]);
+                fetchCategories();
+            } else {
+                message.error(response?.message || 'Operation failed');
+            }
+        } catch (error) {
+            console.error('Submit error:', error);
+            message.error('An error occurred while saving category');
+        } finally {
+            setSubmitLoading(false);
+        }
     };
 
     const columns = [
         {
             title: 'ID',
-            dataIndex: 'id_category',
-            key: 'id_category',
+            dataIndex: 'idCategory',
+            key: 'idCategory',
             width: 80,
+            sorter: (a, b) => a.idCategory - b.idCategory,
         },
         {
             title: 'Image',
-            dataIndex: 'image_category',
-            key: 'image_category',
+            dataIndex: 'imageCategory',
+            key: 'imageCategory',
             width: 100,
             render: (text) => (
                 <Image src={text} alt="category" width={50} height={50} style={{ objectFit: 'cover' }} />
@@ -44,11 +139,11 @@ const AdminCategoryList = () => {
         },
         {
             title: 'Name',
-            dataIndex: 'name_category',
-            key: 'name_category',
+            dataIndex: 'nameCategory',
+            key: 'nameCategory',
             filteredValue: [searchText],
             onFilter: (value, record) =>
-                record.name_category.toLowerCase().includes(value.toLowerCase()),
+                record.nameCategory.toLowerCase().includes(value.toLowerCase()),
         },
         {
             title: 'Description',
@@ -57,18 +152,22 @@ const AdminCategoryList = () => {
             ellipsis: true,
         },
         {
-            title: 'Parent Category ID',
-            dataIndex: 'parent_category_id',
-            key: 'parent_category_id',
-            render: (text) => text ? <Tag color="blue">{text}</Tag> : <Tag color="green">ROOT</Tag>,
+            title: 'Parent Category',
+            dataIndex: 'parentCategoryId',
+            key: 'parentCategoryId',
+            render: (parentId) => {
+                if (!parentId) return <Tag color="green">ROOT</Tag>;
+                const parent = categories.find(c => c.idCategory === parentId);
+                return <Tag color="blue">{parent ? parent.nameCategory : parentId}</Tag>;
+            },
         },
         {
             title: 'Action',
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Button type="primary" icon={<EditOutlined />} size="small" />
-                    <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
+                    <Button type="primary" icon={<EditOutlined />} size="small" onClick={() => showEditModal(record)} />
+                    <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.idCategory)}>
                         <Button type="primary" danger icon={<DeleteOutlined />} size="small" />
                     </Popconfirm>
                 </Space>
@@ -76,15 +175,16 @@ const AdminCategoryList = () => {
         },
     ];
 
+    // Prepare data for chart: Number of subcategories per parent category
     const parentCounts = {};
     categories.forEach(cat => {
-        if (cat.parent_category_id) {
-            parentCounts[cat.parent_category_id] = (parentCounts[cat.parent_category_id] || 0) + 1;
+        if (cat.parentCategoryId) {
+            parentCounts[cat.parentCategoryId] = (parentCounts[cat.parentCategoryId] || 0) + 1;
         }
     });
 
     const chartData = Object.keys(parentCounts).map(parentId => {
-        const parentName = categories.find(c => c.id_category === parseInt(parentId))?.name_category || `ID ${parentId}`;
+        const parentName = categories.find(c => c.idCategory === parseInt(parentId))?.nameCategory || `ID ${parentId}`;
         return {
             name: parentName,
             count: parentCounts[parentId]
@@ -93,6 +193,7 @@ const AdminCategoryList = () => {
 
     return (
         <div className="admin-category-list">
+            {submitLoading && <Loading fullscreen tip={`${editingCategory ? 'Updating' : 'Creating'} category...`} />}
             <div className="category-list-header">
                 <Input
                     placeholder="Search categories..."
@@ -100,14 +201,15 @@ const AdminCategoryList = () => {
                     onChange={e => setSearchText(e.target.value)}
                     style={{ width: 300 }}
                 />
-                <Button type="primary" icon={<PlusOutlined />}>Add Category</Button>
+                <Button type="primary" icon={<PlusOutlined />} onClick={showAddModal}>Add Category</Button>
             </div>
 
             <Table
                 columns={columns}
                 dataSource={categories}
                 pagination={{ pageSize: 5 }}
-                rowKey="key"
+                rowKey="idCategory"
+                loading={loading}
                 className="category-table"
             />
 
@@ -127,6 +229,67 @@ const AdminCategoryList = () => {
                     </Card>
                 </Col>
             </Row>
+
+            <Modal
+                title={editingCategory ? 'Edit Category' : 'Add New Category'}
+                open={isModalVisible}
+                onOk={handleModalOk}
+                onCancel={handleModalCancel}
+                maskClosable={false}
+            >
+                <Form layout="vertical" form={form}>
+                    <Form.Item
+                        name="nameCategory"
+                        label="Category Name"
+                        rules={[{ required: true, message: 'Please enter category name' }]}
+                    >
+                        <Input placeholder="e.g. Antibiotics" />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="description"
+                        label="Description"
+                        rules={[{ required: true, message: 'Please enter description' }]}
+                    >
+                        <TextArea rows={3} />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="parentCategoryId"
+                        label="Parent Category (Optional)"
+                    >
+                        <Select
+                            allowClear
+                            placeholder="Select a parent category"
+                            showSearch
+                            optionFilterProp="children"
+                        >
+                            {categories
+                                .filter(c => c.idCategory !== editingCategory?.idCategory) // Avoid self-parenting
+                                .map(c => (
+                                    <Option key={c.idCategory} value={c.idCategory}>
+                                        {c.nameCategory} (ID: {c.idCategory})
+                                    </Option>
+                                ))}
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item label="Image">
+                        <Upload
+                            listType="picture"
+                            maxCount={1}
+                            fileList={fileList.length > 0 ? fileList.map(f => ({ ...f, status: 'done' })) : []} // Visual hack if needed, but managing own state is better
+                            onRemove={() => setFileList([])}
+                            beforeUpload={(file) => {
+                                setFileList([file]);
+                                return false;
+                            }}
+                        >
+                            <Button icon={<UploadOutlined />}>Select Image</Button>
+                        </Upload>
+                    </Form.Item>
+                </Form>
+            </Modal>
         </div>
     );
 };
