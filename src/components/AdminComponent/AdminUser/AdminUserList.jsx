@@ -1,41 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Input, Button, Space, Tag, Switch, Popconfirm, message, Avatar, Row, Col, Card } from 'antd';
 import { SearchOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
 import dayjs from 'dayjs';
 import './AdminUser.css';
-
-const initialUsers = [
-    { key: 1, id_user: 1, address: '88 Nguyễn Văn Cừ, Quận 5, TP.HCM', created_at: '2025-11-10 12:08:45', email: 'A01@gmail.com', full_name: 'Nguyễn Xuân Phát', phone: '0912345678', role: 'USER', avatar_url: 'https://placehold.co/50x50?text=Phat', date_of_birth: '2006-05-25', status: 'INACTIVE' },
-    { key: 2, id_user: 2, address: '55 Nguyễn Văn B, Quận 9, TP.HCM', created_at: '2025-11-11 13:02:21', email: 'A02@gmail.com', full_name: 'Nguyễn Xuân A', phone: '0912345678', role: 'USER', avatar_url: 'https://placehold.co/50x50?text=A', date_of_birth: '2007-08-25', status: 'ACTIVE' },
-    { key: 3, id_user: 3, address: null, created_at: '2025-11-11 13:06:03', email: 'A03@gmail.com', full_name: 'Nguyen Van CDEF', phone: '0398854463', role: 'USER', avatar_url: null, date_of_birth: null, status: 'ACTIVE' },
-    { key: 5, id_user: 5, address: null, created_at: '2025-11-11 16:38:05', email: 'A04@gmail.com', full_name: 'Nguyen Van D', phone: null, role: 'USER', avatar_url: null, date_of_birth: null, status: 'ACTIVE' },
-    { key: 6, id_user: 6, address: null, created_at: '2025-11-28 17:57:45', email: 'A045@gmail.com', full_name: 'Nguyen Van Da', phone: null, role: 'USER', avatar_url: null, date_of_birth: null, status: 'ACTIVE' },
-    { key: 7, id_user: 7, address: null, created_at: '2025-11-28 16:04:32', email: 'ABC01@gmail.com', full_name: 'Nguyen Van Dac', phone: null, role: 'USER', avatar_url: null, date_of_birth: null, status: 'ACTIVE' },
-    { key: 8, id_user: 8, address: null, created_at: '2025-11-28 16:33:44', email: 'khoi@gmail.com', full_name: 'sinh', phone: null, role: 'USER', avatar_url: null, date_of_birth: null, status: 'ACTIVE' },
-    { key: 9, id_user: 9, address: null, created_at: '2025-11-28 16:35:00', email: 'khoi1@gmail.com', full_name: 'sinh', phone: null, role: 'USER', avatar_url: null, date_of_birth: null, status: 'ACTIVE' },
-];
+import { getAllAdminUsers, updateUserStatus, deleteUser } from '../../../services/adminUserService';
 
 const AdminUserList = () => {
-    const [users, setUsers] = useState(initialUsers);
-    const [searchText, setSearchText] = useState('');
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    const handleStatusChange = (checked, record) => {
-        const newStatus = checked ? 'ACTIVE' : 'INACTIVE';
-        const updatedUsers = users.map(user => {
-            if (user.id_user === record.id_user) {
-                return { ...user, status: newStatus };
+    // Fetch users from backend (excluding BANNED)
+    const fetchUsers = async () => {
+        setLoading(true);
+        try {
+            const response = await getAllAdminUsers();
+            if (response && response.success) {
+                // Transform to match table column keys
+                const transformed = response.data.map(u => ({
+                    key: u.idUser,
+                    id_user: u.idUser,
+                    full_name: u.fullName,
+                    email: u.email,
+                    avatar_url: u.avatarUrl,
+                    role: u.role,
+                    status: u.status,
+                    created_at: u.createdAt,
+                }));
+                setUsers(transformed);
+            } else {
+                message.error('Failed to fetch users');
             }
-            return user;
-        });
-        setUsers(updatedUsers);
-        message.success(`User ${record.full_name} is now ${newStatus}`);
+        } catch (err) {
+            console.error('Fetch users error:', err);
+            message.error('Error fetching users');
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleDelete = (key) => {
-        const newData = users.filter((item) => item.key !== key);
-        setUsers(newData);
-        message.success('User deleted successfully');
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+    const [searchText, setSearchText] = useState('');
+
+    const handleStatusChange = async (checked, record) => {
+        const newStatus = checked ? 'ACTIVE' : 'INACTIVE';
+        try {
+            const response = await updateUserStatus(record.id_user, newStatus);
+            if (response && response.success) {
+                message.success(`User ${record.full_name} is now ${newStatus}`);
+                fetchUsers();
+            } else {
+                message.error('Failed to update status');
+            }
+        } catch (err) {
+            console.error('Status update error:', err);
+            message.error('Error updating status');
+        }
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            const response = await deleteUser(id);
+            if (response && response.success) {
+                message.success('User deleted successfully');
+                fetchUsers();
+            } else {
+                message.error('Failed to delete user');
+            }
+        } catch (err) {
+            console.error('Delete error:', err);
+            message.error('Error deleting user');
+        }
     };
 
     const columns = [
@@ -110,6 +148,7 @@ const AdminUserList = () => {
         },
     ];
 
+    // Prepare Data for Charts
     const statusCounts = {};
     users.forEach(user => {
         statusCounts[user.status] = (statusCounts[user.status] || 0) + 1;
@@ -120,6 +159,7 @@ const AdminUserList = () => {
     }));
     const COLORS = ['#00C49F', '#FF8042'];
 
+    // Group by Registration Date
     const registrationByDate = {};
     users.forEach(user => {
         const date = dayjs(user.created_at).format('YYYY-MM-DD');
@@ -145,11 +185,13 @@ const AdminUserList = () => {
                 columns={columns}
                 dataSource={users}
                 pagination={{ pageSize: 10 }}
-                rowKey="key"
+                rowKey="id_user"
+                loading={loading}
                 className="user-table"
                 scroll={{ x: 1000 }}
             />
 
+            {/* Charts Section */}
             <Row gutter={24} style={{ marginTop: 24 }}>
                 <Col span={12}>
                     <Card title="User Status Distribution" bordered={false}>
