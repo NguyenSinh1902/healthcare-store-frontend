@@ -73,6 +73,10 @@ const AdminSidebar = ({ collapsed }) => {
         navigate(e.key);
     };
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/feature/admin-coupon-fe
     const selectedKey = location.pathname;
 
     const defaultOpenKeys = [];
