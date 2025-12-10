@@ -6,8 +6,10 @@ import ReloadIcon from '../../assets/images/ReloadOutlined.png';
 
 import './FilterSidebar.css';
 
+import { getAllProducts } from '../../services/productService';
+
 const FilterSidebar = ({ onFilter }) => {
-  // --- CẤU HÌNH ---
+
   const MAX_PRICE = 1000;
   const DEFAULT_RANGE = [0, MAX_PRICE];
 
@@ -18,12 +20,39 @@ const FilterSidebar = ({ onFilter }) => {
     { label: 'Above $500', value: 'above_500', range: [500, MAX_PRICE] },
   ];
 
-  const brandOptions = ['Blackmores', 'Swisse', 'Centrum', 'Nature Made'];
-
   // --- STATE ---
+  const [brandOptions, setBrandOptions] = useState([]);
   const [priceRange, setPriceRange] = useState(DEFAULT_RANGE);
   const [selectedPriceRadio, setSelectedPriceRadio] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState(null);
+
+  // Fetch unique brands from API
+  React.useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const res = await getAllProducts();
+
+        // --- SỬA ĐOẠN NÀY ---
+        // Thêm dấu ? sau chữ res để kiểm tra an toàn
+        // Nếu res null -> bỏ qua res?.data -> chạy vế sau
+        const products = res?.data || (Array.isArray(res) ? res : []);
+
+        if (products.length > 0) {
+          const brands = [...new Set(products.map(p => p.brand).filter(b => b))];
+          setBrandOptions(brands);
+        } else {
+          // Nếu không có sản phẩm thì set rỗng (để không bị giữ data cũ nếu có)
+          setBrandOptions([]);
+        }
+
+      } catch (error) {
+        // Tùy chọn: Nếu lỗi 404 (không tìm thấy) thì có thể bỏ qua không cần log
+        console.error("Failed to fetch brands", error);
+        setBrandOptions([]); // Có lỗi thì cứ coi như không có brand nào
+      }
+    };
+    fetchBrands();
+  }, []);
 
   // --- HANDLERS ---
   const handleSliderChange = (value) => {
