@@ -8,6 +8,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import AdminSidebar from '../../../components/AdminComponent/AdminSidebar/AdminSidebar';
 import AdminUserList from '../../../components/AdminComponent/AdminUser/AdminUserList';
+import AdminHeader from '../../../components/AdminComponent/AdminHeader/AdminHeader';
 
 const { Header, Content } = Layout;
 
@@ -26,21 +27,11 @@ const AdminUserPage = () => {
         <Layout style={{ minHeight: '100vh' }}>
             <AdminSidebar collapsed={collapsed} />
             <Layout>
-                <Header style={{ padding: 0, background: colorBgContainer, display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingRight: '20px' }}>
-                    <Button
-                        type="text"
-                        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                        onClick={() => setCollapsed(!collapsed)}
-                        style={{
-                            fontSize: '16px',
-                            width: 64,
-                            height: 64,
-                        }}
-                    />
-                    <Button icon={<LogoutOutlined />} onClick={handleLogout}>
-                        Logout
-                    </Button>
-                </Header>
+                <AdminHeader
+                    collapsed={collapsed}
+                    onToggleCollapse={() => setCollapsed(!collapsed)}
+                    colorBgContainer={colorBgContainer}
+                />
                 <Content
                     style={{
                         margin: '24px 16px',
