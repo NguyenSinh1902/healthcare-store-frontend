@@ -16,6 +16,7 @@ const OrderPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation(); // 2. Hook lấy state từ navigate
+  const [messageApi, contextHolder] = message.useMessage();
 
   // Lấy toàn bộ giỏ hàng từ Redux
   const { items, totalAmount } = useSelector((state) => state.cart);
@@ -36,7 +37,7 @@ const OrderPage = () => {
 
     // Nếu vào trang này mà chưa chọn sản phẩm nào -> Đá về giỏ hàng
     if (!location.state?.selectedCartItemIds || location.state.selectedCartItemIds.length === 0) {
-      message.warning("Vui lòng chọn sản phẩm từ giỏ hàng trước!");
+      messageApi.warning("Vui lòng chọn sản phẩm từ giỏ hàng trước!");
       navigate('/cart');
     }
   }, [dispatch, navigate, location.state]);
@@ -79,7 +80,7 @@ const OrderPage = () => {
   const handlePlaceOrder = async () => {
     if (!deliveryAddress || deliveryAddress.trim() === '') {
       setAddressError(true);
-      message.error("Vui lòng nhập địa chỉ giao hàng trước khi đặt đơn!");
+      messageApi.error("Vui lòng nhập địa chỉ giao hàng trước khi đặt đơn!");
       return;
     }
 
@@ -93,23 +94,26 @@ const OrderPage = () => {
     try {
       const response = await createOrder(orderData);
       if (response && response.success) {
-        message.success("Đặt hàng thành công!");
+        messageApi.success("Đặt hàng thành công!");
         // Lưu ý: clearCartAction của Redux thường xóa hết. 
         // Nếu muốn chuẩn, bạn nên dispatch 1 action mới là removeSelectedItems(ids)
         // Nhưng tạm thời fetchCart lại để đồng bộ với BE là an toàn nhất.
         dispatch(fetchCart());
-        navigate('/order-success');
+        setTimeout(() => {
+          navigate('/order-success', { state: { order: response.data } });
+        }, 1000); // Đợi 1s để user kịp đọc thông báo
       } else {
-        message.error(response.message || "Đặt hàng thất bại.");
+        messageApi.error(response.message || "Đặt hàng thất bại.");
       }
     } catch (error) {
       console.error("Order placement failed", error);
-      message.error("Có lỗi xảy ra, vui lòng thử lại.");
+      messageApi.error("Có lỗi xảy ra, vui lòng thử lại.");
     }
   };
 
   return (
     <section className="order-page">
+      {contextHolder}
       <div className="order__outer">
         <div className="order__inner">
 

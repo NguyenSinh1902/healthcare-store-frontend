@@ -11,6 +11,8 @@ const ProductCard = ({ product }) => {
 
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.auth);
+  const [messageApi, contextHolder] = message.useMessage();
+
 
   const {
     id = 1,
@@ -30,7 +32,7 @@ const ProductCard = ({ product }) => {
     e.stopPropagation();
 
     if (!isAuthenticated) {
-      message.warning("Please login to add items to cart");
+      messageApi.warning("Please login to add items to cart");
       navigate('/login');
       return;
     }
@@ -39,46 +41,51 @@ const ProductCard = ({ product }) => {
       idProduct: id,
       quantity: 1
     }));
+    messageApi.success("Product added to cart successfully.");
   };
 
   return (
-    <div className="product-card" onClick={handleCardClick}>
-      <div className="pc-product-image-container">
-        <div className="discount-badge">{discount}</div>
-        <img src={image} alt={name} className="product-image" />
+    <>
+      {contextHolder}
+      <div className="product-card" onClick={handleCardClick}>
+        <div className="pc-product-image-container">
+          <div className="discount-badge">{discount}</div>
+          <img src={image} alt={name} className="product-image" />
 
-        <div className="action-buttons">
-          <button className="action-btn wishlist-btn" onClick={(e) => e.stopPropagation()}>
-            <HeartOutlined />
-          </button>
-          <button className="action-btn view-btn" onClick={(e) => e.stopPropagation()}>
-            <EyeOutlined />
-          </button>
-        </div>
-
-        <div className="add-to-cart-layer" onClick={handleAddToCart}>
-          Add To Cart
-        </div>
-      </div>
-
-      <div className="product-info">
-        <h3 className="product-name">{name}</h3>
-
-        <div className="product-price-row">
-          <span className="current-price">${price}</span>
-          <span className="original-price">${originalPrice}</span>
-        </div>
-
-        <div className="product-rating">
-          <div className="stars">
-            {[...Array(5)].map((_, i) => (
-              <StarFilled key={i} className="star-icon" />
-            ))}
+          <div className="action-buttons">
+            <button className="action-btn wishlist-btn" onClick={(e) => e.stopPropagation()}>
+              <HeartOutlined />
+            </button>
+            <button className="action-btn view-btn" onClick={(e) => e.stopPropagation()}>
+              <EyeOutlined />
+            </button>
           </div>
-          <span className="rating-count">({rating})</span>
+
+          <div className="add-to-cart-layer" onClick={handleAddToCart}>
+            Add To Cart
+          </div>
+        </div>
+
+        <div className="product-info">
+          <h3 className="product-name">{name}</h3>
+
+          <div className="product-price-row">
+            <span className="current-price">${price}</span>
+            <span className="original-price">${originalPrice}</span>
+          </div>
+
+          <div className="product-rating">
+            <div className="stars">
+              {[...Array(5)].map((_, i) => (
+                <StarFilled key={i} className="star-icon" />
+              ))}
+            </div>
+            <span className="rating-count">({rating})</span>
+          </div>
         </div>
       </div>
-    </div>
+
+    </>
   );
 };
 

@@ -7,6 +7,7 @@ import App from './App';
 import './index.css';
 import { store } from './redux/store';
 import 'antd/dist/reset.css';
+import 'antd/es/message/style';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
