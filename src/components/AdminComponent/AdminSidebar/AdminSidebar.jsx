@@ -9,6 +9,7 @@ import {
     TagsOutlined,
     MessageOutlined,
     SettingOutlined,
+    CreditCardOutlined,
 } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './AdminSidebar.css';
@@ -56,6 +57,11 @@ const AdminSidebar = ({ collapsed }) => {
             children: [
                 { key: '/admin/coupons', label: 'Coupons' },
             ],
+        },
+        {
+            key: '/admin/payment',
+            icon: <CreditCardOutlined />,
+            label: 'Payments',
         },
         {
             key: '/admin/feedbacks',

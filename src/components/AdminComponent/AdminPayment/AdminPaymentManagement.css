@@ -1,0 +1,89 @@
+.admin-payment-container {
+    padding: 24px;
+    background-color: #f0f2f5;
+    min-height: 100vh;
+}
+
+.page-title {
+    margin-bottom: 24px;
+    font-size: 26px;
+    font-weight: 700;
+    color: #1f1f1f;
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+    border-radius: 12px !important;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card .ant-card-body {
+    padding: 24px;
+}
+
+.dashboard-card .ant-statistic-title {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.dashboard-card .ant-statistic-content {
+    color: #fff !important;
+}
+
+.card-icon-bg {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 50px;
+    color: #fff;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* Gradients - Softer/Professional Tones */
+.card-revenue {
+    background: linear-gradient(135deg, #43E97B 0%, #38F9D7 100%);
+    /* Fresh Green */
+}
+
+.card-total {
+    background: linear-gradient(135deg, #F6D365 0%, #FDA085 100%);
+    /* Soft Orange */
+}
+
+.card-success {
+    background: linear-gradient(135deg, #5EE7DF 0%, #B490CA 100%);
+    /* Blue Purple */
+}
+
+.card-failed {
+    background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 99%, #FECFEF 100%);
+    /* Soft Red */
+}
+
+/* Transaction Card */
+.transaction-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.transaction-card .ant-card-head {
+    border-bottom: 1px solid #f0f0f0;
+    font-weight: 600;
+}
+
+/* Chart Card */
+.chart-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
