@@ -1,0 +1,184 @@
+/* PaymentPage.css */
+.payment-page-container {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    /* Modern Mesh Gradient Background */
+    background-color: #E0F7FA;
+    background-image:
+        radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
+        radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%),
+        radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 1) 0, transparent 50%);
+    background:
+        radial-gradient(at 0% 0%, hsla(189, 100%, 90%, 1) 0, transparent 50%),
+        radial-gradient(at 50% 100%, hsla(220, 60%, 92%, 1) 0, transparent 50%),
+        radial-gradient(at 100% 0%, hsla(340, 100%, 94%, 1) 0, transparent 50%);
+    background-size: 150% 150%;
+    animation: gradientShift 15s ease infinite;
+}
+
+.payment-card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid #eaeaea;
+    transition: transform 0.3s ease;
+}
+
+.payment-card:hover {
+    transform: translateY(-5px);
+}
+
+.payment-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background-color: #FFF1F0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px auto;
+}
+
+.payment-title {
+    font-family: 'Degular Demo', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #FF4D4F;
+    margin-bottom: 10px;
+}
+
+.payment-desc {
+    font-family: 'Poppins', sans-serif;
+    color: #6c757d;
+    font-size: 16px;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.payment-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.btn-retry {
+    height: 45px;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    font-family: 'Poppins', sans-serif;
+}
+
+.btn-home {
+    height: 45px;
+    border-radius: 12px !important;
+    font-weight: 500 !important;
+}
+
+/* Background Decorations */
+.bg-shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.6;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.shape-1 {
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(135deg, #656ED3 0%, #fecfef 100%);
+    top: -50px;
+    left: -50px;
+    animation: float 8s ease-in-out infinite;
+}
+
+.shape-2 {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+    bottom: 50px;
+    right: -20px;
+    animation: float 10s ease-in-out infinite reverse;
+}
+
+.shape-3 {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+    top: 20%;
+    right: 15%;
+    animation: float 12s ease-in-out infinite;
+}
+
+.shape-4 {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+    bottom: 20%;
+    left: 25%;
+    animation: float 9s ease-in-out infinite reverse;
+}
+
+.shape-5 {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+    top: 15%;
+    left: 45%;
+    animation: float 11s ease-in-out infinite;
+}
+
+.shape-6 {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #fdcbf1 0%, #e6dee9 100%);
+    bottom: 40%;
+    right: 25%;
+    animation: float 13s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(20px, 40px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+.payment-card {
+    position: relative;
+    z-index: 10;
+    /* Bring card to front */
+}
+
+/* Custom Thin Scrollbar */
+.custom-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+    background: #d9d9d9;
+    border-radius: 4px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+    background: #bfbfbf;
+}
