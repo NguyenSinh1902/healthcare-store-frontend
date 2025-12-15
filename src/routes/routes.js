@@ -20,6 +20,9 @@ import CouponPage from "../pages/admin/Coupon/CouponPage";
 import AdminProfilePage from "../pages/admin/Profile/AdminProfilePage";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
+import PaymentSuccessPage from "../pages/client/Payment/PaymentSuccessPage";
+import PaymentFailedPage from "../pages/client/Payment/PaymentFailedPage";
+import AdminPaymentPage from "../pages/admin/Payment/PaymentPage";
 
 const routes = [
   { path: "/", element: <HomePage />, isShowHeader: true },
@@ -44,6 +47,10 @@ const routes = [
     path: "/account", element: <AccountDetailsPage />, isShowHeader: true
   },
 
+  // Payment Routes
+  { path: "/payment/success", element: <PaymentSuccessPage />, isShowHeader: true },
+  { path: "/payment/failed", element: <PaymentFailedPage />, isShowHeader: true },
+
   {
     path: "/login", element: <LoginPage />, isShowHeader: false
   },
@@ -60,6 +67,7 @@ const routes = [
   { path: "/admin/customers", element: <ProtectedRoute><AdminUserPage /></ProtectedRoute>, isShowHeader: false },
   { path: "/admin/staff", element: <ProtectedRoute><StaffPage /></ProtectedRoute>, isShowHeader: false },
   { path: "/admin/coupons", element: <ProtectedRoute><CouponPage /></ProtectedRoute>, isShowHeader: false },
+  { path: "/admin/payment", element: <ProtectedRoute><AdminPaymentPage /></ProtectedRoute>, isShowHeader: false },
   { path: "/admin/profile", element: <ProtectedRoute><AdminProfilePage /></ProtectedRoute>, isShowHeader: false },
 
   // Public Admin Routes
