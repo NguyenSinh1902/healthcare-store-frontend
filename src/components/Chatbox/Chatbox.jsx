@@ -1,14 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Input, Spin } from 'antd';
-import { SendOutlined, RobotOutlined, CloseOutlined, MessageOutlined, DeleteOutlined } from '@ant-design/icons';
+import { SendOutlined, RobotOutlined, CloseOutlined } from '@ant-design/icons';
 import { askChatBot } from '../../services/chatService';
 import './Chatbox.css';
 
 const Chatbox = () => {
     const [isOpen, setIsOpen] = useState(false);
-
-    const { isAuthenticated } = useSelector((state) => state.auth);
 
     const [messages, setMessages] = useState(() => {
         const saved = localStorage.getItem('chat_history');
@@ -29,25 +26,11 @@ const Chatbox = () => {
     };
 
     useEffect(() => {
-        if (!isAuthenticated) {
-            const initialMsg = [{ sender: 'AI', text: "Chào bạn! Mình là trợ lý ảo HealthCare. Mình có thể giúp gì cho bạn hôm nay? 🥰" }];
-            setMessages(initialMsg);
-            localStorage.removeItem('chat_history');
-        }
-    }, [isAuthenticated]);
-
-    useEffect(() => {
         localStorage.setItem('chat_history', JSON.stringify(messages));
         if (isOpen) {
             scrollToBottom();
         }
     }, [messages, isOpen]);
-
-    const handleClearChat = () => {
-        const initialMsg = [{ sender: 'AI', text: "Chào bạn! Mình là trợ lý ảo HealthCare. Mình có thể giúp gì cho bạn hôm nay? 🥰" }];
-        setMessages(initialMsg);
-        localStorage.removeItem('chat_history');
-    };
 
     const handleSend = async () => {
         if (!inputText.trim()) return;
@@ -97,7 +80,6 @@ const Chatbox = () => {
 
     return (
         <div className="chatbox-wrapper">
-
             {!isOpen && (
                 <button className="chat-toggle-btn" onClick={() => setIsOpen(true)}>
                     <RobotOutlined style={{ fontSize: '24px' }} />
@@ -112,13 +94,6 @@ const Chatbox = () => {
                             AI Assistant
                         </div>
                         <div style={{ display: 'flex', gap: '8px' }}>
-                            <Button
-                                type="text"
-                                icon={<DeleteOutlined style={{ color: 'white' }} />}
-                                onClick={handleClearChat}
-                                title="Xóa lịch sử chat"
-                                className="btn-close-chat"
-                            />
                             <Button
                                 type="text"
                                 icon={<CloseOutlined style={{ color: 'white' }} />}
