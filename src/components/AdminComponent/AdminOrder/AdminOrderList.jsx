@@ -51,7 +51,7 @@ const AdminOrderList = () => {
                         unit_price: d.unitPrice,
                         total_price: d.totalPrice
                     }))
-                }));
+                })).sort((a, b) => dayjs(b.order_date).valueOf() - dayjs(a.order_date).valueOf());
                 setOrders(transformed);
             } else {
                 message.error('Failed to fetch orders');

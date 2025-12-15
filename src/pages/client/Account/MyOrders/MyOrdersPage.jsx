@@ -91,7 +91,8 @@ const MyOrdersPage = () => {
     return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
   };
 
-  const filteredOrders = getFilteredOrders();
+  // const filteredOrders = getFilteredOrders();
+  const filteredOrders = [...getFilteredOrders()].sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
 
   return (
     <section className="account-page-wrapper">

@@ -64,7 +64,8 @@ const AdminPaymentManagement = () => {
 
             const res = await getAdminTransactions(params);
             if (res && res.success) {
-                setTransactions(res.data);
+                const sortedTransactions = res.data.sort((a, b) => b.idPayment - a.idPayment);
+                setTransactions(sortedTransactions);
             }
         } catch (error) {
             console.error("Fetch transactions error:", error);
