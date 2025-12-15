@@ -2,11 +2,12 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Row, Col, message } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom'; // 1. Import useLocation
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import OrderLeftSection from '../../../components/OrderComponent/OrderLeftSection';
 import CheckoutSummary from '../../../components/OrderComponent/CheckoutSummary';
 import { createOrder } from '../../../services/orderService';
+import { createPaymentUrl } from '../../../services/paymentService';
 import { getProfile } from '../../../services/profileService';
 import { fetchCart, clearCartAction } from '../../../redux/slices/cartSlice';
 
@@ -15,10 +16,9 @@ import './OrderPage.css';
 const OrderPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation(); // 2. Hook lấy state từ navigate
+  const location = useLocation();
   const [messageApi, contextHolder] = message.useMessage();
 
-  // Lấy toàn bộ giỏ hàng từ Redux
   const { items, totalAmount } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
 
@@ -27,28 +27,23 @@ const OrderPage = () => {
   const [selectedCoupon, setSelectedCoupon] = useState(null);
   const [addressError, setAddressError] = useState(false);
 
-  // 3. Lấy danh sách ID đã chọn từ CartPage gửi sang
-  // Nếu không có (ví dụ user truy cập trực tiếp link), mặc định là mảng rỗng
   const selectedCartItemIds = location.state?.selectedCartItemIds || [];
 
   useEffect(() => {
     dispatch(fetchCart());
     fetchUserProfile();
 
-    // Nếu vào trang này mà chưa chọn sản phẩm nào -> Đá về giỏ hàng
     if (!location.state?.selectedCartItemIds || location.state.selectedCartItemIds.length === 0) {
-      messageApi.warning("Vui lòng chọn sản phẩm từ giỏ hàng trước!");
+      messageApi.warning("Please select products from your shopping cart first!");
       navigate('/cart');
     }
   }, [dispatch, navigate, location.state]);
 
-  // 4. Lọc ra danh sách item cần thanh toán (Chỉ những item có ID trong list đã chọn)
   const checkoutItems = useMemo(() => {
     if (!items) return [];
     return items.filter(item => selectedCartItemIds.includes(item.idCartItem));
   }, [items, selectedCartItemIds]);
 
-  // 5. Tính lại tổng tiền dựa trên danh sách đã lọc
   const checkoutTotal = useMemo(() => {
     return checkoutItems.reduce((total, item) => total + (item.unitPrice * item.quantity), 0);
   }, [checkoutItems]);
@@ -80,7 +75,7 @@ const OrderPage = () => {
   const handlePlaceOrder = async () => {
     if (!deliveryAddress || deliveryAddress.trim() === '') {
       setAddressError(true);
-      messageApi.error("Vui lòng nhập địa chỉ giao hàng trước khi đặt đơn!");
+      messageApi.error("Please enter your shipping address before placing your order!");
       return;
     }
 
@@ -88,26 +83,47 @@ const OrderPage = () => {
       deliveryAddress: deliveryAddress.trim(),
       paymentMethod: paymentMethod,
       idCoupon: selectedCoupon ? selectedCoupon.idCoupon : null,
-      selectedCartItemIds: selectedCartItemIds // 6. Gửi danh sách ID xuống Backend
+      selectedCartItemIds: selectedCartItemIds
     };
 
     try {
       const response = await createOrder(orderData);
+
       if (response && response.success) {
-        messageApi.success("Đặt hàng thành công!");
-        // Lưu ý: clearCartAction của Redux thường xóa hết. 
-        // Nếu muốn chuẩn, bạn nên dispatch 1 action mới là removeSelectedItems(ids)
-        // Nhưng tạm thời fetchCart lại để đồng bộ với BE là an toàn nhất.
+
         dispatch(fetchCart());
-        setTimeout(() => {
-          navigate('/order-success', { state: { order: response.data } });
-        }, 1000); // Đợi 1s để user kịp đọc thông báo
+
+        const newOrder = response.data;
+        const newOrderId = newOrder.idOrder;
+
+        if (paymentMethod === 'CARD') {
+          messageApi.loading("Redirecting to the checkout page...", 2.5);
+
+          try {
+            const payRes = await createPaymentUrl(newOrderId, 'NCB');
+            if (payRes && payRes.success && payRes.data && payRes.data.paymentUrl) {
+              window.location.href = payRes.data.paymentUrl;
+            } else {
+              messageApi.error("Payment link not retrieved. Please try again later.");
+              navigate('/account/orders');
+            }
+          } catch (payErr) {
+            console.error("Payment URL creation failed", payErr);
+            messageApi.error("Payment initiation error.");
+          }
+
+        } else {
+          messageApi.success("Order placed successfully!");
+          setTimeout(() => {
+            navigate('/order-success', { state: { order: newOrder } });
+          }, 1000);
+        }
       } else {
-        messageApi.error(response.message || "Đặt hàng thất bại.");
+        messageApi.error(response.message || "Order failed.");
       }
     } catch (error) {
       console.error("Order placement failed", error);
-      messageApi.error("Có lỗi xảy ra, vui lòng thử lại.");
+      messageApi.error("An error occurred, please try again!");
     }
   };
 
@@ -132,14 +148,14 @@ const OrderPage = () => {
                 paymentMethod={paymentMethod}
                 setPaymentMethod={setPaymentMethod}
                 hasError={addressError}
-                items={checkoutItems} // 7. Truyền danh sách đã lọc xuống để hiển thị
+                items={checkoutItems}
               />
             </Col>
 
             <Col xs={24} lg={8}>
               <div className="summary-sticky">
                 <CheckoutSummary
-                  itemsTotal={checkoutTotal} // 8. Truyền tổng tiền đã tính lại
+                  itemsTotal={checkoutTotal}
                   selectedCoupon={selectedCoupon}
                   onApplyCoupon={setSelectedCoupon}
                   onRemoveCoupon={() => setSelectedCoupon(null)}

@@ -11,3 +11,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+Fix Google Maps Autocomplete dropdown hidden behind Modal .pac-container {
+  z-index: 10000 !important;
+}

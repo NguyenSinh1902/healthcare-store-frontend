@@ -2,7 +2,7 @@
 
 .cart-page {
     width: 100%;
-    background-color: #FAFAFA; /* Nền tổng thể hơi xám nhẹ để nổi bật các card trắng */
+    background-color: #FAFAFA;
     padding-bottom: 80px;
     min-height: 100vh;
 }
@@ -16,12 +16,11 @@
 
 .cart-page__inner {
     width: 100%;
-    padding: 0 135px; /* Padding chuẩn 135px */
+    padding: 0 135px;
     box-sizing: border-box;
     padding-top: 10px;
 }
 
-/* --- Breadcrumb --- */
 .breadcrumb {
     padding: 0 0 30px 0;
     color: #9A9A9A;
@@ -37,28 +36,26 @@
 }
 
 .breadcrumb .current {
-    color: black; /* Màu đen cho trang hiện tại */
+    color: black;
     cursor: default;
 }
 
-/* --- Khoảng cách các section --- */
 .section-spacer {
     margin-bottom: 20px;
 }
 
-/* Container chứa danh sách Items */
 .cart-list-container {
     background: white;
     border-radius: 32px;
     border: 1px solid #F8F7F8;
-    padding: 32px; /* Padding trong khung trắng */
+    padding: 32px;
 }
 
 .cart-section-title {
     font-family: 'Inter', sans-serif;
     font-size: 20px;
     font-weight: 600;
-    color: #2859C5; /* Màu xanh tiêu đề "Items Name" */
+    color: #2859C5;
     margin-bottom: 10px;
 }
 
@@ -74,19 +71,16 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/* Cột phải (Summary) */
 .summary-spacer {
-    /* Để summary dính khi cuộn nếu muốn (Sticky) */
     position: sticky;
     top: 20px;
 }
 
-/* Responsive Mobile */
 @media (max-width: 992px) {
     .cart-page__inner {
-        padding: 0 20px; /* Giảm padding trên mobile */
+        padding: 0 20px;
     }
-    
+
     .cart-list-container {
         margin-bottom: 30px;
         padding: 20px;

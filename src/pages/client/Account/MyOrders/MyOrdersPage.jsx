@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, message } from "antd";
+import { Row, Col, message, Button } from "antd";
 import AccountSidebar from "../../../../components/AccountSidebar/AccountSidebar";
 import { getMyOrders } from "../../../../services/orderService";
 import OrderDetailsModal from "./OrderDetailsModal";
@@ -8,9 +8,12 @@ import iconLinear from "../../../../assets/images/outline-linear.png";
 import iconMoney from "../../../../assets/images/outline-money.png";
 import iconReceipt from "../../../../assets/images/outline-receipt.png";
 
+import { createPaymentUrl } from "../../../../services/paymentService";
+
 const MyOrdersPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadingOrder, setLoadingOrder] = useState(null); // Store ID of order being retried
 
   // Modal State
   const [selectedOrderId, setSelectedOrderId] = useState(null);
@@ -38,6 +41,25 @@ const MyOrdersPage = () => {
       message.error("Error fetching orders");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleRetryPayment = async (orderId) => {
+    if (loadingOrder) return;
+    setLoadingOrder(orderId);
+    message.loading("Creating payment URL...", 1);
+    try {
+      const res = await createPaymentUrl(orderId, 'NCB');
+      if (res && res.success && res.data && res.data.paymentUrl) {
+        window.location.href = res.data.paymentUrl;
+      } else {
+        message.error("Failed to create payment URL");
+      }
+    } catch (error) {
+      console.error(error);
+      message.error("Error creating payment URL");
+    } finally {
+      setLoadingOrder(null);
     }
   };
 
@@ -135,6 +157,24 @@ const MyOrdersPage = () => {
                         <div className={`status-badge ${getStatusClass(order.status)}`}>
                           {formatStatus(order.status)}
                         </div>
+                        {order.status === 'PENDING' && order.paymentMethod === 'CARD' && (
+                          <Button
+                            type="primary"
+                            danger
+                            size="small"
+                            loading={loadingOrder === order.idOrder}
+                            onClick={() => handleRetryPayment(order.idOrder)}
+                            style={{
+                              fontSize: '11px',
+                              borderRadius: '6px',
+                              border: 'none',
+                              boxShadow: '0 2px 5px rgba(255, 77, 79, 0.25)',
+                              fontWeight: 600
+                            }}
+                          >
+                            Pay Now
+                          </Button>
+                        )}
                         <button
                           className="btn-reorder"
                           onClick={() => handleViewDetails(order.idOrder)}
@@ -165,7 +205,7 @@ const MyOrdersPage = () => {
         />
 
       </div>
-    </section>
+    </section >
   );
 };
 

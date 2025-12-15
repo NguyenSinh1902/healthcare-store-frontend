@@ -14,7 +14,7 @@ const AdminProfilePage = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [updateLoading, setUpdateLoading] = useState(false); // Thêm state loading cho update
+    const [updateLoading, setUpdateLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [avatarFile, setAvatarFile] = useState(null);
     const [form] = Form.useForm();
@@ -67,7 +67,7 @@ const AdminProfilePage = () => {
     };
 
     const handleSave = async () => {
-        setUpdateLoading(true); // Bắt đầu loading
+        setUpdateLoading(true);
         try {
             const values = await form.validateFields();
             const updateData = {
@@ -77,7 +77,6 @@ const AdminProfilePage = () => {
                 dateOfBirth: values.dateOfBirth ? values.dateOfBirth.format('YYYY-MM-DD') : null
             };
 
-            // Add avatar file if selected
             if (avatarFile) {
                 updateData.avatar = avatarFile;
             }
@@ -95,7 +94,7 @@ const AdminProfilePage = () => {
             console.error('Update failed:', error);
             message.error('Failed to update profile');
         } finally {
-            setUpdateLoading(false); // Kết thúc loading
+            setUpdateLoading(false);
         }
     };
 
@@ -115,10 +114,9 @@ const AdminProfilePage = () => {
                         minHeight: 280,
                         background: colorBgContainer,
                         borderRadius: borderRadiusLG,
-                        position: 'relative' // Để Loading có thể hiển thị đè lên nếu cần (tuy nhiên Loading component dùng fixed nên ko ảnh hưởng lắm)
+                        position: 'relative'
                     }}
                 >
-                    {/* Hiển thị Loading khi đang update */}
                     {updateLoading && <Loading fullscreen tip="Updating profile..." />}
 
 
@@ -126,10 +124,9 @@ const AdminProfilePage = () => {
                         <Loading fullscreen tip="Loading profile..." />
                     ) : (
                         <div className="profile-container">
-                            {/* --- COVER & AVATAR SECTION --- */}
+
                             <div className="profile-cover-section">
                                 <div className="cover-photo">
-                                    {/* Có thể thay bằng ảnh thật nếu API có field coverUrl */}
                                     <img
                                         src="https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=1600&q=80"
                                         alt="Cover"

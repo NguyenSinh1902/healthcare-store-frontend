@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import AccountSidebar from '../../../../components/AccountSidebar/AccountSidebar';
 import { getProfile, updateProfile } from '../../../../services/profileService';
 import Loading from '../../../../components/Loading/Loading';
+import AddressAutocomplete from '../../../../components/AddressAutocomplete/AddressAutocomplete';
 import './AccountDetailsPage.css';
 
 const AccountDetailsPage = () => {
@@ -87,8 +88,12 @@ const AccountDetailsPage = () => {
       <div className="account-container">
 
         <Row gutter={40}>
+          {/* CỘT SIDEBAR */}
           <Col xs={24} lg={6}>
-            <AccountSidebar />
+            {/* Bọc Sidebar trong một thẻ div và sticky thẻ div này */}
+            <div style={{ position: 'sticky', top: '120px', height: 'fit-content' }}>
+              <AccountSidebar />
+            </div>
           </Col>
 
           <Col xs={24} lg={18}>
@@ -184,7 +189,7 @@ const AccountDetailsPage = () => {
 
               <Col span={24}>
                 <Form.Item name="address" label="Address">
-                  <Input.TextArea rows={2} size="large" />
+                  <AddressAutocomplete placeholder="Enter your address..." />
                 </Form.Item>
               </Col>
 

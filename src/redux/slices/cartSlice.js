@@ -24,9 +24,12 @@ export const addToCartItem = createAsyncThunk('cart/addToCart', async ({ idProdu
             dispatch(fetchCart());
             return response.data;
         }
-        return rejectWithValue(response.message);
+        return rejectWithValue(response.message ? response.message.replace("Unexpected error: ", "") : response.message);
     } catch (error) {
-        return rejectWithValue(error.message);
+        const errorMsg = error.response && error.response.data && error.response.data.message
+            ? error.response.data.message.replace("Unexpected error: ", "")
+            : error.message;
+        return rejectWithValue(errorMsg);
     }
 });
 
@@ -37,9 +40,12 @@ export const updateCartItemQuantity = createAsyncThunk('cart/updateQuantity', as
             dispatch(fetchCart());
             return response.data;
         }
-        return rejectWithValue(response.message);
+        return rejectWithValue(response.message ? response.message.replace("Unexpected error: ", "") : response.message);
     } catch (error) {
-        return rejectWithValue(error.message);
+        const errorMsg = error.response && error.response.data && error.response.data.message
+            ? error.response.data.message.replace("Unexpected error: ", "")
+            : error.message;
+        return rejectWithValue(errorMsg);
     }
 });
 
@@ -83,7 +89,6 @@ export const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        // Optional: Local optimistic updates if needed, but relying on API for now is safer
         resetCart: (state) => {
             state.items = [];
             state.totalQuantity = 0;
@@ -101,10 +106,8 @@ export const cartSlice = createSlice({
             .addCase(fetchCart.fulfilled, (state, action) => {
                 state.isLoading = false;
                 const cartData = action.payload;
-                // API returns items array. We need to sum up quantity if API doesn't provide totalQuantity
                 state.items = cartData.items || [];
                 state.totalAmount = cartData.totalAmount;
-                // Calculate total quantity from items
                 state.totalQuantity = state.items.reduce((total, item) => total + item.quantity, 0);
             })
             .addCase(fetchCart.rejected, (state, action) => {
@@ -123,11 +126,8 @@ export const cartSlice = createSlice({
             .addCase(addToCartItem.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
-                message.error(action.payload || "Failed to add to cart");
             });
 
-        // Other actions mainly trigger fetchCart, so we handle their loading states if needed
-        // but fetchCart will handle the data update.
     },
 });
 

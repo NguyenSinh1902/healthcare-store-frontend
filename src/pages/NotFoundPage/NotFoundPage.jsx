@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import './NotFoundPage.css';
+import errorImage from '../../assets/images/404-error.png';
 
 const NotFoundPage = () => {
     const navigate = useNavigate();
@@ -13,7 +14,7 @@ const NotFoundPage = () => {
             <div className="not-found-content">
                 <div className="not-found-image">
                     <img
-                        src="https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg"
+                        src={errorImage}
                         alt="404 Not Found"
                     />
                 </div>

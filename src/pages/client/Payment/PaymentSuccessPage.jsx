@@ -111,7 +111,6 @@ const PaymentSuccessPage = () => {
                 ) : order ? (
                     <div style={{ textAlign: 'left', background: '#fff', border: '1px solid #eee', borderRadius: '16px', padding: '20px', marginBottom: '25px', boxShadow: '0 4px 12px rgba(0,0,0,0.02)' }}>
 
-                        {/* Transaction Receipt Header */}
                         <div style={{ marginBottom: '20px', paddingBottom: '15px', borderBottom: '1px dashed #ddd' }}>
                             <Row gutter={[16, 12]}>
                                 <Col span={12}>
@@ -127,10 +126,9 @@ const PaymentSuccessPage = () => {
                             </Row>
                         </div>
 
-                        {/* Order Details */}
                         <div style={{ marginBottom: '20px' }}>
                             <h4 style={{ fontSize: '14px', color: '#555', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>Order Details #{order.idOrder}</h4>
-                            {/* Items rendering logic - Scrollable Container */}
+
                             <div className="custom-scroll" style={{ maxHeight: '150px', overflowY: 'auto', paddingRight: '5px' }}>
                                 {order.orderDetails ? renderOrderItems(order.orderDetails) : (
                                     <div style={{ color: '#999', fontStyle: 'italic' }}>Items list not available</div>
@@ -138,7 +136,6 @@ const PaymentSuccessPage = () => {
                             </div>
                         </div>
 
-                        {/* Shipping Address */}
                         <div style={{ background: '#f9f9f9', padding: '12px', borderRadius: '8px', marginBottom: '15px' }}>
                             <div style={{ fontSize: '12px', color: '#888', marginBottom: '4px' }}>Shipping to</div>
                             <div style={{ fontSize: '14px', fontWeight: '500', color: '#333' }}>
@@ -146,7 +143,6 @@ const PaymentSuccessPage = () => {
                             </div>
                         </div>
 
-                        {/* Total Summary */}
                         <Divider style={{ margin: '15px 0' }} />
                         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', alignItems: 'center' }}>
                             <span style={{ fontWeight: '600', color: '#333' }}>Total Paid</span>

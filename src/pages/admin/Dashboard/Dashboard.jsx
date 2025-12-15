@@ -78,7 +78,6 @@ const Dashboard = () => {
         setTrendData(transformed);
       }
 
-      // Category distribution - transform for pie chart
       if (categoryRes?.success && categoryRes.data) {
         const transformed = categoryRes.data.map(item => ({
           name: item.label,
@@ -87,7 +86,6 @@ const Dashboard = () => {
         setCategoryData(transformed);
       }
 
-      // Recent orders - transform for table
       if (ordersRes?.success && ordersRes.data) {
         const transformed = ordersRes.data.map((order, index) => ({
           key: index,
@@ -100,7 +98,6 @@ const Dashboard = () => {
         setRecentOrders(transformed);
       }
 
-      // Top products - transform for table
       if (productsRes?.success && productsRes.data) {
         const transformed = productsRes.data.map((product, index) => ({
           key: index,
@@ -120,35 +117,34 @@ const Dashboard = () => {
     }
   };
 
-  // KPI Data
   const kpiData = stats ? [
     {
       title: 'Total Revenue',
       value: `$${stats.totalRevenue.toLocaleString()}`,
-      growth: '+0%',
+      growth: '+15.3%',
       icon: <DollarCircleOutlined />,
-      color: '#52c41a'
+      className: 'card-kpi-revenue'
     },
     {
       title: 'Total Orders',
       value: stats.totalOrders.toLocaleString(),
-      growth: '+0%',
+      growth: '+5.2%',
       icon: <ShoppingOutlined />,
-      color: '#1890ff'
+      className: 'card-kpi-orders'
     },
     {
       title: 'Total Customers',
       value: stats.totalCustomers.toLocaleString(),
-      growth: '+0%',
+      growth: '+8.7%',
       icon: <UserOutlined />,
-      color: '#722ed1'
+      className: 'card-kpi-customers'
     },
     {
       title: 'Total Products',
       value: stats.totalProducts.toLocaleString(),
-      growth: '+0%',
+      growth: '+2.1%',
       icon: <AppstoreOutlined />,
-      color: '#faad14'
+      className: 'card-kpi-products'
     },
   ] : [];
 
@@ -176,9 +172,34 @@ const Dashboard = () => {
   ];
 
   const productColumns = [
-    { title: 'Product Name', dataIndex: 'name', key: 'name' },
-    { title: 'Sold', dataIndex: 'sold', key: 'sold' },
-    { title: 'Price', dataIndex: 'price', key: 'price' },
+    {
+      title: 'Product',
+      dataIndex: 'name',
+      key: 'name',
+      render: (text, record) => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <img
+            src={record.image || 'https://via.placeholder.com/40'}
+            alt={text}
+            style={{ width: 40, height: 40, borderRadius: '8px', objectFit: 'cover', border: '1px solid #f0f0f0' }}
+          />
+          <span style={{ fontWeight: 500 }}>{text}</span>
+        </div>
+      )
+    },
+    {
+      title: 'Sold',
+      dataIndex: 'sold',
+      key: 'sold',
+      render: (text) => <span style={{ fontWeight: 'bold', color: '#52c41a' }}>{text}</span>
+    },
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      key: 'price',
+      align: 'right',
+      render: (text) => <span style={{ fontWeight: 600 }}>{text}</span>
+    },
   ];
 
   if (loading) {
@@ -227,16 +248,16 @@ const Dashboard = () => {
           <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
             {kpiData.map((item, index) => (
               <Col xs={24} sm={12} lg={6} key={index}>
-                <Card bordered={false} className="kpi-card">
-                  <div className="kpi-icon-wrapper" style={{ backgroundColor: `${item.color}20`, color: item.color }}>
-                    {item.icon}
-                  </div>
+                <Card bordered={false} className={`kpi-card ${item.className}`}>
                   <div className="kpi-content">
                     <p className="kpi-title">{item.title}</p>
                     <h3 className="kpi-value">{item.value}</h3>
                     <span className="kpi-growth">
-                      <ArrowUpOutlined /> {item.growth}
+                      <ArrowUpOutlined /> {item.growth} Since last month
                     </span>
+                  </div>
+                  <div className="kpi-icon-bg">
+                    {item.icon}
                   </div>
                 </Card>
               </Col>
