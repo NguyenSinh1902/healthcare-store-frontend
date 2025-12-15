@@ -13,7 +13,7 @@ const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 const AdminPaymentManagement = () => {
-    // State
+
     const [transactions, setTransactions] = useState([]);
     const [dashboardData, setDashboardData] = useState({
         totalRevenue: 0,
@@ -24,32 +24,23 @@ const AdminPaymentManagement = () => {
     const [chartData, setChartData] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    // Filter State
     const [keyword, setKeyword] = useState('');
     const [status, setStatus] = useState('');
     const [dateRange, setDateRange] = useState([]);
 
-    // Fetch Data
     const fetchData = async () => {
         setLoading(true);
         try {
-            // 1. Fetch Dashboard Stats
             const dashRes = await getAdminPaymentDashboard();
-            if (dashRes && dashRes.success !== false) { // API might return data directly or wrapped
-                // Adjust based on your API response structure (the user provided example shows direct object or wrapper??
-                // User example: { failedTransactions: 1, totalRevenue: ..., successTransactions: 14 }
-                // If our axios interceptor returns response.data directly, then it is the object.
+            if (dashRes && dashRes.success !== false) {
                 setDashboardData(dashRes);
             }
 
-            // 2. Fetch Chart Data
             const chartRes = await getAdminPaymentChart();
             if (Array.isArray(chartRes)) {
                 setChartData(chartRes);
             }
 
-            // 3. Fetch Transactions (Initial load)
-            // We can call fetchTransactions() separately to handle filters
             await fetchTransactionsList();
 
         } catch (error) {
@@ -84,7 +75,7 @@ const AdminPaymentManagement = () => {
 
     useEffect(() => {
         fetchData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+
     }, []);
 
     // Handlers
@@ -96,17 +87,15 @@ const AdminPaymentManagement = () => {
         setKeyword('');
         setStatus('');
         setDateRange([]);
-        // timeout to allow state update before fetch (or use useEffect on filters, but manual trigger is safer for admin)
+
         setTimeout(() => {
-            // We need to call fetch with cleared params. 
-            // Since state updates are async, better to just call API with empty params directly here
+
             getAdminTransactions({}).then(res => {
                 if (res && res.success) setTransactions(res.data);
             });
         }, 0);
     };
 
-    // Columns
     const columns = [
         {
             title: 'ID',
@@ -164,7 +153,6 @@ const AdminPaymentManagement = () => {
         <div className="admin-payment-container">
             <h2 className="page-title">Payment Management</h2>
 
-            {/* 1. Dashboard Cards */}
             <Row gutter={24} style={{ marginBottom: 24 }}>
                 <Col span={6}>
                     <Card className="dashboard-card card-revenue" bordered={false}>
@@ -214,7 +202,6 @@ const AdminPaymentManagement = () => {
                 </Col>
             </Row>
 
-            {/* 2. Transaction Filter & Table (Moved Up) */}
             <Card title="Transaction List" className="transaction-card" bordered={false} style={{ marginBottom: 24 }}>
                 <div className="payment-filter-bar" style={{ marginBottom: 20, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                     <Input
@@ -254,8 +241,6 @@ const AdminPaymentManagement = () => {
                 />
             </Card>
 
-            {/* 3. Chart (Moved Down) */}
-            {/* 3. Charts Section */}
             <Row gutter={24} style={{ marginBottom: 24 }}>
                 <Col span={16}>
                     <Card title="Revenue Trend" bordered={false} className="chart-card">

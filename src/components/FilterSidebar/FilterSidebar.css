@@ -3,6 +3,7 @@
 .filter-sidebar {
     width: 100%;
     font-family: 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 .filter-header {
@@ -123,7 +124,7 @@
     margin-right: 15px;
 }
 
-.custom-radio input:checked ~ .radio-mark::after {
+.custom-radio input:checked~.radio-mark::after {
     content: "";
     position: absolute;
     display: block;

@@ -50,36 +50,38 @@ const Banner = () => {
       <div className="banner__outer">
         <div className="banner__inner">
           <div className="banner-container">
-            <div className="banner-slider">
-              <div
-                className="slider-track"
-                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-              >
-                {sliderImages.map((src, index) => (
-                  <div className="slide" key={index}>
-                    <img src={src} alt={`Slide ${index + 1}`} />
-                  </div>
-                ))}
+            {/* Left Column: Slider + Pagination */}
+            <div className="banner-left-column">
+              <div className="banner-slider">
+                <div
+                  className="slider-track"
+                  style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                >
+                  {sliderImages.map((src, index) => (
+                    <div className="slide" key={index}>
+                      <img src={src} alt={`Slide ${index + 1}`} />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Nút Prev */}
+                <button className="slider-nav prev" onClick={prevSlide}>
+                  <LeftOutlined style={{ fontSize: 18, color: "#333" }} />
+                </button>
+
+                {/* Nút Next */}
+                <button className="slider-nav next" onClick={nextSlide}>
+                  <RightOutlined style={{ fontSize: 18, color: "#333" }} />
+                </button>
               </div>
-
-              {/* Nút Prev */}
-              <button className="slider-nav prev" onClick={prevSlide}>
-                <LeftOutlined style={{ fontSize: 18, color: "#333" }} />
-              </button>
-
-              {/* Nút Next */}
-              <button className="slider-nav next" onClick={nextSlide}>
-                <RightOutlined style={{ fontSize: 18, color: "#333" }} />
-              </button>
 
               {/* Pagination */}
               <div className="slider-pagination">
                 {sliderImages.map((_, index) => (
                   <div
                     key={index}
-                    className={`pagination-dot ${
-                      currentIndex === index ? "active" : ""
-                    }`}
+                    className={`pagination-dot ${currentIndex === index ? "active" : ""
+                      }`}
                     onClick={() => goToSlide(index)}
                   ></div>
                 ))}

@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getProfile } from "../../services/profileService";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../redux/slices/authSlice';
+import { fetchCart } from '../../redux/slices/cartSlice';
 import "./Header.css";
 import logo from "../../assets/images/logo-GreenPlus.png";
 import iconSearch from "../../assets/images/icon_search.png";
@@ -12,7 +14,6 @@ import iconAccount from "../../assets/images/icon-account.png";
 import bxMap from "../../assets/images/bx_map.png";
 import weuiBack from "../../assets/images/weui_back-outlined.png";
 
-// Ant Design Icons cho đẹp
 import { UserOutlined, FileTextOutlined, LogoutOutlined, SettingOutlined } from '@ant-design/icons';
 
 import ButtonCategory from "../ButtonCategory/ButtonCategory";
@@ -24,12 +25,35 @@ const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [userProfile, setUserProfile] = useState(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // Get auth state from Redux
   const { isAuthenticated, user } = useSelector((state) => state.auth);
+  // Get cart state
+  const { items: cartItems } = useSelector((state) => state.cart);
+
+  // Fetch profile when authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      const fetchProfile = async () => {
+        try {
+          const res = await getProfile();
+          if (res && res.data) {
+            setUserProfile(res.data);
+          }
+          dispatch(fetchCart()); // Fetch cart data
+        } catch (error) {
+          console.error("Error fetching profile:", error);
+        }
+      };
+      fetchProfile();
+    } else {
+      setUserProfile(null);
+    }
+  }, [isAuthenticated]);
 
   const handleCloseAll = () => {
     setShowCategory(false);
@@ -49,19 +73,18 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    setUserProfile(null);
     handleCloseAll();
     navigate('/login');
   };
 
-  // Hàm toggle cho Notification
   const toggleNotifications = (e) => {
     e.stopPropagation();
     const current = showNotifications;
-    handleCloseAll(); // Đóng hết cái khác
-    setShowNotifications(!current); // Bật/tắt cái này
+    handleCloseAll();
+    setShowNotifications(!current);
   };
 
-  // Hàm toggle cho User Menu
   const toggleUserMenu = (e) => {
     e.stopPropagation();
     const current = showUserMenu;
@@ -69,9 +92,11 @@ const Header = () => {
     setShowUserMenu(!current);
   };
 
+  const displayName = userProfile?.fullName || user?.fullName || user?.email || "Member";
+  const displayAvatar = userProfile?.avatarUrl || user?.avatarUrl || "https://placehold.co/40x40";
+
   return (
     <>
-      {/* Overlay tối màn hình */}
       {(showCategory || showSearch || showNotifications || showUserMenu) && (
         <div className="menu-overlay" onClick={handleCloseAll}></div>
       )}
@@ -80,7 +105,6 @@ const Header = () => {
         <div className="header__outer">
           <div className="header__inner">
 
-            {/* --- LOGO --- */}
             <div
               className="header__logo"
               onClick={handleGoHome}
@@ -133,6 +157,7 @@ const Header = () => {
             >
               <img src={iconSearch} alt="Search" className="icon-search" />
               <input
+                style={{ fontSize: "12px", fontWeight: "400", opacity: "0.8" }}
                 type="text"
                 placeholder="What are you looking for?"
                 value={searchQuery}
@@ -157,9 +182,7 @@ const Header = () => {
 
               {/* 1. NOTIFICATION */}
               <div className="action-item-wrapper" onClick={toggleNotifications}>
-                <img src={iconBell} alt="Notification" className="action-icon-img" />
-                {/* Badge giả lập (chấm đỏ) */}
-                <div className="notification-badge">2</div>
+                <img src={iconBell} alt="Notification" className="action-icon-img" style={{ width: "30px", height: "30px" }} />
 
                 {/* DROPDOWN NOTIFICATION */}
                 {showNotifications && (
@@ -185,11 +208,34 @@ const Header = () => {
               {/* 2. CART */}
               <div className="action-item-wrapper" onClick={() => { navigate("/cart"); handleCloseAll(); }}>
                 <img src={iconCart} alt="Cart" className="action-icon-img" />
+                {cartItems && cartItems.length > 0 && (
+                  <div className="notification-badge">{cartItems.length}</div>
+                )}
               </div>
 
               {/* 3. USER ACCOUNT */}
-              <div className="action-item-wrapper" onClick={toggleUserMenu}>
-                <img src={iconAccount} alt="User" style={{ width: "28px" }} className="action-icon-img" />
+              <div className="action-item-wrapper user-action" onClick={toggleUserMenu}>
+                {isAuthenticated ? (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0px' }}>
+                    <span className="header-greeting" style={{ color: 'white', fontSize: '13px', fontWeight: '500' }}>
+                      Hello, {displayName?.split(' ')[0] || "Member"}!
+                    </span>
+                    <img
+                      src={displayAvatar}
+                      alt="Avatar"
+                      className="header-user-avatar"
+                      style={{ width: "32px", height: "32px", borderRadius: "50%", objectFit: "cover", border: "2px solid rgba(255,255,255,0.8)" }}
+                    />
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0px' }}>
+                    <span style={{ color: 'white', fontSize: '13px', fontWeight: '500', whiteSpace: 'nowrap' }}>
+                      Login / Sign Up
+                    </span>
+                    <img src={iconAccount} alt="User" style={{ width: "30px", marginLeft: "5px" }} className="action-icon-img" />
+
+                  </div>
+                )}
 
                 {/* DROPDOWN USER MENU */}
                 {showUserMenu && (
@@ -199,10 +245,10 @@ const Header = () => {
                       <>
                         {/* User Info Mini */}
                         <div className="user-mini-profile">
-                          <img src="https://placehold.co/48x48" alt="Avatar" />
+                          <img src={displayAvatar} alt="Avatar" className="header-user-avatar" />
                           <div>
-                            <div className="user-name">{user?.fullName || user?.email || "User"}</div>
-                            <div className="user-email">{user?.email}</div>
+                            <div className="user-name">{displayName}</div>
+                            <div className="user-email">{userProfile?.email || user?.email}</div>
                           </div>
                         </div>
 

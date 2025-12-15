@@ -10,15 +10,15 @@ import {
 import { Modal, Form, Input, Radio } from 'antd';
 import './OrderLeftSection.css';
 import OrderItemsList from './OrderItemsList';
+import AddressAutocomplete from '../AddressAutocomplete/AddressAutocomplete';
 
-// Nhận thêm prop 'items' để truyền xuống danh sách sản phẩm
 const OrderLeftSection = ({
   deliveryAddress,
   setDeliveryAddress,
   paymentMethod,
   setPaymentMethod,
   hasError,
-  items // <--- Prop danh sách sản phẩm đã lọc
+  items
 }) => {
   const [isDeliveryModalOpen, setIsDeliveryModalOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
@@ -70,8 +70,6 @@ const OrderLeftSection = ({
         </div>
       </div>
 
-      {/* --- DELIVERY CARD --- */}
-      {/* Thêm class card-error nếu hasError = true */}
       <div className={`info-card ${hasError ? 'card-error' : ''}`}>
         <div className="card-header">
           <div className="header-left">
@@ -88,22 +86,20 @@ const OrderLeftSection = ({
             <div className="icon-box-small">
               <EnvironmentOutlined style={{ color: '#2859C5', fontSize: '12px' }} />
             </div>
-            {/* Logic hiển thị: Nếu có địa chỉ thì hiện, không có thì hiện placeholder */}
+
             <span className={`address-text ${!deliveryAddress ? 'text-placeholder' : ''}`}>
               {deliveryAddress || "Vui lòng nhập địa chỉ nhận hàng..."}
             </span>
           </div>
         </div>
 
-        {/* Hiển thị dòng thông báo lỗi màu đỏ */}
         {hasError && (
           <div className="error-message">
-            * Địa chỉ giao hàng không được để trống.
+            * The delivery address must not be left blank.
           </div>
         )}
       </div>
 
-      {/* --- PAYMENT CARD --- */}
       <div className="info-card">
         <div className="card-header">
           <div className="header-left">
@@ -123,11 +119,8 @@ const OrderLeftSection = ({
         </div>
       </div>
 
-      {/* --- ITEMS LIST --- */}
-      {/* Quan trọng: Truyền prop items xuống đây */}
       <OrderItemsList items={items} />
 
-      {/* --- MODAL DELIVERY --- */}
       <Modal
         title="Edit Delivery Address"
         open={isDeliveryModalOpen}
@@ -138,12 +131,11 @@ const OrderLeftSection = ({
       >
         <Form form={deliveryForm} layout="vertical">
           <Form.Item name="address" label="Address" rules={[{ required: true, message: 'Please input your address!' }]}>
-            <Input.TextArea rows={3} placeholder="Ex: 12 Nguyen Van Bao, Go Vap..." />
+            <AddressAutocomplete placeholder="Ex: 12 Nguyen Van Bao, Go Vap..." />
           </Form.Item>
         </Form>
       </Modal>
 
-      {/* --- MODAL PAYMENT --- */}
       <Modal
         title="Select Payment Method"
         open={isPaymentModalOpen}

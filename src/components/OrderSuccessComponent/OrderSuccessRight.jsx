@@ -33,11 +33,11 @@ const OrderSuccessRight = ({ order }) => {
         <div className="os-info-rows">
           <div className="os-row">
             <span className="os-label-gray">Delivery fee</span>
-            <span className="os-value-black">${deliveryFee}</span>
+            <span className="os-value-black">${Number(deliveryFee).toFixed(2)}</span>
           </div>
           <div className="os-row">
             <span className="os-label-gray">Coupon</span>
-            <span className="os-value-black">-${discountAmount}</span>
+            <span className="os-value-black">-${Number(discountAmount).toFixed(2)}</span>
           </div>
           <div className="os-row">
             <span className="os-label-gray">Items total</span>
@@ -49,7 +49,7 @@ const OrderSuccessRight = ({ order }) => {
 
         <div className="os-total-row">
           <span className="os-total-label">Total</span>
-          <span className="os-total-value">${totalAmount}</span>
+          <span className="os-total-value">${Number(totalAmount).toFixed(2)}</span>
         </div>
       </div>
 

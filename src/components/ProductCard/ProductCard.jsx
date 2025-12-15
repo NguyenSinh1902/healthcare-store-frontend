@@ -28,20 +28,29 @@ const ProductCard = ({ product }) => {
     navigate(`/product-detail/${id}`);
   };
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = async (e) => {
     e.stopPropagation();
 
     if (!isAuthenticated) {
       messageApi.warning("Please login to add items to cart");
-      navigate('/login');
+      setTimeout(() => navigate('/login'), 1000);
       return;
     }
 
-    dispatch(addToCartItem({
-      idProduct: id,
-      quantity: 1
-    }));
-    messageApi.success("Product added to cart successfully.");
+    try {
+      const actionResult = await dispatch(addToCartItem({
+        idProduct: id,
+        quantity: 1
+      }));
+
+      if (addToCartItem.fulfilled.match(actionResult)) {
+        messageApi.success("Product added to cart successfully.");
+      } else if (addToCartItem.rejected.match(actionResult)) {
+        messageApi.error(actionResult.payload || "Failed to add to cart");
+      }
+    } catch (error) {
+      messageApi.error("Something went wrong");
+    }
   };
 
   return (
@@ -70,8 +79,8 @@ const ProductCard = ({ product }) => {
           <h3 className="product-name">{name}</h3>
 
           <div className="product-price-row">
-            <span className="current-price">${price}</span>
-            <span className="original-price">${originalPrice}</span>
+            <span className="current-price">${Number(price).toFixed(2)}</span>
+            <span className="original-price">${Number(originalPrice).toFixed(2)}</span>
           </div>
 
           <div className="product-rating">

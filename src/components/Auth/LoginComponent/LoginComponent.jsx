@@ -44,7 +44,7 @@ const LoginComponent = () => {
 
       if (data && data.success) {
 
-        messageApi.success("Đăng nhập thành công! Đang chuyển hướng...");
+        messageApi.success("Login successful! Redirecting...");
 
         setTimeout(() => {
           const userData = {
@@ -131,6 +131,7 @@ const LoginComponent = () => {
             <SocialLogin />
           </div>
 
+          {/* Lấy hiệu ứng bên PaymentSuccessPage.jsx */}
           <div className="decorative-shape shape-1"></div>
           <div className="decorative-shape shape-2"></div>
         </div>

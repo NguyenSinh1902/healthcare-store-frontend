@@ -169,10 +169,13 @@ const RegisterComponent = () => {
         <span>Back to Home</span>
       </div>
 
+      {/* Lấy hiệu ứng bên PaymentSuccessPage.jsx */}
       <div className="register-container">
         <div className="register-left-section">
-          <div className="dec-shape-reg shape-reg-1" />
-          <div className="dec-shape-reg shape-reg-2" />
+          <div className="dec-shape-reg shape-1" />
+          <div className="dec-shape-reg shape-2" />
+          <div className="dec-shape-reg shape-4" />
+          <div className="dec-shape-reg shape-5" />
           <img src={registerImg} alt="Register Illustration" className="register-floating-img" />
         </div>
 
