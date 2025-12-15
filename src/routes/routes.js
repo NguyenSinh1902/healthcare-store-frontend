@@ -20,6 +20,8 @@ import CouponPage from "../pages/admin/Coupon/CouponPage";
 import AdminProfilePage from "../pages/admin/Profile/AdminProfilePage";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
+import PaymentSuccessPage from "../pages/client/Payment/PaymentSuccessPage";
+import PaymentFailedPage from "../pages/client/Payment/PaymentFailedPage";
 
 const routes = [
   { path: "/", element: <HomePage />, isShowHeader: true },
@@ -51,6 +53,10 @@ const routes = [
   {
     path: "/register", element: <RegisterPage />, isShowHeader: false
   },
+
+  // Payment Routes
+  { path: "/payment/success", element: <PaymentSuccessPage />, isShowHeader: true },
+  { path: "/payment/failed", element: <PaymentFailedPage />, isShowHeader: true },
 
   // Protected Admin Routes
   { path: "/admin", element: <ProtectedRoute><Dashboard /></ProtectedRoute>, isShowHeader: false },

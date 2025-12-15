@@ -43,14 +43,14 @@ const OrderSuccessPage = () => {
           <div className="os-action-buttons">
 
             <button
-              className="btn-action btn-home"
+              className="od-btn-action od-btn-home"
               onClick={() => navigate('/')}
             >
               Back To Home
             </button>
 
             <button
-              className="btn-action btn-history"
+              className="od-btn-action od-btn-history"
               onClick={() => navigate('/account/orders')}
             >
               View Order History

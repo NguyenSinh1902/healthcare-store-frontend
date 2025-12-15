@@ -51,7 +51,7 @@
     width: 100%;
 }
 
-.btn-action {
+.od-btn-action {
     height: 70px;
     border-radius: 20px;
     font-family: 'Roboto', sans-serif;
@@ -66,24 +66,24 @@
     justify-content: center;
 }
 
-.btn-home {
+.od-btn-home {
     background-color: #2859C5;
     color: white;
     border: none;
 }
 
-.btn-home:hover {
+.od-btn-home:hover {
     background-color: #1e46a3;
     box-shadow: 0 4px 15px rgba(40, 89, 197, 0.3);
 }
 
-.btn-history {
+.od-btn-history {
     background-color: white;
     color: #2859C5;
     border: 4px solid #2859C5;
 }
 
-.btn-history:hover {
+.od-btn-history:hover {
     background-color: #F0F8FF;
 }
 
@@ -91,7 +91,7 @@
     .os-page__inner {
         padding: 0 20px;
     }
-    
+
     .os-action-buttons {
         flex-direction: column;
         align-items: center;
