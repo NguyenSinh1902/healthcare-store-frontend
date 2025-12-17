@@ -101,6 +101,9 @@ const OrderDetailsModal = ({ open, onCancel, orderId }) => {
                         <Descriptions.Item label="Delivery Address">
                             {order.deliveryAddress}
                         </Descriptions.Item>
+                        <Descriptions.Item label="Phone Number">
+                            {order.phoneNumber || "N/A"}
+                        </Descriptions.Item>
                     </Descriptions>
 
                     <Divider orientation="left">Items</Divider>

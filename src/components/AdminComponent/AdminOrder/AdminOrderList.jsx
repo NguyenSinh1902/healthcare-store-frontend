@@ -10,10 +10,6 @@ import { getAllOrders, updateOrderStatus } from '../../../services/adminOrderSer
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-// Orders will be fetched from backend via adminOrderService
-
-// Order details will be fetched per order via API when needed
-
 const AdminOrderList = () => {
     const [orders, setOrders] = useState([]);
     const [searchText, setSearchText] = useState('');
@@ -25,7 +21,6 @@ const AdminOrderList = () => {
     const [newStatus, setNewStatus] = useState('');
     const [loading, setLoading] = useState(false);
 
-    // Fetch orders from backend
     const fetchOrders = async () => {
         setLoading(true);
         try {
@@ -42,6 +37,7 @@ const AdminOrderList = () => {
                     payment_method: o.paymentMethod,
                     status: o.status,
                     delivery_address: o.deliveryAddress,
+                    phone_number: o.phoneNumber,
                     orderDetails: (o.orderDetails || []).map(d => ({
                         id_order_detail: d.idOrderDetail,
                         id_product: d.idProduct,
@@ -165,6 +161,12 @@ const AdminOrderList = () => {
             key: 'delivery_address',
             width: 250,
             ellipsis: true,
+        },
+        {
+            title: 'Phone',
+            dataIndex: 'phone_number',
+            key: 'phone_number',
+            width: 120,
         },
         {
             title: 'Action',

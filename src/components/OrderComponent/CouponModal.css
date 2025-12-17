@@ -255,3 +255,28 @@
 .btn-apply:hover {
     background-color: #F9F9F9;
 }
+
+/* --- INVALID COUPON STYLING --- */
+.coupon-card.coupon-invalid {
+    opacity: 0.6;
+    filter: grayscale(100%);
+    cursor: not-allowed;
+    background-color: #e0e0e0;
+}
+
+.coupon-card.coupon-invalid .card-top {
+    background-image: none;
+    background-color: #555;
+}
+
+.coupon-card.coupon-invalid .card-bottom {
+    background-color: #ddd;
+}
+
+.coupon-card.coupon-invalid .btn-apply {
+    cursor: not-allowed;
+    background-color: #ccc;
+    color: #666;
+    border-color: #bbb;
+    box-shadow: none;
+}

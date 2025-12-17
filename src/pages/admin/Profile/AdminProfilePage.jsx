@@ -7,6 +7,7 @@ import AdminHeader from '../../../components/AdminComponent/AdminHeader/AdminHea
 import Loading from '../../../components/Loading/Loading';
 import { getProfile, updateProfile } from '../../../services/profileService';
 import './AdminProfilePage.css';
+import AddressAutocomplete from '../../../components/AddressAutocomplete/AddressAutocomplete';
 
 const { Content } = Layout;
 
@@ -249,7 +250,7 @@ const AdminProfilePage = () => {
                                                 name="address"
                                                 label="Address"
                                             >
-                                                <Input.TextArea rows={3} size="large" />
+                                                <AddressAutocomplete placeholder="Enter your address" />
                                             </Form.Item>
                                         </div>
                                     </Form>

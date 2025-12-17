@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import Confetti from 'react-confetti';
 import { Row, Col } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -11,10 +12,34 @@ import './OrderSuccessPage.css';
 const OrderSuccessPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { order } = location.state || {}; // Lấy order từ state
+  const { order } = location.state || {};
+
+  const [windowDimension, setWindowDimension] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  const detectSize = () => {
+    setWindowDimension({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  }
+
+  useEffect(() => {
+    window.addEventListener('resize', detectSize);
+    return () => window.removeEventListener('resize', detectSize);
+  }, []);
 
   return (
     <section className="order-success-page">
+      <Confetti
+        width={windowDimension.width}
+        height={windowDimension.height}
+        numberOfPieces={200}
+        recycle={false}
+        run={true}
+      />
       <div className="os-page__outer">
         <div className="os-page__inner">
 

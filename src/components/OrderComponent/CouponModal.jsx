@@ -9,7 +9,6 @@ const CouponModal = ({ open, onCancel, onApply, cartTotal = 0 }) => {
   const [loading, setLoading] = useState(false);
   const [searchCode, setSearchCode] = useState('');
 
-  // 1. Khởi tạo Hook message (Quan trọng để hiển thị thông báo trên Modal)
   const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
@@ -29,7 +28,6 @@ const CouponModal = ({ open, onCancel, onApply, cartTotal = 0 }) => {
       }
     } catch (error) {
       console.error("Failed to fetch coupons", error);
-      // Dùng messageApi thay vì message thường
       messageApi.error("Failed to load coupons");
       setCoupons([]);
     } finally {
@@ -64,37 +62,35 @@ const CouponModal = ({ open, onCancel, onApply, cartTotal = 0 }) => {
   };
 
   const handleApply = (coupon) => {
-    // 2. Validate Active
-    if (coupon.active === false) {
-      messageApi.error("Mã giảm giá này hiện đang bị khóa!");
+    // Validate Active
+    if (coupon.active === false || coupon.status === 'INACTIVE') {
+      messageApi.error("This discount code is currently locked!");
       return;
     }
 
-    // 3. Validate Date (Hạn sử dụng)
+    // Validate Date
     if (coupon.endDate) {
       const now = new Date();
       const endDate = new Date(coupon.endDate);
       endDate.setHours(23, 59, 59, 999);
 
       if (now > endDate) {
-        messageApi.error("Mã giảm giá này đã hết hạn!");
+        messageApi.error("This discount code has expired!");
         return;
       }
     }
 
-    // 4. Validate Min Order (Ép kiểu Number để so sánh chính xác)
     const currentTotal = Number(cartTotal);
     const minOrder = Number(coupon.minOrderValue);
 
     if (currentTotal < minOrder) {
-      // Format tiền tệ cho dễ nhìn
+
       const formattedMinOrder = minOrder.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-      messageApi.error(`Đơn hàng cần tối thiểu ${formattedMinOrder} để sử dụng mã này!`);
+      messageApi.error(`Minimum order required ${formattedMinOrder} To use this code!`);
       return;
     }
 
-    // Thỏa mãn hết điều kiện
-    messageApi.success("Áp dụng mã giảm giá thành công!");
+    messageApi.success("Discount code applied successfully!");
     onApply(coupon);
     onCancel();
   };
@@ -108,7 +104,6 @@ const CouponModal = ({ open, onCancel, onApply, cartTotal = 0 }) => {
       className="coupon-modal-wrapper"
       centered
     >
-      {/* 5. Đặt contextHolder ở đây để render thông báo */}
       {contextHolder}
 
       <div className="coupon-container">
@@ -140,43 +135,58 @@ const CouponModal = ({ open, onCancel, onApply, cartTotal = 0 }) => {
         </div>
 
         <div className="coupon-list">
-          {coupons.map((coupon) => (
-            <div key={coupon.idCoupon} className="coupon-card">
+          {coupons.map((coupon) => {
 
-              <div className="card-top">
-                <div className="card-top-content">
-                  <div className="icon-bg-white">
-                    <div className="inner-icon" style={{ background: '#E5672C' }}></div>
+            const isInactive = coupon.active === false || coupon.status === 'INACTIVE';
+            let isExpired = false;
+            if (coupon.endDate) {
+              const now = new Date();
+              const endDate = new Date(coupon.endDate);
+              endDate.setHours(23, 59, 59, 999);
+              if (now > endDate) isExpired = true;
+            }
+
+            const isInvalid = isInactive || isExpired;
+
+            return (
+              <div key={coupon.idCoupon} className={`coupon-card ${isInvalid ? 'coupon-invalid' : ''}`}>
+
+                <div className="card-top">
+                  <div className="card-top-content">
+                    <div className="icon-bg-white">
+                      <div className="inner-icon" style={{ background: '#E5672C' }}></div>
+                    </div>
+                    <div className="code-info">
+                      <div className="discount-text">Flat ${coupon.discountAmount} OFF</div>
+                      <div className="code-text">{coupon.code}</div>
+                    </div>
                   </div>
-                  <div className="code-info">
-                    <div className="discount-text">Flat ${coupon.discountAmount} OFF</div>
-                    <div className="code-text">{coupon.code}</div>
+
+                  <div className="card-meta">
+                    <span>Code: {coupon.code}</span>
+                    <span>Valid: {coupon.endDate}</span>
                   </div>
                 </div>
 
-                <div className="card-meta">
-                  <span>Code: {coupon.code}</span>
-                  <span>Valid: {coupon.endDate}</span>
+                <div className="card-bottom">
+                  <div className="card-details">
+                    <div className="min-order">Minimum order: ${coupon.minOrderValue}</div>
+                    <div className="desc">Save ${coupon.discountAmount} instantly on checkout!</div>
+                    <div className="terms">*Terms & conditions applicable</div>
+                  </div>
+
+                  <button
+                    className="btn-apply"
+                    onClick={() => !isInvalid && handleApply(coupon)}
+                    disabled={isInvalid}
+                  >
+                    {isInvalid ? (isExpired ? 'Expired' : 'Locked') : 'Apply Code'}
+                  </button>
                 </div>
+
               </div>
-
-              <div className="card-bottom">
-                <div className="card-details">
-                  <div className="min-order">Minimum order: ${coupon.minOrderValue}</div>
-                  <div className="desc">Save ${coupon.discountAmount} instantly on checkout!</div>
-                  <div className="terms">*Terms & conditions applicable</div>
-                </div>
-
-                <button
-                  className="btn-apply"
-                  onClick={() => handleApply(coupon)}
-                >
-                  Apply Code
-                </button>
-              </div>
-
-            </div>
-          ))}
+            );
+          })}
           {coupons.length === 0 && !loading && (
             <div style={{ textAlign: 'center', padding: '20px', width: '100%', gridColumn: '1 / -1' }}>
               No coupons found

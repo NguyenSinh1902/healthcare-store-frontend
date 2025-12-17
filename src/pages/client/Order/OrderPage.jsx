@@ -23,6 +23,7 @@ const OrderPage = () => {
   const { user } = useSelector((state) => state.auth);
 
   const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('CASH');
   const [selectedCoupon, setSelectedCoupon] = useState(null);
   const [addressError, setAddressError] = useState(false);
@@ -52,15 +53,18 @@ const OrderPage = () => {
   const fetchUserProfile = async () => {
     try {
       const response = await getProfile();
-      if (response && response.success && response.data && response.data.address) {
-        setDeliveryAddress(response.data.address);
-      } else if (user && user.address) {
-        setDeliveryAddress(user.address);
+      if (response && response.success && response.data) {
+        if (response.data.address) setDeliveryAddress(response.data.address);
+        if (response.data.phone) setPhoneNumber(response.data.phone);
+      } else if (user) {
+        if (user.address) setDeliveryAddress(user.address);
+        if (user.phone) setPhoneNumber(user.phone);
       }
     } catch (error) {
       console.error("Failed to fetch profile for order", error);
-      if (user && user.address) {
-        setDeliveryAddress(user.address);
+      if (user) {
+        if (user.address) setDeliveryAddress(user.address);
+        if (user.phone) setPhoneNumber(user.phone);
       }
     }
   };
@@ -73,14 +77,15 @@ const OrderPage = () => {
   };
 
   const handlePlaceOrder = async () => {
-    if (!deliveryAddress || deliveryAddress.trim() === '') {
+    if (!deliveryAddress || deliveryAddress.trim() === '' || !phoneNumber || phoneNumber.trim() === '') {
       setAddressError(true);
-      messageApi.error("Please enter your shipping address before placing your order!");
+      messageApi.error("Please enter your shipping address and phone number!");
       return;
     }
 
     const orderData = {
       deliveryAddress: deliveryAddress.trim(),
+      phoneNumber: phoneNumber.trim(),
       paymentMethod: paymentMethod,
       idCoupon: selectedCoupon ? selectedCoupon.idCoupon : null,
       selectedCartItemIds: selectedCartItemIds
@@ -145,6 +150,8 @@ const OrderPage = () => {
               <OrderLeftSection
                 deliveryAddress={deliveryAddress}
                 setDeliveryAddress={handleAddressChange}
+                phoneNumber={phoneNumber}
+                setPhoneNumber={setPhoneNumber}
                 paymentMethod={paymentMethod}
                 setPaymentMethod={setPaymentMethod}
                 hasError={addressError}

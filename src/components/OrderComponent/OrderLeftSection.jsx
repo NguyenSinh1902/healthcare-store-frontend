@@ -5,7 +5,8 @@ import {
   EnvironmentOutlined,
   CreditCardOutlined,
   IdcardOutlined,
-  EditOutlined
+  EditOutlined,
+  PhoneOutlined
 } from '@ant-design/icons';
 import { Modal, Form, Input, Radio } from 'antd';
 import './OrderLeftSection.css';
@@ -15,6 +16,8 @@ import AddressAutocomplete from '../AddressAutocomplete/AddressAutocomplete';
 const OrderLeftSection = ({
   deliveryAddress,
   setDeliveryAddress,
+  phoneNumber,
+  setPhoneNumber,
   paymentMethod,
   setPaymentMethod,
   hasError,
@@ -27,8 +30,11 @@ const OrderLeftSection = ({
 
   // Update form values when props change
   useEffect(() => {
-    deliveryForm.setFieldsValue({ address: deliveryAddress });
-  }, [deliveryAddress, deliveryForm]);
+    deliveryForm.setFieldsValue({
+      address: deliveryAddress,
+      phone: phoneNumber
+    });
+  }, [deliveryAddress, phoneNumber, deliveryForm]);
 
   useEffect(() => {
     // Map payment method string to radio value
@@ -39,6 +45,7 @@ const OrderLeftSection = ({
   const handleDeliveryOk = () => {
     deliveryForm.validateFields().then((values) => {
       setDeliveryAddress(values.address);
+      setPhoneNumber(values.phone);
       setIsDeliveryModalOpen(false);
     });
   };
@@ -50,7 +57,7 @@ const OrderLeftSection = ({
     });
   };
 
-  const displayPaymentMethod = paymentMethod === 'CASH' ? 'Cash on Delivery (COD)' : 'Credit Card (Mastercard **** 3434)';
+  const displayPaymentMethod = paymentMethod === 'CASH' ? 'Cash on Delivery (COD)' : 'Credit Card (Mastercard)';
 
   return (
     <div className="order-left-container">
@@ -88,14 +95,23 @@ const OrderLeftSection = ({
             </div>
 
             <span className={`address-text ${!deliveryAddress ? 'text-placeholder' : ''}`}>
-              {deliveryAddress || "Vui lòng nhập địa chỉ nhận hàng..."}
+              {deliveryAddress || "Please enter the delivery address..."}
+            </span>
+          </div>
+
+          <div className="address-row" style={{ marginTop: '10px' }}>
+            <div className="icon-box-small">
+              <PhoneOutlined style={{ color: '#2859C5', fontSize: '12px' }} />
+            </div>
+            <span className={`address-text ${!phoneNumber ? 'text-placeholder' : ''}`}>
+              {phoneNumber || "Please enter the phone number..."}
             </span>
           </div>
         </div>
 
         {hasError && (
           <div className="error-message">
-            * The delivery address must not be left blank.
+            * The delivery address and phone number must not be left blank.
           </div>
         )}
       </div>
@@ -122,7 +138,7 @@ const OrderLeftSection = ({
       <OrderItemsList items={items} />
 
       <Modal
-        title="Edit Delivery Address"
+        title="Edit Delivery Info"
         open={isDeliveryModalOpen}
         onOk={handleDeliveryOk}
         onCancel={() => setIsDeliveryModalOpen(false)}
@@ -132,6 +148,9 @@ const OrderLeftSection = ({
         <Form form={deliveryForm} layout="vertical">
           <Form.Item name="address" label="Address" rules={[{ required: true, message: 'Please input your address!' }]}>
             <AddressAutocomplete placeholder="Ex: 12 Nguyen Van Bao, Go Vap..." />
+          </Form.Item>
+          <Form.Item name="phone" label="Phone Number" rules={[{ required: true, message: 'Please input your phone number!' }]}>
+            <Input size="large" placeholder="Ex: 0987654321" />
           </Form.Item>
         </Form>
       </Modal>
@@ -147,7 +166,7 @@ const OrderLeftSection = ({
         <Form form={paymentForm} layout="vertical">
           <Form.Item name="method">
             <Radio.Group>
-              <Radio value="card" style={{ display: 'block', marginBottom: '10px' }}>Credit Card (Mastercard **** 3434)</Radio>
+              <Radio value="card" style={{ display: 'block', marginBottom: '10px' }}>Credit Card (Mastercard)</Radio>
               <Radio value="cod" style={{ display: 'block' }}>Cash on Delivery (COD)</Radio>
             </Radio.Group>
           </Form.Item>

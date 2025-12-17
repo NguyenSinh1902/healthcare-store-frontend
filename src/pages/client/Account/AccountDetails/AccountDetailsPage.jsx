@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Modal, Form, Input, DatePicker, message, Upload, Button } from 'antd';
-import { EditOutlined, UploadOutlined } from '@ant-design/icons';
+import { Row, Col, Modal, Form, Input, DatePicker, message, Upload, Button, Image } from 'antd';
+import { EditOutlined, UploadOutlined, UserOutlined, PhoneOutlined, HomeOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import AccountSidebar from '../../../../components/AccountSidebar/AccountSidebar';
 import { getProfile, updateProfile } from '../../../../services/profileService';
@@ -11,7 +11,7 @@ import './AccountDetailsPage.css';
 const AccountDetailsPage = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [updateLoading, setUpdateLoading] = useState(false); // Loading for update
+  const [updateLoading, setUpdateLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [avatarFile, setAvatarFile] = useState(null);
   const [form] = Form.useForm();
@@ -77,7 +77,20 @@ const AccountDetailsPage = () => {
       }
     } catch (error) {
       console.error("Update failed:", error);
-      message.error("Failed to update profile");
+
+      // Handle validation errors
+      if (error.response && error.response.data && error.response.data.errors) {
+        const errorData = error.response.data;
+        message.error(errorData.message || "Validation failed");
+
+        const formErrors = errorData.errors.map(err => ({
+          name: err.field,
+          errors: [err.message]
+        }));
+        form.setFields(formErrors);
+      } else {
+        message.error("Failed to update profile");
+      }
     } finally {
       setUpdateLoading(false); // Stop update loading
     }
@@ -88,9 +101,9 @@ const AccountDetailsPage = () => {
       <div className="account-container">
 
         <Row gutter={40}>
-          {/* CỘT SIDEBAR */}
+
           <Col xs={24} lg={6}>
-            {/* Bọc Sidebar trong một thẻ div và sticky thẻ div này */}
+
             <div style={{ position: 'sticky', top: '120px', height: 'fit-content' }}>
               <AccountSidebar />
             </div>
@@ -101,7 +114,7 @@ const AccountDetailsPage = () => {
               <div style={{ textAlign: 'center', padding: 50 }}>Loading profile...</div>
             ) : (
               <div className="client-profile-card">
-                {/* Header: Cover + Avatar */}
+
                 <div className="client-profile-header">
                   <div className="client-cover-photo">
                     <img
@@ -111,10 +124,13 @@ const AccountDetailsPage = () => {
                   </div>
                   <div className="client-avatar-section">
                     <div className="client-avatar-box">
-                      <img
+                      <Image
                         src={profile?.avatarUrl || "https://placehold.co/150x150"}
                         alt="Avatar"
                         className="client-avatar-img"
+                        preview={{
+                          mask: <div style={{ fontSize: 14 }}>View</div>,
+                        }}
                       />
                     </div>
                     <h2 className="client-username">{profile?.fullName || "User"}</h2>
@@ -157,7 +173,7 @@ const AccountDetailsPage = () => {
         </Row>
 
         <Modal
-          title="Update Profile"
+          title={<div style={{ textAlign: 'center', fontSize: '20px', fontWeight: 'bold', marginBottom: '10px' }}>Update Profile</div>}
           open={isModalOpen}
           onOk={handleUpdate}
           onCancel={() => setIsModalOpen(false)}
@@ -165,25 +181,27 @@ const AccountDetailsPage = () => {
           destroyOnClose
           maskClosable={false}
           width={600}
+          className="custom-modal-profile"
+          centered
         >
           {updateLoading && <Loading fullscreen tip="Updating your profile..." />}
 
           <Form form={form} layout="vertical" className="modal-form">
-            <Row gutter={16}>
+            <Row gutter={20}>
               <Col span={12}>
                 <Form.Item name="fullName" label="Full Name" rules={[{ required: true }]}>
-                  <Input size="large" />
+                  <Input size="large" prefix={<UserOutlined style={{ color: '#bfbfbf' }} />} placeholder="Enter full name" />
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item name="phone" label="Phone Number" >
-                  <Input size="large" />
+                  <Input size="large" prefix={<PhoneOutlined style={{ color: '#bfbfbf' }} />} placeholder="Enter phone number" />
                 </Form.Item>
               </Col>
 
-              <Col span={12}>
+              <Col span={24}>
                 <Form.Item name="dateOfBirth" label="Date of Birth">
-                  <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" size="large" />
+                  <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" size="large" placeholder="Select date of birth" />
                 </Form.Item>
               </Col>
 
@@ -194,19 +212,29 @@ const AccountDetailsPage = () => {
               </Col>
 
               <Col span={24}>
-                <Form.Item label="Avatar">
-                  <Upload
-                    beforeUpload={(file) => {
-                      setAvatarFile(file);
-                      return false;
-                    }}
-                    onRemove={() => setAvatarFile(null)}
-                    maxCount={1}
-                    accept="image/*"
-                    listType="picture"
-                  >
-                    <Button icon={<UploadOutlined />} size="large">Click to Upload Avatar</Button>
-                  </Upload>
+                <Form.Item label="Profile Avatar">
+                  <div className="avatar-upload-container">
+                    <Upload
+                      beforeUpload={(file) => {
+                        setAvatarFile(file);
+                        return false;
+                      }}
+                      onRemove={() => setAvatarFile(null)}
+                      maxCount={1}
+                      accept="image/*"
+                      listType="picture-card"
+                      className="avatar-uploader"
+                      showUploadList={{ showPreviewIcon: false }}
+                    >
+                      <div>
+                        <UploadOutlined />
+                        <div style={{ marginTop: 8 }}>Upload</div>
+                      </div>
+                    </Upload>
+                    <div style={{ fontSize: '13px', color: '#888', marginTop: '8px' }}>
+                      Allowed formats: JPG, PNG. Max size: 2MB.
+                    </div>
+                  </div>
                 </Form.Item>
               </Col>
             </Row>
